@@ -1,0 +1,1 @@
+javascript:(function() { window.location.href = "microsoft-edge:" + window.location.href; })();
