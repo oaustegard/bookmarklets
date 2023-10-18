@@ -1,2 +1,0 @@
-# bookmarklets
-Assorted bookmarklets
