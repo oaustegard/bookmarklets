@@ -52,8 +52,10 @@ javascript:(function(){
     var main = mainEl();
     if (main) {
         _lg('Main found');
-        rmEls(main);
-        var md = td.turndown(main.innerHTML);
+        /* clone and process the node */
+        var clone = main.cloneNode(true);
+        rmEls(clone);
+        var md = td.turndown(clone.innerHTML);
         _lg('Markdown length: ' + md.length);
         
         copyToClip(document, '', md);
