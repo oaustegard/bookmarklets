@@ -10,10 +10,10 @@ javascript:(function() {
         doc.removeEventListener("copy", listener);
     }
 
-    var url = window.location.href;
+    var url = window.location.href.split(/[?#]/)[0];
     var key = AJS.$('#key-val').text();
     var summary = AJS.$('#summary-val').text();
-    var status = AJS.$('#status-val span').text();
+    var status = AJS.$('#opsbar-transitions_more span').text();
     var priority = AJS.$('#priority-val').text().trim();
     var type = AJS.$('#type-val').text().trim();
     var assignee = AJS.$('#assignee-val').text().trim();
