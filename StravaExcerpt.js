@@ -16,8 +16,7 @@ var getHighlights = function() {
     var dateTime = document.querySelector('.details time').textContent.trim();
     var location = document.querySelector('.details .location').textContent.trim();
     
-    var sauceInfo = document.getElementById('sauce-infopanel');
-    var sauceContent = sauceInfo ? sauceInfo.textContent.trim() : 'Sauce info not available';
+    var sauceInfo = parseSauceInfo();
     
     var highlights = {
         title: title,
@@ -26,11 +25,32 @@ var getHighlights = function() {
         riderName: riderName,
         dateTime: dateTime,
         location: location,
-        sauceContent: sauceContent
+        sauceContent: sauceInfo
     };
     
     _lg('Fetched highlights');
     return highlights;
+}
+
+var parseSauceInfo = function() {
+    var saucePanel = document.getElementById('sauce-infopanel');
+    if (!saucePanel) return 'Sauce info not available';
+
+    var selectedOption = saucePanel.querySelector('.drop-down-menu .selection').textContent.trim();
+    var tableRows = saucePanel.querySelectorAll('table tr');
+    
+    var sauceData = [`Selected Sauce Data: ${selectedOption}`];
+    
+    tableRows.forEach(row => {
+        var cells = row.querySelectorAll('td');
+        if (cells.length === 2) {
+            var range = cells[0].textContent.trim();
+            var value = cells[1].textContent.trim();
+            sauceData.push(`${range}: ${value}`);
+        }
+    });
+
+    return sauceData.join('\n');
 }
 
 var getInterestingSegments = function(powerThreshold, speedThreshold) {
