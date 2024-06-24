@@ -3,34 +3,35 @@
 document.body.appendChild(Object.assign(document.createElement('script'), { textContent: 'window._lg = function(msg) { console.log(msg); }' }));
 
 _lg('See ChatGPT session at https://chat.openai.com/c/4ee57917-ff98-4ca8-975d-9e65f63950b1');
+_lg('See Claude session at https://claude.ai/chat/aa4bab3b-a302-445e-aa06-5578d89e9351');
 
 var getHighlights = function() {
     _lg('Parse highlights: title, stats, and top achievements');
     
-    // Extract title, stats, and achievements as before
     var title = document.querySelector('h1.activity-name').textContent.trim();
     var stats = document.querySelector('div.activity-stats').textContent.trim();
     var achievements = document.querySelector('footer.achievements').textContent.trim();
     
-    // Extract the additional information
     var riderName = document.querySelector('.details-container .avatar-athlete img').alt.trim();
     var dateTime = document.querySelector('.details time').textContent.trim();
     var location = document.querySelector('.details .location').textContent.trim();
     
-    // Combine all these into an object
+    var sauceInfo = document.getElementById('sauce-infopanel');
+    var sauceContent = sauceInfo ? sauceInfo.textContent.trim() : 'Sauce info not available';
+    
     var highlights = {
         title: title,
         stats: stats,
         achievements: achievements,
         riderName: riderName,
         dateTime: dateTime,
-        location: location
+        location: location,
+        sauceContent: sauceContent
     };
     
     _lg('Fetched highlights');
     return highlights;
 }
-
 
 var getInterestingSegments = function(powerThreshold, speedThreshold) {
     _lg('Parse all segments');
@@ -81,7 +82,7 @@ var getInterestingSegments = function(powerThreshold, speedThreshold) {
 var combineHighlights = function(highlights) {
     _lg('Combine highlights into a single block');
     
-    var combined = `${highlights.riderName} - ${highlights.dateTime} - ${highlights.location}\n${highlights.title}\n${highlights.stats}\nTop Achievements: ${highlights.achievements}`;
+    var combined = `${highlights.riderName} - ${highlights.dateTime} - ${highlights.location}\n${highlights.title}\n${highlights.stats}\nTop Achievements: ${highlights.achievements}\n\nSauce Info:\n${highlights.sauceContent}`;
     var singleLineCombined = combined.replace(/\n+/g, '\n');
     
     return singleLineCombined;
@@ -107,4 +108,5 @@ var displayRideSummary = function(powerThreshold, speedThreshold) {
     outputWindow.document.write(`<html><head><title>Strava Highlights and Segments</title></head><body><pre>${rideSummary}</pre></body></html>`);
     outputWindow.document.close();
 }
+
 displayRideSummary(/*powerThreshold=*/300, /*speedThreshold=*/25);
