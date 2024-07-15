@@ -1,10 +1,7 @@
-Here is a facts-only README for the bookmarklet:
-
-```markdown
 # Extract HTML Bookmarklet
 
 ## Description
-This bookmarklet processes the current webpage, removes specific tags and attributes, and copies the cleaned HTML to the clipboard.
+The [Extract Core HTML](extract_core_html.js) bookmarklet processes the current webpage, removes specific tags and attributes, and copies the cleaned HTML to the clipboard.
 
 ## Features
 - Removes the following tags: `img`, `style`, `script`, `svg`, `video`, `iframe`, `object`, `embed`, `link`, `nav`, `menu`, `aside`
@@ -67,6 +64,4 @@ javascript:(function() {
 
 ## License
 This project is licensed under the MIT License.
-```
 
-This README provides a concise description of the bookmarklet, its features, usage instructions, the code itself, and licensing information.
