@@ -1,4 +1,5 @@
-javascript:(function() {
+javascript: /* From either a Jira ticket or Kanban board, adds a formatted link to the selected Jira ticket to your clipboard, in Markdown and HTML format */
+(function() {
     function copyToClip(doc, html, text = null) {
         function listener(e) {
             e.clipboardData.setData("text/html", html);
@@ -10,19 +11,30 @@ javascript:(function() {
         doc.removeEventListener("copy", listener);
     }
 
-    var url = window.location.href.split(/[?#]/)[0];
-    var key = AJS.$('#key-val').text();
-    var summary = AJS.$('#summary-val').text();
-    var status = AJS.$('#opsbar-transitions_more span').text();
-    var priority = AJS.$('#priority-val').text().trim();
-    var type = AJS.$('#type-val').text().trim();
-    var assignee = AJS.$('#assignee-val').text().trim();
+    function __$(selector, attribute = 'innerText') {
+        var element = document.querySelector(selector);
+        if (!element) return ' ';
+        return attribute === 'innerText' ? element.innerText.trim() : element.getAttribute(attribute).trim();
+    }
 
-    var markdownLink = "[" + key + "](" + url + ")";
-    var description = summary + " (" + status + "/" + priority + "/" + type + "/" + assignee + ")";
-    var markdown = "_" + markdownLink + " - " + description + "_";
-    var htmlLink = '<a href="' + url + '">' + key + '</a>';
-    var html = "<em>" + htmlLink + " - " + description + "</em>";
-    
+    var url = window.location.href.split(/[?#]/)[0];
+    var key = AJS.$('#key-val').text() || __$('#ghx-detail-issue', 'data-issuekey');
+    if (!key || key === ' ') {
+        alert("Please select a ticket.");
+        return;
+    }
+
+    var summary = AJS.$('#summary-val').text() || __$('#summary-val');
+    var status = AJS.$('#opsbar-transitions_more span').text() || __$('#status-val');
+    var priority = (AJS.$('#priority-val').text() || __$('#priority-val')).trim();
+    var type = (AJS.$('#type-val').text() || __$('#type-val')).trim();
+    var assignee = (AJS.$('#assignee-val').text() || __$('#assignee-val')).trim();
+
+    var markdownLink = `[${key}](${url})`;
+    var description = `${summary} (${status}/${priority}/${type}/${assignee})`;
+    var markdown = `_${markdownLink} - ${description}_`;
+    var htmlLink = `<a href="${url}">${key}</a>`;
+    var html = `<em>${htmlLink} - ${description}</em>`;
+
     copyToClip(document, html, markdown);
 })();
