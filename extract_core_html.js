@@ -32,7 +32,8 @@ javascript:(function() {
     }
 
     let html = clonedBody.outerHTML;
-    html = html.replace(/\n\s*\n/g, '\n'); 
+    html = html.replace(/<!--[\s\S]*?-->/g, '');
+    html = html.replace(/\n\s*\n/g, '\n');
     return html;
   }
 
