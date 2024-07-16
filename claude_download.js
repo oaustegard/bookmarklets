@@ -12,19 +12,15 @@ javascript: (() => {
     _lg('Cloning .mx-auto div');
     const contentClone = contentDiv.cloneNode(true);
 
-    _lg('Removing ignored elements');
-    const ignored = contentClone.querySelectorAll('button, [data-ignore-for-autoscroll="true"], .text-stone-500');
-    for (const element of ignored) {
-      element.remove();
-    }
+    _lg('Removing unwanted elements');
+    const unwanted = contentClone.querySelectorAll('button, [data-ignore-for-autoscroll="true"], .text-stone-500, [data-testid="image.png"], [data-testid="claude_tw.css"]');
+    unwanted.forEach(element => element.remove());
 
-    _lg('Getting main inner HTML');
+    _lg('Getting inner HTML');
     let mainContent = contentClone.innerHTML;
     if (!mainContent) {
       throw new Error('.mx-auto div has no content');
     }
-
-    const title = document.querySelector('button[data-testid="chat-menu-trigger"]').textContent;
 
     _lg('Looking for artifact panel');
     const artifactPanel = document.querySelector('.fixed.bottom-0.top-0.flex.w-full.flex-col');
@@ -36,7 +32,11 @@ javascript: (() => {
     } else {
       _lg('No artifact panel found');
     }
+    
+    const title = document.title;
+    const chat_url = document.location.href;
 
+    _lg('Creating new page with two-column layout');
     const newPage = `<!DOCTYPE html>
 <html>
 <head>
@@ -46,6 +46,7 @@ javascript: (() => {
   <link rel="stylesheet" href="https://austegard.com/claude_tw.css">
 </head>
 <body>
+  <h1 class="content-center"><a href="${chat_url}" target="_blank">${title}</a></h1>
   <div class="main-content">
     ${mainContent}
   </div>
