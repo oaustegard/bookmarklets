@@ -1,4 +1,8 @@
-javascript:void(function() {
+javascript:
+/* 
+This is deprecated in favor of copy_url_as_link_dark.js and copy_url_as_link_light.js. See copy_url_as_link_README.md for details
+*/
+void(function() {
 	loc = window.location;
 	page_title = window.document.title;
 	w = window.open(null, null, "height=150,width=900");
