@@ -1,47 +1,79 @@
 javascript:(function() {
-    /* Function to find the nearest SVG element by navigating up the DOM from the specified element */
-    function findNearestSVG(element) {
-        while (element && element.tagName.toLowerCase() !== 'svg') {
+    /* Style for highlighting SVGs */
+    var style = document.createElement('style');
+    style.textContent = `
+        .svg-downloader-highlight {
+            outline: 3px solid #ff0000 !important;
+            cursor: pointer !important;
+        }
+    `;
+    document.head.appendChild(style);
+
+    /* Function to find the closest SVG element */
+    function findClosestSVG(element) {
+        while (element && element !== document.body) {
+            if (element.tagName.toLowerCase() === 'svg') {
+                return element;
+            }
             element = element.parentElement;
         }
-        return element;
+        return null;
     }
 
-    /* Function to download the SVG */
+    /* Function to download SVG */
     function downloadSVG(svgElement) {
-        /* Get the SVG content */
-        var svgContent = new XMLSerializer().serializeToString(svgElement);
-        
-        /* Create a Blob with the SVG content */
-        var blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
-        
-        /* Create a download link */
-        var link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'downloaded_svg.svg';
-        
-        /* Append the link to the body, click it, and remove it */
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        var svgData = new XMLSerializer().serializeToString(svgElement);
+        var svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+        var svgUrl = URL.createObjectURL(svgBlob);
+        var downloadLink = document.createElement('a');
+        downloadLink.href = svgUrl;
+        downloadLink.download = 'downloaded_svg.svg';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        URL.revokeObjectURL(svgUrl);
     }
 
-    /* Main execution */
-    var selection = window.getSelection();
-    if (selection.rangeCount > 0) {
-        var selectedElement = selection.getRangeAt(0).commonAncestorContainer;
-        if (selectedElement.nodeType === Node.TEXT_NODE) {
-            selectedElement = selectedElement.parentElement;
+    /* Highlight SVGs on mouseover */
+    function highlightSVG(event) {
+        var svg = findClosestSVG(event.target);
+        if (svg) {
+            svg.classList.add('svg-downloader-highlight');
         }
-        
-        var svgElement = findNearestSVG(selectedElement);
-        
-        if (svgElement) {
-            downloadSVG(svgElement);
-        } else {
-            alert('No SVG found in or around the selected element.');
-        }
-    } else {
-        alert('Please select part of an SVG before using this bookmarklet.');
     }
+
+    /* Remove highlight on mouseout */
+    function unhighlightSVG(event) {
+        var svg = findClosestSVG(event.target);
+        if (svg) {
+            svg.classList.remove('svg-downloader-highlight');
+        }
+    }
+
+    /* Handle click on SVG */
+    function handleClick(event) {
+        var svg = findClosestSVG(event.target);
+        if (svg) {
+            event.preventDefault();
+            event.stopPropagation();
+            downloadSVG(svg);
+            cleanup();
+        }
+    }
+
+    /* Cleanup function */
+    function cleanup() {
+        document.removeEventListener('mouseover', highlightSVG);
+        document.removeEventListener('mouseout', unhighlightSVG);
+        document.removeEventListener('click', handleClick);
+        document.head.removeChild(style);
+        alert('SVG downloaded. Bookmarklet deactivated.');
+    }
+
+    /* Add event listeners */
+    document.addEventListener('mouseover', highlightSVG);
+    document.addEventListener('mouseout', unhighlightSVG);
+    document.addEventListener('click', handleClick);
+
+    alert('SVG Downloader activated. Hover over an SVG and click to download. Click anywhere else to cancel.');
 })();
