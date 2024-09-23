@@ -2,7 +2,7 @@
 
 ## Overview
 
-This bookmarklet adds sorting functionality to the achievements table on https://wandrer.earth/dashboard/my_places. It adds a header that allows sorting by either area name or achievement percentage.
+This bookmarklet, https://github.com/oaustegard/bookmarklets/blob/main/wandrer_sort_bigmap_achievements.js, adds sorting functionality to the achievements table on https://wandrer.earth/dashboard/my_places. It adds a header that allows sorting by either area name or achievement percentage.
 
 ## Features
 
@@ -15,8 +15,9 @@ This bookmarklet adds sorting functionality to the achievements table on https:/
 To install the bookmarklet:
 
 1. Visit the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html)
-2. a. From the dropdown list select wandrer_sort_bigmap_achievements.js:
-2. b. Alternatively copy the below into the text area (note there is currently a bug that if you clear the field it prepends a hello world alert -- delete that before continuing)
+2. Copy the code: (note there is currently a bug that if you clear the field it prepends a hello world alert -- delete that before continuing)
+  a. From the dropdown list select wandrer_sort_bigmap_achievements.js:
+  b. Alternatively copy the below into the text area, replacing the hello world code 
 ```javascript
 javascript:(function(){const iframe=document.querySelector("#my_places_iframe");const iframeDocument=iframe.contentDocument||iframe.contentWindow.document;const tableContainer=iframeDocument.querySelector("#drawer > div.tw-relative.tw-flex.tw-flex-col.tw-overflow-auto > div > div:nth-child(2)");if(!tableContainer){alert("Table container not found");return;}const rowsContainer=tableContainer.querySelector("div > div > div.tw-bg-white.tw-flex.tw-flex-grow.tw-flex-col.tw-overflow-scroll");if(!rowsContainer){alert("Rows container not found");return;}const rows=Array.from(rowsContainer.querySelectorAll("div.tw-flex.tw-justify-between.tw-items-center.tw-py-2.tw-border-b.tw-border-b-\\[\\#F8F8F8\\]"));if(rows.length===0){alert("No rows found");return;}const headerRow=iframeDocument.createElement("div");headerRow.className="tw-flex tw-justify-between tw-items-center tw-py-2 tw-border-b tw-border-b-[#F8F8F8] tw-font-bold";headerRow.innerHTML=`<p class="tw-text-sm tw-cursor-pointer" onclick="window.sortTable('name')">Name</p><p class="tw-text-sm tw-cursor-pointer" onclick="window.sortTable('percentage')">Percentage</p>`;rowsContainer.insertBefore(headerRow,rows[0]);iframe.contentWindow.sortTable=function(column){const sortedRows=rows.sort((a,b)=>{const aValue=column==='name'?a.querySelector("p").textContent.trim():parseFloat(a.querySelector("p.tw-text-slate-500.tw-text-\\[10px\\]").textContent);const bValue=column==='name'?b.querySelector("p").textContent.trim():parseFloat(b.querySelector("p.tw-text-slate-500.tw-text-\\[10px\\]").textContent);if(column==='name'){return aValue.localeCompare(bValue);}else{return bValue-aValue;}});sortedRows.forEach(row=>rowsContainer.appendChild(row));};alert("Table header and sorting functionality added successfully!");})();
 ```
