@@ -1,11 +1,22 @@
-javascript:(function() {
+javascript: (function () {
+    const DEFAULT_FTP = 270; /* Set your default FTP here */
+
+    /* Utility function to calculate FTP */
+    function calculateFTP() {
+        const powerController = pageView?._powerController?.attributes;
+        if (!powerController?.weighted_power || !powerController?.relative_intensity) {
+            return DEFAULT_FTP;  /* Return default if no power data available */
+        }
+        return (powerController.weighted_power / powerController.relative_intensity) * 100;
+    }
+
     /* Format time from seconds to human readable */
     function formatTime(seconds) {
         seconds = Math.round(seconds);
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
         const remainingSeconds = seconds % 60;
-        
+
         if (hours > 0) {
             return `${hours}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
         }
@@ -16,100 +27,112 @@ javascript:(function() {
     function createResultsDisplay(results) {
         const container = document.createElement('div');
         container.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            max-height: 80vh;
-            overflow-y: auto;
-            z-index: 9999;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        `;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        max-height: 80vh;
+        overflow-y: auto;
+        z-index: 9999;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    `;
 
         container.innerHTML = `
-            <style>
-                .segment-table {
-                    border-collapse: collapse;
-                    margin: 10px 0;
-                    min-width: 500px;
-                }
-                .segment-table th,
-                .segment-table td {
-                    padding: 4px 8px;
-                    border: 1px solid #ddd;
-                    text-align: right;
-                }
-                .segment-table th:first-child,
-                .segment-table td:first-child {
-                    text-align: left;
-                }
-                .positive { color: #2ecc71; }
-                .negative { color: #e74c3c; }
-                .close-btn {
-                    position: absolute;
-                    top: 5px;
-                    right: 5px;
-                    padding: 5px 10px;
-                    cursor: pointer;
-                    border: none;
-                    background: none;
-                    font-size: 20px;
-                    color: #666;
-                }
-                .segment-name {
-                    font-size: 16px;
-                    font-weight: bold;
-                    margin: 15px 0 5px;
-                }
-                .efforts-count {
-                    font-size: 14px;
-                    color: #666;
-                    margin-bottom: 5px;
-                }
-            </style>
-            <button class="close-btn">×</button>
-            <h2 style="margin-top: 0;">Segment YoY Performance Analysis</h2>
-        `;
+        <style>
+            .segment-table {
+                border-collapse: collapse;
+                margin: 10px 0;
+                min-width: 500px;
+            }
+            .segment-table th,
+            .segment-table td {
+                padding: 4px 8px;
+                border: 1px solid #ddd;
+                text-align: right;
+            }
+            .segment-table th:first-child,
+            .segment-table td:first-child {
+                text-align: left;
+            }
+            .positive { color: #2ecc71; }
+            .negative { color: #e74c3c; }
+            .close-btn {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                padding: 5px 10px;
+                cursor: pointer;
+                border: none;
+                background: none;
+                font-size: 20px;
+                color: #666;
+            }
+            .segment-name {
+                font-size: 16px;
+                font-weight: bold;
+                margin: 15px 0 5px;
+            }
+            .efforts-count {
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 5px;
+            }
+            .efforts-link {
+                color: #666;
+                text-decoration: none;
+            }
+            .efforts-link:hover {
+                text-decoration: underline;
+                color: #333;
+            }
+        </style>
+        <button class="close-btn">×</button>
+        <h2 style="margin-top: 0;">Segment YoY Performance Analysis</h2>
+    `;
 
         results.forEach(result => {
             const segmentHtml = `
-                <div class="segment-name">${result.segmentName}</div>
-                <div class="efforts-count">${result.totalEfforts} efforts</div>
-                <table class="segment-table">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>This Ride</th>
-                            <th>YoY Avg</th>
-                            <th>Diff</th>
-                            <th>YoY Pos</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Power</td>
-                            <td>${result.currentPower ? result.currentPower.toFixed(1) + 'W' : 'N/A'}</td>
-                            <td>${result.averagePower ? result.averagePower.toFixed(1) + 'W' : 'N/A'}</td>
-                            <td class="${result.powerImprovement >= 0 ? 'positive' : 'negative'}">
-                                ${result.powerImprovement ? (result.powerImprovement >= 0 ? '+' : '') + result.powerImprovement.toFixed(1) + '%' : 'N/A'}
-                            </td>
-                            <td>${result.powerRank || 'N/A'}</td>
-                        </tr>
-                        <tr>
-                            <td>Time</td>
-                            <td>${result.currentTime ? formatTime(result.currentTime) : 'N/A'}</td>
-                            <td>${result.averageTime ? formatTime(result.averageTime) : 'N/A'}</td>
-                            <td class="${result.timeImprovement >= 0 ? 'positive' : 'negative'}">
-                                ${result.timeImprovement ? (result.timeImprovement >= 0 ? '+' : '') + result.timeImprovement.toFixed(1) + '%' : 'N/A'}
-                            </td>
-                            <td>${result.timeRank || 'N/A'}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            `;
+            <div class="segment-name">${result.segmentName}</div>
+            <div class="efforts-count">
+                <a href="https://www.strava.com/segments/${result.segmentId}?filter=my_results" 
+                   class="efforts-link" 
+                   target="_blank">${result.totalEfforts} efforts</a>
+            </div>
+            <table class="segment-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>This Ride</th>
+                        <th>YoY Avg</th>
+                        <th>Diff</th>
+                        <th>YoY Pos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Power</td>
+                        <td>${result.currentPower ? result.currentPower.toFixed(1) + 'W' : 'N/A'}</td>
+                        <td>${result.averagePower ? result.averagePower.toFixed(1) + 'W' : 'N/A'}</td>
+                        <td class="${result.powerImprovement >= 0 ? 'positive' : 'negative'}">
+                            ${result.powerImprovement ? (result.powerImprovement >= 0 ? '+' : '') + result.powerImprovement.toFixed(1) + '%' : 'N/A'}
+                        </td>
+                        <td>${result.powerRank || 'N/A'}</td>
+                    </tr>
+                    <tr>
+                        <td>Time</td>
+                        <td>${result.currentTime ? formatTime(result.currentTime) : 'N/A'}</td>
+                        <td>${result.averageTime ? formatTime(result.averageTime) : 'N/A'}</td>
+                        <td class="${result.timeImprovement <= 0 ? 'positive' : 'negative'}">
+                            ${result.timeImprovement ? (result.timeImprovement >= 0 ? '+' : '') + result.timeImprovement.toFixed(1) + '%' : 'N/A'}
+                        </td>
+                        <td>${result.timeRank || 'N/A'}</td>
+                    </tr>
+                </tbody>
+            </table>
+        `;
             container.insertAdjacentHTML('beforeend', segmentHtml);
         });
 
@@ -121,31 +144,31 @@ javascript:(function() {
     function analyzeSegmentPerformance(currentEffort, historyData) {
         const oneYearAgo = new Date();
         oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-        
+
         /* Ensure historyData and efforts exist */
         if (!historyData?.efforts?.length) {
             return null;
         }
 
-        const recentEfforts = historyData.efforts.filter(effort => 
+        const recentEfforts = historyData.efforts.filter(effort =>
             new Date(effort.start_date) > oneYearAgo
         );
-    
+
         /* Filter valid power efforts before sorting/averaging */
         const powerEfforts = recentEfforts.filter(e => e.avg_watts_calc && !isNaN(e.avg_watts_calc));
-        
+
         const sortedByPower = [...powerEfforts].sort((a, b) => b.avg_watts_calc - a.avg_watts_calc);
         const sortedByTime = [...recentEfforts].sort((a, b) => a.elapsed_time - b.elapsed_time);
-    
+
         const avgPower = powerEfforts.length > 0 ?
             powerEfforts.reduce((sum, e) => sum + e.avg_watts_calc, 0) / powerEfforts.length : null;
-    
+
         const avgTime = recentEfforts.length > 0 ?
             recentEfforts.reduce((sum, e) => sum + e.elapsed_time, 0) / recentEfforts.length : null;
-    
+
         const currentPower = currentEffort.attributes.avg_watts_raw;
         const currentTime = currentEffort.attributes.elapsed_time_raw;
-    
+
         /* Calculate rankings only if we have valid data */
         let powerRank = null;
         let timeRank = null;
@@ -169,9 +192,9 @@ javascript:(function() {
         }
 
         if (currentTime && avgTime) {
-            timeImprovement = ((avgTime - currentTime) / avgTime) * 100;
+            timeImprovement = ((currentTime - avgTime) / avgTime) * 100;
         }
-    
+
         return {
             currentPower,
             currentTime,
@@ -181,6 +204,7 @@ javascript:(function() {
             timeImprovement,
             totalEfforts: recentEfforts.length,
             segmentName: currentEffort.attributes.name,
+            segmentId: currentEffort.attributes.segment_id,  /* Added this line */
             powerRank,
             timeRank
         };
@@ -196,15 +220,6 @@ javascript:(function() {
         return num + "th";
     }
 
-    /* Utility function to calculate FTP */
-    function calculateFTP() {
-        const powerController = pageView?._powerController?.attributes;
-        if (!powerController?.weighted_power || !powerController?.relative_intensity) {
-            return null;
-        }
-        return (powerController.weighted_power / powerController.relative_intensity) * 100;
-    }
-
     /* Process single segment history */
     async function fetchSegmentHistory(segmentId, csrfToken) {
         try {
@@ -216,7 +231,7 @@ javascript:(function() {
                 },
                 credentials: 'include'
             });
-            
+
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             return await response.json();
         } catch (error) {
@@ -234,12 +249,8 @@ javascript:(function() {
             return;
         }
 
-        /* Calculate FTP */
+        /* Calculate FTP or use default */
         const ftp = calculateFTP();
-        if (!ftp) {
-            alert('Unable to calculate FTP. Please ensure you are on a power-based activity.');
-            return;
-        }
 
         /* Get segment efforts */
         const efforts = pageView?.segmentEfforts()?.models;
@@ -248,7 +259,7 @@ javascript:(function() {
             return;
         }
 
-        /* Filter relevant segments */
+        /* Filter relevant segments - now more permissive */
         const relevantEfforts = efforts.filter(effort => {
             const attrs = effort.attributes;
             return (
@@ -256,12 +267,12 @@ javascript:(function() {
                 attrs.effort_leaderboard_eligible &&
                 !attrs.hidden &&
                 !attrs.flagged &&
-                attrs.avg_watts_raw > ftp
+                (!attrs.avg_watts_raw || attrs.avg_watts_raw > ftp)  /* Include if no power or exceeds FTP */
             );
         });
 
         if (!relevantEfforts.length) {
-            alert('No segments found exceeding FTP or matching criteria.');
+            alert('No segments found matching criteria.');
             return;
         }
 
