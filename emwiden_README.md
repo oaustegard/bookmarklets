@@ -19,32 +19,16 @@ The objective was to create a bookmarklet that allows users to **expand any elem
 
 ### How to Install the Bookmarklet
 
-1. **Copy the JavaScript Code:** Select and copy the entire JavaScript code provided above, starting with `javascript:(function(){...})();`.
-
-2. **Create a New Bookmark:**
-   - **Chrome:**
-     - Right-click the bookmarks bar and select "Add page..."
-   - **Firefox:**
-     - Right-click the bookmarks toolbar and select "New Bookmark..."
-   - **Edge:**
-     - Right-click the favorites bar and select "Add favorite..."
-   - **Safari:**
-     - Open the Bookmarks menu, select "Add Bookmark," and choose a location.
-
-3. **Name the Bookmark:**
-   - Example: `Expand Element to Prevent Scroll`
-
-4. **Paste the Code into the URL Field:**
-   - In the URL or Location field of the new bookmark, paste the copied JavaScript code.
-
-5. **Save the Bookmark:**
-   - Click save or OK to create the bookmarklet.
-
+1. **Use my Bookmarklet Installer**
+   - Navigate to the [Bookmarklet Installer for emwiden.js](https://austegard.com/bookmarklet-installer.html?bookmarklet=emwiden.js)
+   - Drag the Emwiden link to your bookmarks
+2. Or copy the JavaScript into a bookmark, [the traditional way](https://en.wikipedia.org/wiki/Bookmarklet#Method_1:_Creating_a_New_Bookmark)
+   
 ### Using the Bookmarklet
 
 1. **Navigate to a Web Page:**
    - Open any webpage where you experience horizontal scrolling or suspect layout issues.
-
+   - Drag the Emwiden link to your bookmarks
 2. **Activate the Bookmarklet:**
    - Click on the `Expand Element to Prevent Scroll` bookmarklet in your bookmarks bar.
    - **Console Notification:** Open the browser's developer console (`F12` or `Ctrl+Shift+I`) to see the activation message:
