@@ -1,8 +1,8 @@
-### Expand Elements to Prevent Horizontal Scroll with a One-Click Bookmarklet
+### Expand Elements to Prevent Horizontal Scroll with a One-Click Bookmarklet: emwiden
 
 ### Introduction
 
-In web development and browsing, encountering horizontal scrollbars can disrupt the user experience and indicate layout issues. Whether you're a developer debugging a webpage or a user navigating a site with design flaws, addressing horizontal overflow is essential. Manually inspecting and adjusting elements can be time-consuming and inefficient. This is where our **Expand Elements to Prevent Horizontal Scroll Bookmarklet** becomes invaluable.
+In web development and browsing, encountering horizontal scrollbars can disrupt the user experience and indicate layout issues. Whether you're a developer debugging a webpage or a user navigating a site with design flaws, addressing horizontal overflow is essential. Manually inspecting and adjusting elements can be time-consuming and inefficient. This is where our **emwiden Bookmarklet** becomes useful.
 
 ### The Ask
 
