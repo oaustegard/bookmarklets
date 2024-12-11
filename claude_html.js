@@ -10,6 +10,12 @@ javascript:(function(){
     });
   }
 
+  async function loadScripts() {
+    await loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js');
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js');
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/javascript.min.js');
+  }  
+
   /* Fetch conversation data with auth headers */
   async function fetchConversation() {
     const orgId = localStorage.getItem('lastActiveOrg');
@@ -200,9 +206,10 @@ javascript:(function(){
     });
 
     html += `</div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <script>
-      hljs.highlightAll();
+      document.addEventListener('DOMContentLoaded', (event) => {
+        hljs.highlightAll();
+      });
       
       function downloadHTML() {
         const htmlContent = document.documentElement.outerHTML;
@@ -226,21 +233,14 @@ javascript:(function(){
   /* Main execution */
   async function main() {
     try {
-      /* Load marked.js library */
-      await loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js');
-      
-      /* Configure marked */
-      marked.setOptions({
-        breaks: true,
-        gfm: true,
-        headerIds: false
-      });
-
+      await loadScripts();
+      marked.setOptions({ breaks: true, gfm: true, headerIds: false });
       const conversationData = await fetchConversation();
       const formattedHTML = formatConversation(conversationData, marked);
       const newWindow = window.open('', '_blank');
       newWindow.document.write(formattedHTML);
       newWindow.document.close();
+      newWindow.hljs.highlightAll();
     } catch(error) {
       alert('Error processing conversation: ' + error.message);
     }
