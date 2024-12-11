@@ -17,7 +17,7 @@ javascript:(function(){
     await loadScript('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js');
     await loadScript('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/javascript.min.js');
     console.log('Highlight.js loaded');
-  }  
+  }
 
   /* Fetch conversation data with auth headers */
   async function fetchConversation() {
@@ -64,7 +64,6 @@ javascript:(function(){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>${title}</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.fluid.classless.green.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
     <style>
@@ -146,11 +145,6 @@ javascript:(function(){
         padding: 0.2em 0.4em;
         border-radius: 0.25em;
       }
-      pre code {
-        background: transparent;
-        padding: 0;
-        border-radius: 0;
-      }
       .artifact {
         margin: 1rem 0;
         padding: 1rem;
@@ -186,8 +180,7 @@ javascript:(function(){
     /* Process each message */
     pathMessages.forEach(message => {
       let processedText = message.text;
-      console.log('Processing message:', processedText);
-      
+
       /* Handle artifacts */
       processedText = processedText.replace(
         /<antArtifact[^>]*identifier="([^"]*)"[^>]*title="([^"]*)"[^>]*>([\s\S]*?)<\/antArtifact>/g,
@@ -211,7 +204,10 @@ javascript:(function(){
     });
 
     html += `</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <script>
+      hljs.highlightAll();
+
       function downloadHTML() {
         const htmlContent = document.documentElement.outerHTML;
         const blob = new Blob([htmlContent], { type: 'text/html' });
@@ -225,7 +221,7 @@ javascript:(function(){
         URL.revokeObjectURL(url);
       }
     </script>
-</body>
+  </body>
 </html>`;
 
     return html;
@@ -237,23 +233,13 @@ javascript:(function(){
       await loadScripts();
       const conversationData = await fetchConversation();
       const formattedHTML = formatConversation(conversationData, marked);
-  
       const newWindow = window.open('', '_blank');
       newWindow.document.write(formattedHTML);
-  
-      /* Wait for the new window to load and then highlight */
-      await new Promise(resolve => {
-        newWindow.addEventListener('load', () => {
-          newWindow.hljs.highlightAll();
-          resolve(); 
-        });
-      });
-  
-      newWindow.document.close(); 
-    } catch (error) {
+      newWindow.document.close();
+    } catch(error) {
       alert('Error: ' + error.message);
     }
   }
 
-main();
+  main();
 })();
