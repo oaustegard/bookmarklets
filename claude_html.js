@@ -11,9 +11,12 @@ javascript:(function(){
   }
 
   async function loadScripts() {
+    console.log('Loading scripts...');
     await loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js');
+    console.log('Marked loaded');
     await loadScript('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js');
     await loadScript('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/javascript.min.js');
+    console.log('Highlight.js loaded');
   }  
 
   /* Fetch conversation data with auth headers */
@@ -182,6 +185,7 @@ javascript:(function(){
     /* Process each message */
     pathMessages.forEach(message => {
       let processedText = message.text;
+      console.log('Processing message:', processedText);
       
       /* Handle artifacts */
       processedText = processedText.replace(
@@ -238,11 +242,16 @@ async function main() {
       const conversationData = await fetchConversation();
       const formattedHTML = formatConversation(conversationData, marked);
       const newWindow = window.open('', '_blank');
+      console.log('Document written');
       newWindow.document.write(formattedHTML);
+      console.log('Highlight.js object:', newWindow.hljs);
       newWindow.document.querySelector('script').onload = () => {
-        newWindow.hljs.highlightAll();
+        console.log('Script running, hljs:', window.hljs);
+        hljs.highlightAll();
+        console.log('Highlighting complete');
         newWindow.document.close();
       };
+      
     } catch(error) {
       alert('Error processing conversation: ' + error.message);
     }
