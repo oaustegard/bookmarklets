@@ -10,15 +10,27 @@ javascript:(function(){
     });
   }
 
-  /* Fetch conversation data */
+  /* Fetch conversation data with auth headers */
   async function fetchConversation() {
     const orgId = localStorage.getItem('lastActiveOrg');
     const conversationId = window.location.pathname.split('/').pop();
     const timestamp = new Date().getTime();
-    const apiUrl = `https://api.claude.ai/api/organizations/${orgId}/chat_conversations/${conversationId}?tree=True&rendering_mode=raw&t=${timestamp}`;
-    
-    const response = await fetch(apiUrl);
-    if (!response.ok) throw new Error('Failed to fetch conversation');
+    const apiUrl = `https://claude.ai/api/organizations/${orgId}/chat_conversations/${conversationId}`;
+
+    /* Get current cookies and headers */
+    const response = await fetch(apiUrl, {
+      method: 'GET',
+      credentials: 'include',  /* Include cookies */
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch conversation: ${response.status}`);
+    }
+
     return response.json();
   }
 
