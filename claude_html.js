@@ -212,8 +212,6 @@ javascript:(function(){
 
     html += `</div>
     <script>
-      setTimeout(() => hljs.highlightAll(), 100);
-
       function downloadHTML() {
         const htmlContent = document.documentElement.outerHTML;
         const blob = new Blob([htmlContent], { type: 'text/html' });
@@ -239,23 +237,23 @@ javascript:(function(){
       await loadScripts();
       const conversationData = await fetchConversation();
       const formattedHTML = formatConversation(conversationData, marked);
+  
       const newWindow = window.open('', '_blank');
       newWindow.document.write(formattedHTML);
-      
-      // Add this code
+  
+      /* Wait for the new window to load and then highlight */
       await new Promise(resolve => {
         newWindow.addEventListener('load', () => {
-          console.log('Window loaded, hljs:', newWindow.hljs);
           newWindow.hljs.highlightAll();
-          resolve();
+          resolve(); 
         });
       });
-      
-      newWindow.document.close();
-    } catch(error) {
+  
+      newWindow.document.close(); 
+    } catch (error) {
       alert('Error: ' + error.message);
     }
   }
 
-  main();
+main();
 })();
