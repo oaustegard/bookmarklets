@@ -231,7 +231,7 @@ javascript:(function(){
   }
 
   /* Main execution */
-  async function main() {
+async function main() {
     try {
       await loadScripts();
       marked.setOptions({ breaks: true, gfm: true, headerIds: false });
@@ -239,8 +239,10 @@ javascript:(function(){
       const formattedHTML = formatConversation(conversationData, marked);
       const newWindow = window.open('', '_blank');
       newWindow.document.write(formattedHTML);
-      newWindow.document.close();
-      newWindow.hljs.highlightAll();
+      newWindow.document.querySelector('script').onload = () => {
+        newWindow.hljs.highlightAll();
+        newWindow.document.close();
+      };
     } catch(error) {
       alert('Error processing conversation: ' + error.message);
     }
