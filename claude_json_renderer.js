@@ -25,12 +25,13 @@ javascript:(function(){
   /* Format the conversation with markdown support */
   function formatConversation(data, marked) {
     const pathMessages = getConversationPath(data);
+    const title = data.name || 'Conversation';
     let html = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>${data.name || 'Conversation'}</title>
+    <title>${title}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.fluid.classless.green.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
     <style>
@@ -57,7 +58,25 @@ javascript:(function(){
         margin-bottom: 2rem;
         padding-bottom: 1rem;
         border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
       }
+      .meta-info { flex: 1; }
+      .download-btn {
+        background-color: #4a5568;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+      }
+      .download-btn:hover { background-color: #2d3748; }
       #conversation { display: flex; flex-direction: column; gap: 1rem; }
       .message {
         padding: 1rem;
@@ -103,14 +122,19 @@ javascript:(function(){
     </style>
 </head>
 <body>
-    <h1>${data.name || 'Conversation'}</h1>
+    <h1>${title}</h1>
     <div class="meta">
-        <p>Created: <span style="margin-left:4px;">
-            <a href="https://claude.ai/chat/${data.uuid}" target="_blank">
-                ${new Date(data.created_at).toLocaleString('en-US', {dateStyle:'full', timeStyle:'long'})}
-            </a>
-        </span></p>
-        ${data.project ? `<p>Project: ${data.project.name}</p>` : ''}
+        <div class="meta-info">
+            <p>Created: <span style="margin-left:4px;">
+                <a href="https://claude.ai/chat/${data.uuid}" target="_blank">
+                    ${new Date(data.created_at).toLocaleString('en-US', {dateStyle:'full', timeStyle:'long'})}
+                </a>
+            </span></p>
+            ${data.project ? `<p>Project: ${data.project.name}</p>` : ''}
+        </div>
+        <a href="#" class="download-btn" onclick="downloadHTML()">
+            Download HTML
+        </a>
     </div>
     <div id="conversation">`;
 
@@ -142,7 +166,22 @@ javascript:(function(){
 
     html += `</div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-    <script>hljs.highlightAll();</script>
+    <script>
+      hljs.highlightAll();
+      
+      function downloadHTML() {
+        const htmlContent = document.documentElement.outerHTML;
+        const blob = new Blob([htmlContent], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = '${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    </script>
 </body>
 </html>`;
 
