@@ -17,10 +17,9 @@ javascript:(function(){
     const timestamp = new Date().getTime();
     const apiUrl = `https://claude.ai/api/organizations/${orgId}/chat_conversations/${conversationId}`;
 
-    /* Get current cookies and headers */
     const response = await fetch(apiUrl, {
       method: 'GET',
-      credentials: 'include',  /* Include cookies */
+      credentials: 'include',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -120,15 +119,27 @@ javascript:(function(){
       }
       .content { margin: 0; }
       .content p { margin: 0.5em 0; }
+      pre { margin: 1em 0; }
       pre code {
         border-radius: 0.375rem;
         font-size: 0.875rem;
         padding: 1rem !important;
         background-color: #f7fafc !important;
         border: 1px solid var(--border-color);
+        display: block;
+        overflow-x: auto;
       }
       code {
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.9em;
+        background: #f1f5f9;
+        padding: 0.2em 0.4em;
+        border-radius: 0.25em;
+      }
+      pre code {
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
       }
       .artifact {
         margin: 1rem 0;
@@ -215,9 +226,16 @@ javascript:(function(){
   /* Main execution */
   async function main() {
     try {
+      /* Load marked.js library */
       await loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js');
-      marked.setOptions({ breaks: true, gfm: true, headerIds: false });
       
+      /* Configure marked */
+      marked.setOptions({
+        breaks: true,
+        gfm: true,
+        headerIds: false
+      });
+
       const conversationData = await fetchConversation();
       const formattedHTML = formatConversation(conversationData, marked);
       const newWindow = window.open('', '_blank');
