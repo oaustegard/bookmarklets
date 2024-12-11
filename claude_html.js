@@ -64,6 +64,7 @@ javascript:(function(){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>${title}</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.fluid.classless.green.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
     <style>
@@ -211,10 +212,8 @@ javascript:(function(){
 
     html += `</div>
     <script>
-      document.addEventListener('DOMContentLoaded', (event) => {
-        hljs.highlightAll();
-      });
-      
+      setTimeout(() => hljs.highlightAll(), 100);
+
       function downloadHTML() {
         const htmlContent = document.documentElement.outerHTML;
         const blob = new Blob([htmlContent], { type: 'text/html' });
@@ -235,25 +234,26 @@ javascript:(function(){
   }
 
   /* Main execution */
-async function main() {
+  async function main() {
     try {
       await loadScripts();
-      marked.setOptions({ breaks: true, gfm: true, headerIds: false });
       const conversationData = await fetchConversation();
       const formattedHTML = formatConversation(conversationData, marked);
       const newWindow = window.open('', '_blank');
-      console.log('Document written');
       newWindow.document.write(formattedHTML);
-      console.log('Highlight.js object:', newWindow.hljs);
-      newWindow.document.querySelector('script').onload = () => {
-        console.log('Script running, hljs:', window.hljs);
-        hljs.highlightAll();
-        console.log('Highlighting complete');
-        newWindow.document.close();
-      };
       
+      // Add this code
+      await new Promise(resolve => {
+        newWindow.addEventListener('load', () => {
+          console.log('Window loaded, hljs:', newWindow.hljs);
+          newWindow.hljs.highlightAll();
+          resolve();
+        });
+      });
+      
+      newWindow.document.close();
     } catch(error) {
-      alert('Error processing conversation: ' + error.message);
+      alert('Error: ' + error.message);
     }
   }
 
