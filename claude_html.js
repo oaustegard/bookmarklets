@@ -1,4 +1,7 @@
 javascript:(function(){
+
+alert("Works only in part -- can't figure out how to successfully apply the color highlighting of code blocks -- going back to using the claude_json_renderer.js instead")
+
   /* Load required libraries dynamically */
   async function loadScript(url) {
     return new Promise((resolve, reject) => {
