@@ -16,9 +16,9 @@ A powerful debugging bookmarklet for front-end developers to search through Java
 ## Installation
 
 1. Visit [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html)
-2. Either
-  a. Select dom_search from the dropdown or 
-  b. Paste the bookmarklet code from https://raw.githubusercontent.com/oaustegard/bookmarklets/refs/heads/main/dom_search.js, then name the bookmarklet
+2. Either:
+   1. Select dom_search from the dropdown or 
+   2. Paste the bookmarklet code from https://raw.githubusercontent.com/oaustegard/bookmarklets/refs/heads/main/dom_search.js, then name the bookmarklet
 3. Drag the generated link to your bookmarks bar
 
 ## Usage
