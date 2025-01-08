@@ -1,6 +1,6 @@
 # DOM Search
 
-A powerful debugging bookmarklet for front-end developers to search through JavaScript window properties and locate specific keys or values in the DOM.
+[dom_search_js](dom_search.js): A powerful debugging bookmarklet for front-end developers to search through JavaScript window properties and locate specific keys or values in the DOM.
 
 ## Features
 
