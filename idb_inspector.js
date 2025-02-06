@@ -1,5 +1,6 @@
 javascript:(function() {
     /* Quick and easy access to IndexedDB tables and data */
+    /* Load idb library */
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/idb@8/build/umd.js';
     
@@ -11,18 +12,98 @@ javascript:(function() {
             top: 20px;
             right: 20px;
             width: 600px;
-            max-height: 80vh;
+            height: 80vh;
             background: white;
             border: 1px solid #ccc;
             border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             z-index: 999999;
-            overflow: auto;
             font-family: system-ui, sans-serif;
+            display: flex;
+            flex-direction: column;
         `;
-
-        /* Add draggable functionality */
+    
+        /* Fixed header div */
+        const fixedHeader = document.createElement('div');
+        fixedHeader.style.cssText = `
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            background: white;
+            border-radius: 8px 8px 0 0;
+            flex-shrink: 0;
+        `;
+    
+        /* Scrollable content div */
+        const scrollableContent = document.createElement('div');
+        scrollableContent.style.cssText = `
+            padding: 15px;
+            overflow-y: auto;
+            flex-grow: 1;
+        `;
+    
+        /* Fixed header content */
+        fixedHeader.innerHTML = `
+            <div style="display:flex;justify-content:space-between;align-items:center;" class="drag-handle">
+                <h3 style="margin:0;font-size:16px;cursor:move;user-select:none;">
+                    <span style="color:#666;margin-right:5px;user-select:none;">≡</span>
+                    IndexedDB Inspector
+                </h3>
+                <div>
+                    <button id="idb-inspector-minimize" 
+                        style="border:1px solid #ccc;background:#fff;cursor:pointer;font-size:14px;margin-right:5px;padding:2px 8px;border-radius:3px;color:#333;min-width:24px;">−</button>
+                    <button id="idb-inspector-close" 
+                        style="border:1px solid #ccc;background:#fff;cursor:pointer;font-size:14px;padding:2px 8px;border-radius:3px;color:#333;min-width:24px;">×</button>
+                </div>
+            </div>
+        `;
+    
+        /* Create controls section */
+        const controls = document.createElement('div');
+        controls.id = 'idb-inspector-content';
+        controls.style.cssText = `
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            background: white;
+            flex-shrink: 0;
+        `;
+        
+        controls.innerHTML = `
+            <div style="margin-bottom:15px;">
+                <select id="idb-database-select" style="width:100%;padding:5px;margin-bottom:10px;border:1px solid #ccc;border-radius:3px;">
+                    <option value="">Select Database</option>
+                </select>
+                <select id="idb-store-select" style="width:100%;padding:5px;border:1px solid #ccc;border-radius:3px;">
+                    <option value="">Select Store</option>
+                </select>
+            </div>
+            <div style="margin-bottom:15px;">
+                <select id="idb-query-type" style="width:100%;padding:5px;margin-bottom:10px;border:1px solid #ccc;border-radius:3px;">
+                    <option value="simple">Simple Text Search</option>
+                    <option value="key">Key Search</option>
+                    <option value="value">Value Path Search</option>
+                    <option value="regex">Regex Search</option>
+                    <option value="range">Key Range</option>
+                </select>
+                <div id="query-inputs">
+                    <input type="text" id="idb-search" 
+                        placeholder="Search values..." 
+                        style="width:100%;padding:5px;border:1px solid #ccc;border-radius:3px;">
+                </div>
+            </div>
+        `;
+    
+        /* Create content area */
+        const content = document.createElement('div');
+        content.id = 'idb-content';
+        content.style.cssText = 'font-family: monospace;font-size:12px;';
+    
+        /* Assemble the UI */
+        scrollableContent.appendChild(content);
+        container.appendChild(fixedHeader);
+        container.appendChild(controls);
+        container.appendChild(scrollableContent);
+        document.body.appendChild(container);
+    
+        /* Initialize dragging variables */
         let isDragging = false;
         let currentX;
         let currentY;
@@ -30,58 +111,6 @@ javascript:(function() {
         let initialY;
         let xOffset = 0;
         let yOffset = 0;
-
-        /* Create header with controls */
-        const header = document.createElement('div');
-        header.innerHTML = `
-            <div style="position:sticky;top:0;background:white;border-bottom:1px solid #eee;margin:-15px -15px 15px -15px;padding:15px;user-select:none;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;" class="drag-handle">
-                    <h3 style="margin:0;font-size:16px;cursor:move;user-select:none;">
-                        <span style="color:#666;margin-right:5px;user-select:none;">≡</span>
-                        IndexedDB Inspector
-                    </h3>
-                    <div>
-                        <button id="idb-inspector-minimize" 
-                            style="border:1px solid #ccc;background:#fff;cursor:pointer;font-size:14px;margin-right:5px;padding:2px 8px;border-radius:3px;color:#333;min-width:24px;">−</button>
-                        <button id="idb-inspector-close" 
-                            style="border:1px solid #ccc;background:#fff;cursor:pointer;font-size:14px;padding:2px 8px;border-radius:3px;color:#333;min-width:24px;">×</button>
-                    </div>
-                </div>
-                <div id="idb-inspector-content">
-                    <div style="margin-bottom:15px;">
-                        <select id="idb-database-select" style="width:100%;padding:5px;margin-bottom:10px;border:1px solid #ccc;border-radius:3px;">
-                            <option value="">Select Database</option>
-                        </select>
-                        <select id="idb-store-select" style="width:100%;padding:5px;border:1px solid #ccc;border-radius:3px;">
-                            <option value="">Select Store</option>
-                        </select>
-                    </div>
-                    <div style="margin-bottom:15px;">
-                        <select id="idb-query-type" style="width:100%;padding:5px;margin-bottom:10px;border:1px solid #ccc;border-radius:3px;">
-                            <option value="simple">Simple Text Search</option>
-                            <option value="key">Key Search</option>
-                            <option value="value">Value Path Search</option>
-                            <option value="regex">Regex Search</option>
-                            <option value="range">Key Range</option>
-                        </select>
-                        <div id="query-inputs">
-                            <input type="text" id="idb-search" 
-                                placeholder="Search values..." 
-                                style="width:100%;padding:5px;border:1px solid #ccc;border-radius:3px;">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-        container.appendChild(header);
-
-        /* Create content area */
-        const content = document.createElement('div');
-        content.id = 'idb-content';
-        content.style.cssText = 'font-family: monospace;font-size:12px;';
-        container.appendChild(content);
-
-        document.body.appendChild(container);
 
         /* Initialize dragging */
         const dragHandle = container.querySelector('.drag-handle');
