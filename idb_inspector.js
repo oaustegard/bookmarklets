@@ -52,7 +52,7 @@ javascript:(function() {
         document.body.appendChild(container);
 
         /* Get list of databases */
-        const databases = await window.indexedDB.databases();
+        const databases = await window.indexedDB.databases().catch(() => []);
         const dbSelect = document.getElementById('idb-database-select');
         const storeSelect = document.getElementById('idb-store-select');
         const searchInput = document.getElementById('idb-search');
@@ -80,14 +80,15 @@ javascript:(function() {
 
             try {
                 currentDb = await idb.openDB(dbSelect.value);
-                currentDb.objectStoreNames.forEach(storeName => {
+                /* Convert DOMStringList to Array and iterate */
+                Array.from(currentDb.objectStoreNames).forEach(storeName => {
                     const option = document.createElement('option');
                     option.value = storeName;
                     option.textContent = storeName;
                     storeSelect.appendChild(option);
                 });
             } catch (err) {
-                contentArea.innerHTML = `<div style="color:red">Error: ${err.message}</div>`;
+                contentArea.innerHTML = `<div style="color:red">Error opening database: ${err.message}</div>`;
             }
         });
 
@@ -101,17 +102,21 @@ javascript:(function() {
                 let data = [];
 
                 /* Get all data from store */
-                for await (const cursor of store) {
-                    const item = {
-                        key: cursor.key,
-                        value: cursor.value
-                    };
-                    
-                    /* Apply search filter if exists */
-                    if (!searchTerm || 
-                        JSON.stringify(item).toLowerCase().includes(searchTerm.toLowerCase())) {
-                        data.push(item);
+                try {
+                    for await (const cursor of store) {
+                        const item = {
+                            key: cursor.key,
+                            value: cursor.value
+                        };
+                        
+                        /* Apply search filter if exists */
+                        if (!searchTerm || 
+                            JSON.stringify(item).toLowerCase().includes(searchTerm.toLowerCase())) {
+                            data.push(item);
+                        }
                     }
+                } catch (err) {
+                    throw new Error(`Failed to read store data: ${err.message}`);
                 }
 
                 /* Display data */
@@ -120,7 +125,7 @@ javascript:(function() {
                         <div style="color:#666;margin-bottom:3px;">Key: ${
                             typeof item.key === 'object' ? 
                             JSON.stringify(item.key) : 
-                            item.key
+                            String(item.key)
                         }</div>
                         <div style="white-space:pre-wrap;">${
                             JSON.stringify(item.value, null, 2)
