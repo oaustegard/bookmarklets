@@ -10,7 +10,7 @@ javascript:(function() {
             position: fixed;
             top: 20px;
             right: 20px;
-            width: 400px;
+            width: 600px;
             max-height: 80vh;
             background: white;
             border: 1px solid #ccc;
@@ -34,17 +34,17 @@ javascript:(function() {
         /* Create header with controls */
         const header = document.createElement('div');
         header.innerHTML = `
-            <div style="position:sticky;top:0;background:white;border-bottom:1px solid #eee;margin:-15px -15px 15px -15px;padding:15px;">
+            <div style="position:sticky;top:0;background:white;border-bottom:1px solid #eee;margin:-15px -15px 15px -15px;padding:15px;user-select:none;">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;" class="drag-handle">
-                    <h3 style="margin:0;font-size:16px;cursor:move;">
-                        <span style="color:#666;margin-right:5px;">☰</span>
+                    <h3 style="margin:0;font-size:16px;cursor:move;user-select:none;">
+                        <span style="color:#666;margin-right:5px;user-select:none;">≡</span>
                         IndexedDB Inspector
                     </h3>
                     <div>
                         <button id="idb-inspector-minimize" 
-                            style="border:none;background:#f0f0f0;cursor:pointer;font-size:14px;margin-right:5px;padding:2px 8px;border-radius:3px;">−</button>
+                            style="border:1px solid #ccc;background:#fff;cursor:pointer;font-size:14px;margin-right:5px;padding:2px 8px;border-radius:3px;color:#333;min-width:24px;">−</button>
                         <button id="idb-inspector-close" 
-                            style="border:none;background:#f0f0f0;cursor:pointer;font-size:14px;padding:2px 8px;border-radius:3px;">×</button>
+                            style="border:1px solid #ccc;background:#fff;cursor:pointer;font-size:14px;padding:2px 8px;border-radius:3px;color:#333;min-width:24px;">×</button>
                     </div>
                 </div>
                 <div id="idb-inspector-content">
