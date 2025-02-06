@@ -1,5 +1,5 @@
 javascript:(function() {
-    /* Load idb library */
+    /* Quick and easy access to IndexedDB tables and data */
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/idb@8/build/umd.js';
     
@@ -22,23 +22,46 @@ javascript:(function() {
             font-family: system-ui, sans-serif;
         `;
 
+        /* Add draggable functionality */
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
         /* Create header with controls */
         const header = document.createElement('div');
         header.innerHTML = `
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;cursor:move;" class="drag-handle">
                 <h3 style="margin:0;font-size:16px;">IndexedDB Inspector</h3>
-                <button id="idb-inspector-close" style="border:none;background:none;cursor:pointer;font-size:20px;">&times;</button>
+                <div>
+                    <button id="idb-inspector-minimize" style="border:none;background:none;cursor:pointer;font-size:20px;margin-right:5px;">_</button>
+                    <button id="idb-inspector-close" style="border:none;background:none;cursor:pointer;font-size:20px;">&times;</button>
+                </div>
             </div>
-            <div style="margin-bottom:15px;">
-                <select id="idb-database-select" style="width:100%;padding:5px;margin-bottom:10px;">
-                    <option value="">Select Database</option>
-                </select>
-                <select id="idb-store-select" style="width:100%;padding:5px;">
-                    <option value="">Select Store</option>
-                </select>
-            </div>
-            <div style="margin-bottom:15px;">
-                <input type="text" id="idb-search" placeholder="Search values..." style="width:100%;padding:5px;">
+            <div id="idb-inspector-content">
+                <div style="margin-bottom:15px;">
+                    <select id="idb-database-select" style="width:100%;padding:5px;margin-bottom:10px;">
+                        <option value="">Select Database</option>
+                    </select>
+                    <select id="idb-store-select" style="width:100%;padding:5px;">
+                        <option value="">Select Store</option>
+                    </select>
+                </div>
+                <div style="margin-bottom:15px;">
+                    <select id="idb-query-type" style="width:100%;padding:5px;margin-bottom:10px;">
+                        <option value="simple">Simple Text Search</option>
+                        <option value="key">Key Search</option>
+                        <option value="value">Value Path Search</option>
+                        <option value="regex">Regex Search</option>
+                        <option value="range">Key Range</option>
+                    </select>
+                    <div id="query-inputs">
+                        <input type="text" id="idb-search" placeholder="Search values..." style="width:100%;padding:5px;">
+                    </div>
+                </div>
             </div>
         `;
         container.appendChild(header);
@@ -51,11 +74,79 @@ javascript:(function() {
 
         document.body.appendChild(container);
 
+        /* Initialize dragging */
+        const dragHandle = container.querySelector('.drag-handle');
+        
+        dragHandle.addEventListener('mousedown', dragStart);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+            
+            if (e.target === dragHandle || e.target.parentNode === dragHandle) {
+                isDragging = true;
+            }
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                xOffset = currentX;
+                yOffset = currentY;
+                
+                container.style.transform = `translate(${currentX}px, ${currentY}px)`;
+            }
+        }
+
+        function dragEnd() {
+            isDragging = false;
+        }
+
+        /* Setup query type handling */
+        const queryType = document.getElementById('idb-query-type');
+        const queryInputs = document.getElementById('query-inputs');
+
+        queryType.addEventListener('change', () => {
+            switch(queryType.value) {
+                case 'simple':
+                    queryInputs.innerHTML = `
+                        <input type="text" id="idb-search" placeholder="Search values..." style="width:100%;padding:5px;">
+                    `;
+                    break;
+                case 'key':
+                    queryInputs.innerHTML = `
+                        <input type="text" id="idb-search" placeholder="Exact key to search..." style="width:100%;padding:5px;">
+                    `;
+                    break;
+                case 'value':
+                    queryInputs.innerHTML = `
+                        <input type="text" id="idb-search" placeholder="Path (e.g. user.name)" style="width:100%;padding:5px;margin-bottom:5px;">
+                        <input type="text" id="idb-search-value" placeholder="Value to match" style="width:100%;padding:5px;">
+                    `;
+                    break;
+                case 'regex':
+                    queryInputs.innerHTML = `
+                        <input type="text" id="idb-search" placeholder="Regular expression" style="width:100%;padding:5px;">
+                        <div style="font-size:11px;color:#666;margin-top:3px;">Use format: /pattern/flags</div>
+                    `;
+                    break;
+                case 'range':
+                    queryInputs.innerHTML = `
+                        <input type="text" id="idb-search-min" placeholder="Min value" style="width:calc(50% - 5px);padding:5px;margin-right:5px;">
+                        <input type="text" id="idb-search-max" placeholder="Max value" style="width:calc(50% - 5px);padding:5px;">
+                    `;
+                    break;
+            }
+        });
+
         /* Get list of databases */
         const databases = await window.indexedDB.databases().catch(() => []);
         const dbSelect = document.getElementById('idb-database-select');
         const storeSelect = document.getElementById('idb-store-select');
-        const searchInput = document.getElementById('idb-search');
         const contentArea = document.getElementById('idb-content');
 
         /* Populate database dropdown */
@@ -80,7 +171,6 @@ javascript:(function() {
 
             try {
                 currentDb = await idb.openDB(dbSelect.value);
-                /* Convert DOMStringList to Array and iterate */
                 Array.from(currentDb.objectStoreNames).forEach(storeName => {
                     const option = document.createElement('option');
                     option.value = storeName;
@@ -92,14 +182,64 @@ javascript:(function() {
             }
         });
 
+        /* Query execution function */
+        function executeQuery(item, queryConfig) {
+            const { type, searchStr, searchValue, minValue, maxValue } = queryConfig;
+            
+            switch(type) {
+                case 'simple':
+                    return JSON.stringify(item).toLowerCase().includes(searchStr.toLowerCase());
+                    
+                case 'key':
+                    return String(item.key) === searchStr;
+                    
+                case 'value':
+                    const path = searchStr.split('.');
+                    let value = item.value;
+                    for (const key of path) {
+                        value = value?.[key];
+                        if (value === undefined) return false;
+                    }
+                    return String(value) === searchValue;
+                    
+                case 'regex':
+                    try {
+                        const [, pattern, flags] = searchStr.match(/^\/(.+)\/([gimuy]*)$/);
+                        const regex = new RegExp(pattern, flags);
+                        return regex.test(JSON.stringify(item));
+                    } catch {
+                        return false;
+                    }
+                    
+                case 'range':
+                    const key = Number(item.key);
+                    const min = Number(minValue);
+                    const max = Number(maxValue);
+                    return !isNaN(key) && (isNaN(min) || key >= min) && (isNaN(max) || key <= max);
+                    
+                default:
+                    return true;
+            }
+        }
+
         /* Handle store selection and display data */
-        async function displayStoreData(searchTerm = '') {
+        async function displayStoreData() {
             if (!currentDb || !storeSelect.value) return;
 
             try {
                 const tx = currentDb.transaction(storeSelect.value, 'readonly');
                 const store = tx.objectStore(storeSelect.value);
                 let data = [];
+
+                /* Get query configuration */
+                const type = queryType.value;
+                const queryConfig = {
+                    type,
+                    searchStr: document.getElementById('idb-search')?.value || '',
+                    searchValue: document.getElementById('idb-search-value')?.value || '',
+                    minValue: document.getElementById('idb-search-min')?.value || '',
+                    maxValue: document.getElementById('idb-search-max')?.value || ''
+                };
 
                 /* Get all data from store */
                 try {
@@ -109,9 +249,7 @@ javascript:(function() {
                             value: cursor.value
                         };
                         
-                        /* Apply search filter if exists */
-                        if (!searchTerm || 
-                            JSON.stringify(item).toLowerCase().includes(searchTerm.toLowerCase())) {
+                        if (executeQuery(item, queryConfig)) {
                             data.push(item);
                         }
                     }
@@ -140,13 +278,38 @@ javascript:(function() {
 
         storeSelect.addEventListener('change', () => displayStoreData());
         
-        /* Handle search */
-        let searchTimeout;
-        searchInput.addEventListener('input', () => {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                displayStoreData(searchInput.value);
-            }, 300);
+        /* Handle search input changes */
+        function setupSearchListeners() {
+            const inputs = queryInputs.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    clearTimeout(input.searchTimeout);
+                    input.searchTimeout = setTimeout(() => {
+                        displayStoreData();
+                    }, 300);
+                });
+            });
+        }
+
+        queryType.addEventListener('change', setupSearchListeners);
+        setupSearchListeners();
+
+        /* Handle minimize/maximize */
+        let isMinimized = false;
+        document.getElementById('idb-inspector-minimize').addEventListener('click', () => {
+            const content = document.getElementById('idb-inspector-content');
+            const contentArea = document.getElementById('idb-content');
+            
+            if (isMinimized) {
+                content.style.display = 'block';
+                contentArea.style.display = 'block';
+                container.style.height = 'auto';
+            } else {
+                content.style.display = 'none';
+                contentArea.style.display = 'none';
+                container.style.height = 'auto';
+            }
+            isMinimized = !isMinimized;
         });
 
         /* Handle close button */
@@ -155,6 +318,16 @@ javascript:(function() {
                 currentDb.close();
             }
             container.remove();
+        });
+
+        /* Handle escape key to close */
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (currentDb) {
+                    currentDb.close();
+                }
+                container.remove();
+            }
         });
     };
 
