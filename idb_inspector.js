@@ -34,32 +34,41 @@ javascript:(function() {
         /* Create header with controls */
         const header = document.createElement('div');
         header.innerHTML = `
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;cursor:move;" class="drag-handle">
-                <h3 style="margin:0;font-size:16px;">IndexedDB Inspector</h3>
-                <div>
-                    <button id="idb-inspector-minimize" style="border:none;background:none;cursor:pointer;font-size:20px;margin-right:5px;">_</button>
-                    <button id="idb-inspector-close" style="border:none;background:none;cursor:pointer;font-size:20px;">&times;</button>
+            <div style="position:sticky;top:0;background:white;border-bottom:1px solid #eee;margin:-15px -15px 15px -15px;padding:15px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;" class="drag-handle">
+                    <h3 style="margin:0;font-size:16px;cursor:move;">
+                        <span style="color:#666;margin-right:5px;">☰</span>
+                        IndexedDB Inspector
+                    </h3>
+                    <div>
+                        <button id="idb-inspector-minimize" 
+                            style="border:none;background:#f0f0f0;cursor:pointer;font-size:14px;margin-right:5px;padding:2px 8px;border-radius:3px;">−</button>
+                        <button id="idb-inspector-close" 
+                            style="border:none;background:#f0f0f0;cursor:pointer;font-size:14px;padding:2px 8px;border-radius:3px;">×</button>
+                    </div>
                 </div>
-            </div>
-            <div id="idb-inspector-content">
-                <div style="margin-bottom:15px;">
-                    <select id="idb-database-select" style="width:100%;padding:5px;margin-bottom:10px;">
-                        <option value="">Select Database</option>
-                    </select>
-                    <select id="idb-store-select" style="width:100%;padding:5px;">
-                        <option value="">Select Store</option>
-                    </select>
-                </div>
-                <div style="margin-bottom:15px;">
-                    <select id="idb-query-type" style="width:100%;padding:5px;margin-bottom:10px;">
-                        <option value="simple">Simple Text Search</option>
-                        <option value="key">Key Search</option>
-                        <option value="value">Value Path Search</option>
-                        <option value="regex">Regex Search</option>
-                        <option value="range">Key Range</option>
-                    </select>
-                    <div id="query-inputs">
-                        <input type="text" id="idb-search" placeholder="Search values..." style="width:100%;padding:5px;">
+                <div id="idb-inspector-content">
+                    <div style="margin-bottom:15px;">
+                        <select id="idb-database-select" style="width:100%;padding:5px;margin-bottom:10px;border:1px solid #ccc;border-radius:3px;">
+                            <option value="">Select Database</option>
+                        </select>
+                        <select id="idb-store-select" style="width:100%;padding:5px;border:1px solid #ccc;border-radius:3px;">
+                            <option value="">Select Store</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <select id="idb-query-type" style="width:100%;padding:5px;margin-bottom:10px;border:1px solid #ccc;border-radius:3px;">
+                            <option value="simple">Simple Text Search</option>
+                            <option value="key">Key Search</option>
+                            <option value="value">Value Path Search</option>
+                            <option value="regex">Regex Search</option>
+                            <option value="range">Key Range</option>
+                        </select>
+                        <div id="query-inputs">
+                            <input type="text" id="idb-search" 
+                                placeholder="Search values..." 
+                                style="width:100%;padding:5px;border:1px solid #ccc;border-radius:3px;">
+                        </div>
                     </div>
                 </div>
             </div>
