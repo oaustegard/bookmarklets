@@ -1,4 +1,5 @@
 javascript:(function(){
+  /* Take 2 */
   /* Load required libraries dynamically */
   function loadScript(url) {
     return new Promise((resolve, reject) => {
