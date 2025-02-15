@@ -44,7 +44,7 @@ javascript:(function(){
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>${title}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.fluid.classless.green.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
     <style>
       :root {
         --human-bg: #f0f4f8;
@@ -107,12 +107,20 @@ javascript:(function(){
       }
       .content { margin: 0; }
       .content p { margin: 0.5em 0; }
+      pre {
+        margin: 0;
+        padding: 0;
+      }
       pre code {
+        display: block;
         border-radius: 0.375rem;
         font-size: 0.875rem;
         padding: 1rem !important;
         background-color: #f7fafc !important;
         border: 1px solid var(--border-color);
+        white-space: pre;
+        overflow-x: auto;
+        line-height: 1.5;
       }
       code {
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -157,10 +165,17 @@ javascript:(function(){
       processedText = processedText.replace(
         /<antArtifact[^>]*identifier="([^"]*)"[^>]*title="([^"]*)"[^>]*>([\s\S]*?)<\/antArtifact>/g,
         (match, identifier, title, content) => {
+          /* Clean and format the code content */
+          const cleanContent = content
+            .trim()
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+
           return `<div class="artifact">
             <div class="artifact-header">${title}</div>
             <div class="artifact-content">
-              <pre><code>${content}</code></pre>
+              <pre><code class="language-javascript">${cleanContent}</code></pre>
             </div>
           </div>`;
         }
