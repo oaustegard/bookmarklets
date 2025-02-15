@@ -187,20 +187,10 @@ javascript:(function(){
       processedText = processedText.replace(
         /<antArtifact[^>]*identifier="([^"]*)"[^>]*title="([^"]*)"[^>]*>([\s\S]*?)<\/antArtifact>/g,
         (match, identifier, title, content) => {
-          /* Clean and format the code content */
-          const cleanContent = content
-            .trim()
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            /* Ensure consistent line endings */
-            .replace(/\r\n/g, '\n')
-            .replace(/\r/g, '\n');
-
-          /* Generate unique placeholder */
+          const cleanContent = content.trim();
           const placeholder = `ARTIFACT_PLACEHOLDER_${Math.random().toString(36).substr(2, 9)}`;
           
-          /* Store the complete artifact HTML */
+          /* Store the artifact HTML */
           artifacts[placeholder] = `<div class="artifact">
             <div class="artifact-header">${title}</div>
             <div class="artifact-content"><pre><code class="language-javascript">${cleanContent}</code></pre></div>
@@ -208,6 +198,20 @@ javascript:(function(){
           
           return placeholder;
         }
+      );
+
+      /* Convert markdown to HTML */
+      processedText = marked.parse(processedText);
+
+      /* Replace artifacts after markdown processing */
+      Object.entries(artifacts).forEach(([placeholder, html]) => {
+        processedText = processedText.replace(placeholder, html);
+      });
+
+      /* Fix split code blocks hack */
+      processedText = processedText.replace(
+        /<\/code><p><code class="[^"]*">(.*?)<\/code><\/p>/g,
+        '$1</code>'
       );
 
       /* Convert markdown to HTML */
