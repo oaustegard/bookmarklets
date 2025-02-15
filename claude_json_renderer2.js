@@ -72,7 +72,7 @@ javascript:(function(){
     pathMessages.forEach(message => {
       let processedText = processMessageContent(message);
       
-      /* Handle artifacts */
+      /* Handle artifacts and ensure code blocks end with newline */
       processedText = processedText.replace(
         /<antArtifact[^>]*identifier="([^"]*)"[^>]*title="([^"]*)"[^>]*>([\s\S]*?)<\/antArtifact>/g,
         (match, identifier, title, content) => {
@@ -80,13 +80,19 @@ javascript:(function(){
             .trim()
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
+            .replace(/>/g, '&gt;')
+            + '\n'; /* Add newline to fix highlight.js formatting */
 
           return `<div class="artifact">
             <h3>${title}</h3>
             <pre><code>${cleanContent}</code></pre>
           </div>`;
         }
+      );
+
+      /* Pre-process markdown code blocks to add newline */
+      processedText = processedText.replace(/```[\s\S]*?```/g, match => 
+        match.endsWith('\n```') ? match : match + '\n'
       );
 
       /* Convert markdown to HTML */
@@ -100,7 +106,7 @@ javascript:(function(){
 
     html += `</div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script>hljs.highlightAuto();</script>
+    <script>hljs.highlightAll();</script>
 </body>
 </html>`;
 
