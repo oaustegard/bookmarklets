@@ -1,15 +1,4 @@
 javascript:(function(){
-  /* Load required libraries dynamically */
-  function loadScript(url) {
-    return new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = url;
-      script.onload = resolve;
-      script.onerror = reject;
-      document.head.appendChild(script);
-    });
-  }
-
   /* Process the conversation data into HTML */
   function getConversationPath(data) {
     const messageMap = new Map(data.chat_messages.map(msg => [msg.uuid, msg]));
@@ -33,36 +22,46 @@ javascript:(function(){
     return message.text || '';
   }
 
-  /* Format text with Marked while preserving code blocks */
-  function formatText(text, marked) {
-    /* Store code blocks and replace with placeholders */
-    const codeBlocks = [];
-    const withPlaceholders = text.replace(/```(?:\w+)?\n([\s\S]*?)```/g, (match, code) => {
-      const id = codeBlocks.length;
-      codeBlocks.push(code.trim());
-      return `<!--CODE_BLOCK_${id}-->`;
-    });
-
-    /* Apply marked to non-code content */
-    let processed = marked.parse(withPlaceholders);
-
-    /* Restore code blocks with proper formatting */
-    codeBlocks.forEach((code, id) => {
+  /* Format code blocks with proper HTML escaping */
+  function formatCodeBlocks(text) {
+    return text.replace(/```(?:\w+)?\n([\s\S]*?)```/g, (match, code) => {
       const escapedCode = code
+        .trim()
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
-      processed = processed.replace(
-        `<!--CODE_BLOCK_${id}-->`,
-        `<pre><code>${escapedCode}</code></pre>`
-      );
+      return `<pre><code>${escapedCode}</code></pre>`;
     });
+  }
 
-    return processed;
+  /* Basic markdown formatting */
+  function formatMarkdown(text) {
+    return text
+      /* Headers - process larger ones first */
+      .replace(/^### (.*?)$/gm, '<h3>$1</h3>')
+      .replace(/^## (.*?)$/gm, '<h2>$1</h2>')
+      .replace(/^# (.*?)$/gm, '<h1>$1</h1>')
+      /* Bold */
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/__(.*?)__/g, '<strong>$1</strong>')
+      /* Italic */
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/_(.*?)_/g, '<em>$1</em>')
+      /* Links */
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+      /* Lists */
+      .replace(/^\s*[-*+]\s+(.*?)$/gm, '<li>$1</li>')
+      .replace(/(<li>.*?<\/li>\n?)+/g, '<ul>$&</ul>')
+      /* Paragraphs - handle double line breaks */
+      .replace(/\n\n/g, '</p><p>')
+      /* Line breaks */
+      .replace(/\n/g, '<br>')
+      /* Wrap in paragraph if not already wrapped */
+      .replace(/^(.+?)$/, '<p>$1</p>');
   }
 
   /* Format the conversation */
-  function formatConversation(data, marked) {
+  function formatConversation(data) {
     const pathMessages = getConversationPath(data);
     const title = data.name || 'Conversation';
     let html = `<!DOCTYPE html>
@@ -95,6 +94,11 @@ javascript:(function(){
         font-family: monospace;
         white-space: pre;
       }
+      /* Additional markdown styles */
+      ul { margin: 1rem 0; padding-left: 2rem; }
+      li { margin: 0.5rem 0; }
+      p { margin: 1rem 0; }
+      h1, h2, h3 { margin-top: 1.5rem; }
     </style>
 </head>
 <body>
@@ -122,8 +126,11 @@ javascript:(function(){
         }
       );
 
-      /* Apply Marked with code block preservation */
-      processedText = formatText(processedText, marked);
+      /* Format code blocks first */
+      processedText = formatCodeBlocks(processedText);
+      
+      /* Then apply markdown formatting to the rest */
+      processedText = formatMarkdown(processedText);
 
       html += `<div class="message ${message.sender}">
         <h2>${message.sender}</h2>
@@ -139,27 +146,13 @@ javascript:(function(){
   }
 
   /* Main execution */
-  async function main() {
-    try {
-      /* Load marked.js library */
-      await loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js');
-      
-      /* Configure marked */
-      marked.setOptions({
-        breaks: true,
-        gfm: true,
-        headerIds: false
-      });
-
-      const conversationData = JSON.parse(document.body.textContent);
-      const formattedHTML = formatConversation(conversationData, marked);
-      const newWindow = window.open('', '_blank');
-      newWindow.document.write(formattedHTML);
-      newWindow.document.close();
-    } catch(error) {
-      alert('Error processing conversation: ' + error.message);
-    }
+  try {
+    const conversationData = JSON.parse(document.body.textContent);
+    const formattedHTML = formatConversation(conversationData);
+    const newWindow = window.open('', '_blank');
+    newWindow.document.write(formattedHTML);
+    newWindow.document.close();
+  } catch(error) {
+    alert('Error processing conversation: ' + error.message);
   }
-
-  main();
 })();
