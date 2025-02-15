@@ -1,15 +1,4 @@
-javascript:(function(){ /* Take 3 */
-  /* Load required libraries dynamically */
-  function loadScript(url) {
-    return new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = url;
-      script.onload = resolve;
-      script.onerror = reject;
-      document.head.appendChild(script);
-    });
-  }
-
+javascript:(function(){
   /* Process the conversation data into HTML */
   function getConversationPath(data) {
     const messageMap = new Map(data.chat_messages.map(msg => [msg.uuid, msg]));
@@ -33,8 +22,20 @@ javascript:(function(){ /* Take 3 */
     return message.text || '';
   }
 
-  /* Format the conversation with markdown support */
-  function formatConversation(data, marked) {
+  /* Format code blocks with proper HTML escaping */
+  function formatCodeBlocks(text) {
+    return text.replace(/```(?:\w+)?\n([\s\S]*?)```/g, (match, code) => {
+      const escapedCode = code
+        .trim()
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      return `<pre><code>${escapedCode}</code></pre>`;
+    });
+  }
+
+  /* Format the conversation */
+  function formatConversation(data) {
     const pathMessages = getConversationPath(data);
     const title = data.name || 'Conversation';
     let html = `<!DOCTYPE html>
@@ -44,7 +45,6 @@ javascript:(function(){ /* Take 3 */
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>${title}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.fluid.classless.green.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
     <style>
       body { max-width: 1280px; margin: 0 auto; padding: 1rem; }
       .message { margin: 1rem 0; padding: 1rem; border: 1px solid #eee; }
@@ -56,11 +56,17 @@ javascript:(function(){ /* Take 3 */
         border: 1px solid #e2e8f0;
         border-radius: 0.5rem;
       }
-      pre { margin: 0; }
-      pre code { 
-        padding: 1rem !important;
+      pre { 
+        margin: 1rem 0;
+        padding: 1rem;
+        background: #f8f9fa;
         border: 1px solid #e2e8f0;
         border-radius: 0.375rem;
+        overflow-x: auto;
+      }
+      code { 
+        font-family: monospace;
+        white-space: pre;
       }
     </style>
 </head>
@@ -72,7 +78,7 @@ javascript:(function(){ /* Take 3 */
     pathMessages.forEach(message => {
       let processedText = processMessageContent(message);
       
-      /* Handle artifacts and ensure code blocks end with newline + comment */
+      /* Handle artifacts */
       processedText = processedText.replace(
         /<antArtifact[^>]*identifier="([^"]*)"[^>]*title="([^"]*)"[^>]*>([\s\S]*?)<\/antArtifact>/g,
         (match, identifier, title, content) => {
@@ -80,8 +86,7 @@ javascript:(function(){ /* Take 3 */
             .trim()
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            + '\n<!-- test -->'; /* Add newline and comment to fix highlight.js formatting */
+            .replace(/>/g, '&gt;');
 
           return `<div class="artifact">
             <h3>${title}</h3>
@@ -90,13 +95,8 @@ javascript:(function(){ /* Take 3 */
         }
       );
 
-      /* Pre-process markdown code blocks to add newline and comment */
-      processedText = processedText.replace(/```[\s\S]*?```/g, match => 
-        match.endsWith('\n```') ? match + '\n<!-- test -->' : match + '\n<!-- test -->'
-      );
-
-      /* Convert markdown to HTML */
-      processedText = marked.parse(processedText);
+      /* Format code blocks */
+      processedText = formatCodeBlocks(processedText);
 
       html += `<div class="message ${message.sender}">
         <h2>${message.sender}</h2>
@@ -105,8 +105,6 @@ javascript:(function(){ /* Take 3 */
     });
 
     html += `</div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script>hljs.highlightAll();</script>
 </body>
 </html>`;
 
@@ -114,27 +112,13 @@ javascript:(function(){ /* Take 3 */
   }
 
   /* Main execution */
-  async function main() {
-    try {
-      /* Load marked.js library */
-      await loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js');
-      
-      /* Configure marked */
-      marked.setOptions({
-        breaks: true,
-        gfm: true,
-        headerIds: false
-      });
-
-      const conversationData = JSON.parse(document.body.textContent);
-      const formattedHTML = formatConversation(conversationData, marked);
-      const newWindow = window.open('', '_blank');
-      newWindow.document.write(formattedHTML);
-      newWindow.document.close();
-    } catch(error) {
-      alert('Error processing conversation: ' + error.message);
-    }
+  try {
+    const conversationData = JSON.parse(document.body.textContent);
+    const formattedHTML = formatConversation(conversationData);
+    const newWindow = window.open('', '_blank');
+    newWindow.document.write(formattedHTML);
+    newWindow.document.close();
+  } catch(error) {
+    alert('Error processing conversation: ' + error.message);
   }
-
-  main();
 })();
