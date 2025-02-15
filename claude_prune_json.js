@@ -16,9 +16,42 @@ javascript:(function() {
   }
 
   function processMessageContent(message) {
-    return message.content?.filter(part => part.type === 'text')
-      .map(part => part.text)
-      .join('') || message.text || '';
+    /* Separate handling of text and artifacts */
+    const parts = [];
+    
+    if (message.content) {
+      message.content.forEach(part => {
+        if (part.type === 'text') {
+          parts.push({
+            type: 'text',
+            content: part.text.trim()
+          });
+        } else if (part.text) {
+          /* Handle artifact pattern in text */
+          const artifactMatch = part.text.match(/<antArtifact[^>]*identifier="([^"]*)"[^>]*title="([^"]*)"[^>]*>([\s\S]*?)<\/antArtifact>/);
+          if (artifactMatch) {
+            parts.push({
+              type: 'artifact',
+              identifier: artifactMatch[1],
+              title: artifactMatch[2],
+              content: artifactMatch[3].trim()
+            });
+          } else {
+            parts.push({
+              type: 'text',
+              content: part.text.trim()
+            });
+          }
+        }
+      });
+    } else if (message.text) {
+      parts.push({
+        type: 'text',
+        content: message.text.trim()
+      });
+    }
+    
+    return parts;
   }
 
   function getConversationPath(data) {
@@ -150,47 +183,45 @@ javascript:(function() {
   }
 
   function formatMessage(message) {
-    let processedText = processMessageContent(message);
+    const parts = processMessageContent(message);
+    let html = `<div class="message ${message.sender} selected">
+      <div class="message-header">
+        <h2>${message.sender}</h2>
+        <span class="timestamp">${formatTimestamp(message.created_at)}</span>
+      </div>`;
     
-    /* Handle artifacts */
-    processedText = processedText.replace(
-      /<antArtifact[^>]*identifier="([^"]*)"[^>]*title="([^"]*)"[^>]*>([\s\S]*?)<\/antArtifact>/g,
-      (match, identifier, title, content) => {
-        const cleanContent = content
-          .trim()
+    parts.forEach(part => {
+      if (part.type === 'text') {
+        /* Format code blocks within text */
+        let processedText = part.content.replace(
+          /```(?:\w+)?\n([\s\S]*?)```/g,
+          (match, code) => {
+            const escapedCode = code
+              .trim()
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;');
+            return `<pre><code>${escapedCode}</code></pre>`;
+          }
+        );
+        html += `<div class="text-content">${processedText}</div>`;
+      } else if (part.type === 'artifact') {
+        const cleanContent = part.content
           .replace(/&/g, '&amp;')
           .replace(/</g, '&lt;')
           .replace(/>/g, '&gt;');
 
-        return `<div class="artifact selected" onclick="event.stopPropagation()">
+        html += `<div class="artifact selected" data-identifier="${part.identifier}" onclick="event.stopPropagation()">
           <div class="message-header">
-            <h2>${title}</h2>
+            <h2>${part.title}</h2>
           </div>
           <pre><code>${cleanContent}</code></pre>
         </div>`;
       }
-    );
-
-    /* Format code blocks */
-    processedText = processedText.replace(
-      /```(?:\w+)?\n([\s\S]*?)```/g,
-      (match, code) => {
-        const escapedCode = code
-          .trim()
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;');
-        return `<pre><code>${escapedCode}</code></pre>`;
-      }
-    );
-
-    return `<div class="message ${message.sender} selected">
-      <div class="message-header">
-        <h2>${message.sender}</h2>
-        <span class="timestamp">${formatTimestamp(message.created_at)}</span>
-      </div>
-      ${processedText}
-    </div>`;
+    });
+    
+    html += '</div>';
+    return html;
   }
 
   function createUI(data) {
@@ -234,34 +265,38 @@ javascript:(function() {
     }
 
     function formatSelectedContent() {
-      const selected = document.querySelectorAll('.message.selected, .artifact.selected');
+      const selected = document.querySelectorAll('.message.selected');
       let content = [];
-      let processedArtifacts = new Set(); // Track processed artifacts
+      let processedArtifacts = new Set();
       
       selected.forEach(el => {
-        if (el.classList.contains('message')) {
-          const role = el.classList.contains('human') ? 'Human' : 'Assistant';
-          const timestamp = el.querySelector('.timestamp').textContent;
-          
-          // Get text content excluding timestamp and role label
-          let text = el.textContent
-            .replace(timestamp, '')
-            .replace(role, '')
-            .trim();
-            
-          // Remove leading/trailing whitespace from each line
-          text = text.split('\n')
-            .map(line => line.trim())
-            .filter(line => line) // Remove empty lines
-            .join('\n');
-            
-          content.push(`<${role}>${text}</${role}>`);
-          
-        } else if (el.classList.contains('artifact') && !processedArtifacts.has(el)) {
-          const title = el.querySelector('h2').textContent;
-          const code = el.querySelector('code').textContent.trim();
-          content.push(`<Artifact title="${title}">${code}</Artifact>`);
-          processedArtifacts.add(el); // Mark this artifact as processed
+        const role = el.classList.contains('human') ? 'Human' : 'Assistant';
+        const timestamp = el.querySelector('.timestamp').textContent;
+        
+        /* Get text content excluding artifacts */
+        const textContent = Array.from(el.querySelectorAll('.text-content'))
+          .map(textEl => textEl.textContent.trim())
+          .filter(text => text)
+          .join('\n');
+        
+        /* Process artifacts */
+        const artifacts = Array.from(el.querySelectorAll('.artifact.selected'))
+          .filter(artifactEl => !processedArtifacts.has(artifactEl.dataset.identifier))
+          .map(artifactEl => {
+            processedArtifacts.add(artifactEl.dataset.identifier);
+            const title = artifactEl.querySelector('h2').textContent;
+            const code = artifactEl.querySelector('code').textContent.trim();
+            return `<Artifact title="${title}">${code}</Artifact>`;
+          });
+        
+        /* Combine text and artifacts */
+        let messageContent = textContent;
+        if (artifacts.length > 0) {
+          messageContent += '\n' + artifacts.join('\n');
+        }
+        
+        if (messageContent.trim()) {
+          content.push(`<${role}>${messageContent.trim()}</${role}>`);
         }
       });
       
