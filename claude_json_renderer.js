@@ -187,15 +187,23 @@ javascript:(function(){
       processedText = processedText.replace(
         /<antArtifact[^>]*identifier="([^"]*)"[^>]*title="([^"]*)"[^>]*>([\s\S]*?)<\/antArtifact>/g,
         (match, identifier, title, content) => {
-          /* Generate a unique placeholder that won't be processed by markdown */
+          /* Clean and format the code content */
+          const cleanContent = content
+            .trim()
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            /* Ensure consistent line endings */
+            .replace(/\r\n/g, '\n')
+            .replace(/\r/g, '\n');
+
+          /* Generate unique placeholder */
           const placeholder = `ARTIFACT_PLACEHOLDER_${Math.random().toString(36).substr(2, 9)}`;
           
-          /* Store the artifact HTML for later replacement */
+          /* Store the complete artifact HTML */
           artifacts[placeholder] = `<div class="artifact">
             <div class="artifact-header">${title}</div>
-            <div class="artifact-content">
-              <pre><code class="language-javascript">${content.trim()}</code></pre>
-            </div>
+            <div class="artifact-content"><pre><code class="language-javascript">${cleanContent}</code></pre></div>
           </div>`;
           
           return placeholder;
@@ -258,7 +266,10 @@ javascript:(function(){
       marked.setOptions({
         breaks: true,
         gfm: true,
-        headerIds: false
+        headerIds: false,
+        pedantic: false,
+        smartLists: true,
+        xhtml: true
       });
 
       const conversationData = JSON.parse(document.body.textContent);
