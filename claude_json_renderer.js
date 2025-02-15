@@ -22,6 +22,17 @@ javascript:(function(){
     return path;
   }
 
+  /* Process message content parts into a single string */
+  function processMessageContent(message) {
+    if (message.content && Array.isArray(message.content)) {
+      return message.content
+        .filter(part => part.type === 'text')
+        .map(part => part.text)
+        .join('');
+    }
+    return message.text || '';
+  }
+
   /* Format the conversation with markdown support */
   function formatConversation(data, marked) {
     const pathMessages = getConversationPath(data);
@@ -33,7 +44,7 @@ javascript:(function(){
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>${title}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.fluid.classless.green.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
     <style>
       :root {
         --human-bg: #f0f4f8;
@@ -140,7 +151,7 @@ javascript:(function(){
 
     /* Process each message */
     pathMessages.forEach(message => {
-      let processedText = message.text;
+      let processedText = processMessageContent(message);
       
       /* Handle artifacts */
       processedText = processedText.replace(
@@ -170,7 +181,15 @@ javascript:(function(){
       hljs.highlightAll();
       
       function downloadHTML() {
+        /* Hide download button before getting HTML content */
+        const downloadBtn = document.querySelector('.download-btn');
+        downloadBtn.style.display = 'none';
+        
         const htmlContent = document.documentElement.outerHTML;
+        
+        /* Restore download button */
+        downloadBtn.style.display = '';
+        
         const blob = new Blob([htmlContent], { type: 'text/html' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
