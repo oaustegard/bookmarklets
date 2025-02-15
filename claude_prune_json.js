@@ -1,4 +1,4 @@
-javascript:(function() {
+javascript:(function() { /* 1623 */
   /* Utility functions */
   function estimateTokens(text) {
     const words = text.trim().split(/\s+/).length;
@@ -115,6 +115,9 @@ javascript:(function() {
         border: 2px solid #ff4444;
         background: #fff0f0;
       }
+      .message:not(.selected) .text-content {
+        opacity: 0.5;
+      }
       .message.selected {
         border: 2px solid #4CAF50;
         background: #E8F5E9;
@@ -132,10 +135,12 @@ javascript:(function() {
       .artifact:not(.selected) {
         border: 2px solid #ff4444;
         background: #fff0f0;
+        opacity: 0.5;
       }
       .artifact.selected {
         border: 2px solid #4CAF50;
         background: #E8F5E9;
+        opacity: 1;
       }
       pre {
         margin: 0.5rem 0;
@@ -232,14 +237,13 @@ javascript:(function() {
     }
 
     function formatSelectedContent() {
-      const selected = document.querySelectorAll('.message.selected');
+      const selectedMessages = document.querySelectorAll('.message.selected');
+      const nonSelectedMessages = document.querySelectorAll('.message:not(.selected)');
       let content = [];
       
-      selected.forEach(el => {
+      // Handle selected messages text
+      selectedMessages.forEach(el => {
         const role = el.classList.contains('human') ? 'Human' : 'Assistant';
-        const timestamp = el.querySelector('.timestamp').textContent;
-        
-        // Get text content
         const textElements = Array.from(el.querySelectorAll('.text-content'))
           .map(textEl => textEl.textContent.trim())
           .filter(text => text)
@@ -248,14 +252,13 @@ javascript:(function() {
         if (textElements) {
           content.push(\`<\${role}>\${textElements}</\${role}>\`);
         }
-        
-        // Get artifacts
-        const artifacts = el.querySelectorAll('.artifact.selected');
-        artifacts.forEach(artifact => {
-          const title = artifact.getAttribute('data-title');
-          const code = artifact.querySelector('code').textContent.trim();
-          content.push(\`<Artifact title="\${title}">\${code}</Artifact>\`);
-        });
+      });
+
+      // Handle all selected artifacts, regardless of parent message selection state
+      document.querySelectorAll('.artifact.selected').forEach(artifact => {
+        const title = artifact.getAttribute('data-title');
+        const code = artifact.querySelector('code').textContent.trim();
+        content.push(\`<Artifact title="\${title}">\${code}</Artifact>\`);
       });
       
       return content.join('\\n\\n');
