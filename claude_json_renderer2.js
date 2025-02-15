@@ -1,5 +1,4 @@
-javascript:(function(){
-  /* Take 2 */
+javascript:(function(){ /* Take 3 */
   /* Load required libraries dynamically */
   function loadScript(url) {
     return new Promise((resolve, reject) => {
@@ -73,7 +72,7 @@ javascript:(function(){
     pathMessages.forEach(message => {
       let processedText = processMessageContent(message);
       
-      /* Handle artifacts and ensure code blocks end with newline */
+      /* Handle artifacts and ensure code blocks end with newline + comment */
       processedText = processedText.replace(
         /<antArtifact[^>]*identifier="([^"]*)"[^>]*title="([^"]*)"[^>]*>([\s\S]*?)<\/antArtifact>/g,
         (match, identifier, title, content) => {
@@ -82,7 +81,7 @@ javascript:(function(){
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;')
-            + '\n'; /* Add newline to fix highlight.js formatting */
+            + '\n<!-- test -->'; /* Add newline and comment to fix highlight.js formatting */
 
           return `<div class="artifact">
             <h3>${title}</h3>
@@ -91,9 +90,9 @@ javascript:(function(){
         }
       );
 
-      /* Pre-process markdown code blocks to add newline */
+      /* Pre-process markdown code blocks to add newline and comment */
       processedText = processedText.replace(/```[\s\S]*?```/g, match => 
-        match.endsWith('\n```') ? match : match + '\n'
+        match.endsWith('\n```') ? match + '\n<!-- test -->' : match + '\n<!-- test -->'
       );
 
       /* Convert markdown to HTML */
