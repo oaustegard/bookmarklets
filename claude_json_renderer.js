@@ -46,7 +46,7 @@ javascript:(function(){
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>${title}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.fluid.classless.green.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
     <style>
       :root {
         --human-bg: #f0f4f8;
@@ -120,9 +120,25 @@ javascript:(function(){
         padding: 1rem !important;
         background-color: #f7fafc !important;
         border: 1px solid var(--border-color);
-        white-space: pre;
+        white-space: pre !important;
+        word-wrap: normal !important;
         overflow-x: auto;
         line-height: 1.5;
+        tab-size: 2;
+      }
+      /* Prevent code block splitting */
+      .artifact-content pre {
+        margin: 0;
+        white-space: pre !important;
+      }
+      .artifact-content pre code {
+        white-space: pre !important;
+      }
+      /* Remove any inserted paragraph tags */
+      .artifact-content p {
+        margin: 0;
+        padding: 0;
+        display: inline;
       }
       code {
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -187,19 +203,25 @@ javascript:(function(){
       processedText = processedText.replace(
         /<antArtifact[^>]*identifier="([^"]*)"[^>]*title="([^"]*)"[^>]*>([\s\S]*?)<\/antArtifact>/g,
         (match, identifier, title, content) => {
-          /* Clean and format the code content */
+          /* Preserve line breaks and indentation */
           const cleanContent = content
             .trim()
+            /* Normalize line endings */
+            .replace(/\r\n/g, '\n')
+            .replace(/\r/g, '\n')
+            /* Preserve indentation by converting spaces to non-breaking spaces */
+            .replace(/^( +)/gm, (match) => '\u00A0'.repeat(match.length))
+            /* Ensure each line is properly terminated */
+            .split('\n')
+            .join('\n')
+            /* Escape HTML */
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            /* Ensure consistent line endings */
-            .replace(/\r\n/g, '\n')
-            .replace(/\r/g, '\n');
+            .replace(/>/g, '&gt;');
 
           const placeholder = `ARTIFACT_PLACEHOLDER_${Math.random().toString(36).substr(2, 9)}`;
           
-          /* Store the artifact HTML */
+          /* Create a single unbreakable code block */
           artifacts[placeholder] = `<div class="artifact">
             <div class="artifact-header">${title}</div>
             <div class="artifact-content"><pre><code class="language-javascript">${cleanContent}</code></pre></div>
