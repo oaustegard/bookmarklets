@@ -1,4 +1,5 @@
 javascript:(function(){
+/* Renders the Claude Conversation Tree JSON */
   /* Load required libraries dynamically */
   function loadScript(url) {
     return new Promise((resolve, reject) => {
@@ -35,8 +36,6 @@ javascript:(function(){
 
   /* Format the conversation with markdown support */
   function formatConversation(data, marked) {
-    /* Storage for artifact placeholders */
-    const artifacts = {};
     const pathMessages = getConversationPath(data);
     const title = data.name || 'Conversation';
     let html = `<!DOCTYPE html>
@@ -120,25 +119,9 @@ javascript:(function(){
         padding: 1rem !important;
         background-color: #f7fafc !important;
         border: 1px solid var(--border-color);
-        white-space: pre !important;
-        word-wrap: normal !important;
+        white-space: pre;
         overflow-x: auto;
         line-height: 1.5;
-        tab-size: 2;
-      }
-      /* Prevent code block splitting */
-      .artifact-content pre {
-        margin: 0;
-        white-space: pre !important;
-      }
-      .artifact-content pre code {
-        white-space: pre !important;
-      }
-      /* Remove any inserted paragraph tags */
-      .artifact-content p {
-        margin: 0;
-        padding: 0;
-        display: inline;
       }
       code {
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -199,59 +182,8 @@ javascript:(function(){
         }
       );
 
-      /* Handle artifacts before markdown processing */
-      processedText = processedText.replace(
-        /<antArtifact[^>]*identifier="([^"]*)"[^>]*title="([^"]*)"[^>]*>([\s\S]*?)<\/antArtifact>/g,
-        (match, identifier, title, content) => {
-          /* Preserve line breaks and indentation */
-          const cleanContent = content
-            .trim()
-            /* Normalize line endings */
-            .replace(/\r\n/g, '\n')
-            .replace(/\r/g, '\n')
-            /* Preserve indentation by converting spaces to non-breaking spaces */
-            .replace(/^( +)/gm, (match) => '\u00A0'.repeat(match.length))
-            /* Ensure each line is properly terminated */
-            .split('\n')
-            .join('\n')
-            /* Escape HTML */
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-
-          const placeholder = `ARTIFACT_PLACEHOLDER_${Math.random().toString(36).substr(2, 9)}`;
-          
-          /* Create a single unbreakable code block */
-          artifacts[placeholder] = `<div class="artifact">
-            <div class="artifact-header">${title}</div>
-            <div class="artifact-content"><pre><code class="language-javascript">${cleanContent}</code></pre></div>
-          </div>`;
-          
-          return placeholder;
-        }
-      );
-
       /* Convert markdown to HTML */
       processedText = marked.parse(processedText);
-
-      /* Replace artifacts after markdown processing */
-      Object.entries(artifacts).forEach(([placeholder, html]) => {
-        processedText = processedText.replace(placeholder, html);
-      });
-
-      /* Fix split code blocks and remove errant tags */
-      processedText = processedText
-        .replace(/<br>\s+/g, '')
-        .replace(/<\/code><p><code[^>]*>(.*?)<\/code><\/p><\/pre>/g, '$1</code></pre>')
-        .replace(/<\/code><p><code[^>]*>(.*?)<\/code><\/p>/g, '$1</code>');
-
-      /* Convert markdown to HTML */
-      processedText = marked.parse(processedText);
-
-      /* Replace artifacts after markdown processing */
-      Object.entries(artifacts).forEach(([placeholder, html]) => {
-        processedText = processedText.replace(placeholder, html);
-      });
 
       html += `<div class="message ${message.sender}">
         <div class="sender">${message.sender.charAt(0).toUpperCase() + message.sender.slice(1)}</div>
@@ -260,7 +192,7 @@ javascript:(function(){
     });
 
     html += `</div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script>
       hljs.highlightAll();
       
@@ -301,10 +233,7 @@ javascript:(function(){
       marked.setOptions({
         breaks: true,
         gfm: true,
-        headerIds: false,
-        pedantic: false,
-        smartLists: true,
-        xhtml: true
+        headerIds: false
       });
 
       const conversationData = JSON.parse(document.body.textContent);
