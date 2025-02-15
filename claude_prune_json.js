@@ -237,43 +237,46 @@ javascript:(function() { /* 1623 */
     }
 
     function formatSelectedContent() {
-      // Get all elements that could be in the output
-      const selectedElements = [...document.querySelectorAll('.message.selected, .artifact.selected')]
-        .map(el => {
-          const timestamp = el.querySelector('.timestamp')?.textContent;
-          const isMessage = el.classList.contains('message');
-          const role = isMessage ? (el.classList.contains('human') ? 'Human' : 'Assistant') : null;
-          const textElements = isMessage ? 
-            Array.from(el.querySelectorAll('.text-content'))
-              .map(textEl => textEl.textContent.trim())
-              .filter(text => text)
-              .join('\n') : null;
-          const artifactTitle = !isMessage ? el.getAttribute('data-title') : null;
-          const artifactCode = !isMessage ? el.querySelector('code')?.textContent.trim() : null;
-          
-          return {
-            timestamp: new Date(timestamp || 0), // fallback for artifacts
-            element: el,
-            isMessage,
-            role,
-            textElements,
-            artifactTitle,
-            artifactCode
-          };
-        })
-        .sort((a, b) => a.timestamp - b.timestamp);
-
-      // Convert to output format
-      const content = selectedElements.map(item => {
-        if (item.isMessage && item.textElements) {
-          return `<${item.role}>${item.textElements}</${item.role}>`;
-        } else if (!item.isMessage) {
-          return `<Artifact title="${item.artifactTitle}">${item.artifactCode}</Artifact>`;
-        }
-        return null;
-      }).filter(Boolean);
+      // Get all messages and artifacts with their timestamps
+      const selectedContent = [];
       
-      return content.join('\n\n');
+      // Add selected messages
+      document.querySelectorAll('.message.selected').forEach(el => {
+        const role = el.classList.contains('human') ? 'Human' : 'Assistant';
+        const timestamp = el.querySelector('.timestamp').textContent;
+        const textElements = Array.from(el.querySelectorAll('.text-content'))
+          .map(textEl => textEl.textContent.trim())
+          .filter(text => text)
+          .join('\\n');
+        
+        if (textElements) {
+          selectedContent.push({
+            timestamp: new Date(timestamp).getTime(),
+            content: \`<\${role}>\${textElements}</\${role}>\`,
+            type: 'message'
+          });
+        }
+      });
+
+      // Add selected artifacts
+      document.querySelectorAll('.artifact.selected').forEach(artifact => {
+        const title = artifact.getAttribute('data-title');
+        const code = artifact.querySelector('code').textContent.trim();
+        // Get timestamp from closest message container
+        const timestamp = artifact.closest('.message').querySelector('.timestamp').textContent;
+        
+        selectedContent.push({
+          timestamp: new Date(timestamp).getTime(),
+          content: \`<Artifact title="\${title}">\${code}</Artifact>\`,
+          type: 'artifact'
+        });
+      });
+      
+      // Sort by timestamp
+      selectedContent.sort((a, b) => a.timestamp - b.timestamp);
+      
+      // Join all content
+      return selectedContent.map(item => item.content).join('\\n\\n');
     }
 
     function setupEventListeners() {
