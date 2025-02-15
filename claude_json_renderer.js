@@ -169,14 +169,21 @@ javascript:(function(){
           /* Clean and format the code content */
           const cleanContent = content
             .trim()
+            .split('\n')
+            .map(line => line.trim())
+            .join('\n')
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;');
 
+          /* Detect if content contains JSX/XML */
+          const hasJSX = cleanContent.includes('</') || cleanContent.includes('/>');
+          const language = hasJSX ? 'jsx' : 'javascript';
+
           return `<div class="artifact">
             <div class="artifact-header">${title}</div>
             <div class="artifact-content">
-              <pre><code class="language-javascript">${cleanContent}</code></pre>
+              <pre><code class="language-${language}">${cleanContent}</code></pre>
             </div>
           </div>`;
         }
