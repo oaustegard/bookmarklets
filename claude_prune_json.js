@@ -1,4 +1,4 @@
-javascript:(function() { /* 1623 */
+javascript:(function() { /* 1640 */
   /* Utility functions */
   function estimateTokens(text) {
     const words = text.trim().split(/\s+/).length;
@@ -11,6 +11,7 @@ javascript:(function() { /* 1623 */
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
+      second: '2-digit',
       hour12: true
     });
   }
