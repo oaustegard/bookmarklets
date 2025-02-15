@@ -187,7 +187,16 @@ javascript:(function(){
       processedText = processedText.replace(
         /<antArtifact[^>]*identifier="([^"]*)"[^>]*title="([^"]*)"[^>]*>([\s\S]*?)<\/antArtifact>/g,
         (match, identifier, title, content) => {
-          const cleanContent = content.trim();
+          /* Clean and format the code content */
+          const cleanContent = content
+            .trim()
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            /* Ensure consistent line endings */
+            .replace(/\r\n/g, '\n')
+            .replace(/\r/g, '\n');
+
           const placeholder = `ARTIFACT_PLACEHOLDER_${Math.random().toString(36).substr(2, 9)}`;
           
           /* Store the artifact HTML */
@@ -208,11 +217,11 @@ javascript:(function(){
         processedText = processedText.replace(placeholder, html);
       });
 
-      /* Fix split code blocks hack */
-      processedText = processedText.replace(
-        /<\/code><p><code class="[^"]*">(.*?)<\/code><\/p>/g,
-        '$1</code>'
-      );
+      /* Fix split code blocks and remove errant tags */
+      processedText = processedText
+        .replace(/<br>\s+/g, '')
+        .replace(/<\/code><p><code[^>]*>(.*?)<\/code><\/p><\/pre>/g, '$1</code></pre>')
+        .replace(/<\/code><p><code[^>]*>(.*?)<\/code><\/p>/g, '$1</code>');
 
       /* Convert markdown to HTML */
       processedText = marked.parse(processedText);
