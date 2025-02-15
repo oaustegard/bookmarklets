@@ -16,42 +16,41 @@ javascript:(function() {
   }
 
   function processMessageContent(message) {
-    /* Separate handling of text and artifacts */
-    const parts = [];
+    if (!message.content) return message.text || '';
     
-    if (message.content) {
-      message.content.forEach(part => {
-        if (part.type === 'text') {
-          parts.push({
-            type: 'text',
-            content: part.text.trim()
-          });
-        } else if (part.text) {
-          /* Handle artifact pattern in text */
-          const artifactMatch = part.text.match(/<antArtifact[^>]*identifier="([^"]*)"[^>]*title="([^"]*)"[^>]*>([\s\S]*?)<\/antArtifact>/);
-          if (artifactMatch) {
-            parts.push({
-              type: 'artifact',
-              identifier: artifactMatch[1],
-              title: artifactMatch[2],
-              content: artifactMatch[3].trim()
-            });
-          } else {
-            parts.push({
-              type: 'text',
-              content: part.text.trim()
-            });
-          }
+    const elements = [];
+    message.content.forEach(part => {
+      if (part.type === 'text') {
+        const text = part.text.trim();
+        if (text && !text.startsWith('<antArtifact')) {
+          elements.push(`<div class="text-content">${text}</div>`);
         }
-      });
-    } else if (message.text) {
-      parts.push({
-        type: 'text',
-        content: message.text.trim()
-      });
-    }
-    
-    return parts;
+      }
+    });
+
+    /* Process artifacts separately */
+    message.content.forEach(part => {
+      if (part.type === 'text' && part.text.includes('<antArtifact')) {
+        part.text.match(/<antArtifact[^>]*identifier="([^"]*)"[^>]*title="([^"]*)"[^>]*>([\s\S]*?)<\/antArtifact>/g)
+          ?.forEach(match => {
+            const [, , title, content] = match.match(/<antArtifact[^>]*identifier="([^"]*)"[^>]*title="([^"]*)"[^>]*>([\s\S]*?)<\/antArtifact>/);
+            const cleanContent = content
+              .trim()
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;');
+
+            elements.push(`<div class="artifact selected" data-title="${title}">
+              <div class="message-header">
+                <h2>${title}</h2>
+              </div>
+              <pre><code>${cleanContent}</code></pre>
+            </div>`);
+          });
+      }
+    });
+
+    return elements.join('\n');
   }
 
   function getConversationPath(data) {
@@ -183,45 +182,13 @@ javascript:(function() {
   }
 
   function formatMessage(message) {
-    const parts = processMessageContent(message);
-    let html = `<div class="message ${message.sender} selected">
+    return `<div class="message ${message.sender} selected">
       <div class="message-header">
         <h2>${message.sender}</h2>
         <span class="timestamp">${formatTimestamp(message.created_at)}</span>
-      </div>`;
-    
-    parts.forEach(part => {
-      if (part.type === 'text') {
-        /* Format code blocks within text */
-        let processedText = part.content.replace(
-          /```(?:\w+)?\n([\s\S]*?)```/g,
-          (match, code) => {
-            const escapedCode = code
-              .trim()
-              .replace(/&/g, '&amp;')
-              .replace(/</g, '&lt;')
-              .replace(/>/g, '&gt;');
-            return `<pre><code>${escapedCode}</code></pre>`;
-          }
-        );
-        html += `<div class="text-content">${processedText}</div>`;
-      } else if (part.type === 'artifact') {
-        const cleanContent = part.content
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;');
-
-        html += `<div class="artifact selected" data-identifier="${part.identifier}" onclick="event.stopPropagation()">
-          <div class="message-header">
-            <h2>${part.title}</h2>
-          </div>
-          <pre><code>${cleanContent}</code></pre>
-        </div>`;
-      }
-    });
-    
-    html += '</div>';
-    return html;
+      </div>
+      ${processMessageContent(message)}
+    </div>`;
   }
 
   function createUI(data) {
@@ -255,7 +222,7 @@ javascript:(function() {
     <script>
     /* UI interaction handlers */
     function updateCounters() {
-      const selectedText = Array.from(document.querySelectorAll('.message.selected, .artifact.selected'))
+      const selectedText = Array.from(document.querySelectorAll('.message.selected .text-content, .artifact.selected'))
         .map(el => el.textContent)
         .join(' ');
       const words = selectedText.trim().split(/\\s+/).length;
@@ -267,45 +234,46 @@ javascript:(function() {
     function formatSelectedContent() {
       const selected = document.querySelectorAll('.message.selected');
       let content = [];
-      let processedArtifacts = new Set();
       
       selected.forEach(el => {
         const role = el.classList.contains('human') ? 'Human' : 'Assistant';
         const timestamp = el.querySelector('.timestamp').textContent;
         
-        /* Get text content excluding artifacts */
-        const textContent = Array.from(el.querySelectorAll('.text-content'))
+        // Get text content
+        const textElements = Array.from(el.querySelectorAll('.text-content'))
           .map(textEl => textEl.textContent.trim())
           .filter(text => text)
-          .join('\n');
+          .join('\\n');
         
-        /* Process artifacts */
-        const artifacts = Array.from(el.querySelectorAll('.artifact.selected'))
-          .filter(artifactEl => !processedArtifacts.has(artifactEl.dataset.identifier))
-          .map(artifactEl => {
-            processedArtifacts.add(artifactEl.dataset.identifier);
-            const title = artifactEl.querySelector('h2').textContent;
-            const code = artifactEl.querySelector('code').textContent.trim();
-            return `<Artifact title="${title}">${code}</Artifact>`;
-          });
-        
-        /* Combine text and artifacts */
-        let messageContent = textContent;
-        if (artifacts.length > 0) {
-          messageContent += '\n' + artifacts.join('\n');
+        if (textElements) {
+          content.push(\`<\${role}>\${textElements}</\${role}>\`);
         }
         
-        if (messageContent.trim()) {
-          content.push(`<${role}>${messageContent.trim()}</${role}>`);
-        }
+        // Get artifacts
+        const artifacts = el.querySelectorAll('.artifact.selected');
+        artifacts.forEach(artifact => {
+          const title = artifact.getAttribute('data-title');
+          const code = artifact.querySelector('code').textContent.trim();
+          content.push(\`<Artifact title="\${title}">\${code}</Artifact>\`);
+        });
       });
       
-      return content.join('\n\n');
+      return content.join('\\n\\n');
     }
 
     function setupEventListeners() {
       /* Message selection */
-      document.querySelectorAll('.message, .artifact').forEach(el => {
+      document.querySelectorAll('.message').forEach(el => {
+        el.addEventListener('click', (e) => {
+          if (!e.target.closest('.artifact')) {
+            el.classList.toggle('selected');
+            updateCounters();
+          }
+        });
+      });
+
+      /* Artifact selection */
+      document.querySelectorAll('.artifact').forEach(el => {
         el.addEventListener('click', (e) => {
           e.stopPropagation();
           el.classList.toggle('selected');
