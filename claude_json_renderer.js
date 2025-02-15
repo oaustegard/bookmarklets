@@ -35,6 +35,8 @@ javascript:(function(){
 
   /* Format the conversation with markdown support */
   function formatConversation(data, marked) {
+    /* Storage for artifact placeholders */
+    const artifacts = {};
     const pathMessages = getConversationPath(data);
     const title = data.name || 'Conversation';
     let html = `<!DOCTYPE html>
@@ -181,8 +183,32 @@ javascript:(function(){
         }
       );
 
+      /* Handle artifacts before markdown processing */
+      processedText = processedText.replace(
+        /<antArtifact[^>]*identifier="([^"]*)"[^>]*title="([^"]*)"[^>]*>([\s\S]*?)<\/antArtifact>/g,
+        (match, identifier, title, content) => {
+          /* Generate a unique placeholder that won't be processed by markdown */
+          const placeholder = `ARTIFACT_PLACEHOLDER_${Math.random().toString(36).substr(2, 9)}`;
+          
+          /* Store the artifact HTML for later replacement */
+          artifacts[placeholder] = `<div class="artifact">
+            <div class="artifact-header">${title}</div>
+            <div class="artifact-content">
+              <pre><code class="language-javascript">${content.trim()}</code></pre>
+            </div>
+          </div>`;
+          
+          return placeholder;
+        }
+      );
+
       /* Convert markdown to HTML */
       processedText = marked.parse(processedText);
+
+      /* Replace artifacts after markdown processing */
+      Object.entries(artifacts).forEach(([placeholder, html]) => {
+        processedText = processedText.replace(placeholder, html);
+      });
 
       html += `<div class="message ${message.sender}">
         <div class="sender">${message.sender.charAt(0).toUpperCase() + message.sender.slice(1)}</div>
