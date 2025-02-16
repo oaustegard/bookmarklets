@@ -35,23 +35,25 @@ javascript: (function() {
     removeExistingModals();
 
     const modal = createElement('div', {
-      id: 'searchModal',
-      style: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 10000
-      }
-    });
+        id: 'searchModal',
+        style: {
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          color: '#333'.
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10000
+        }
+      });
 
     const modalContent = createElement('div', {
         style: {
+          color: '#333'.
           backgroundColor: '#fff',
           padding: '20px',
           borderRadius: '8px',
@@ -111,8 +113,8 @@ javascript: (function() {
             display: 'flex',
             gap: '10px'
           }
-        },
-        createElement('button', {
+      },
+      createElement('button', {
           type: 'button',
           style: {
             flex: 1,
@@ -132,8 +134,8 @@ javascript: (function() {
               performSearch(input, type);
             }
           }
-        }, 'Search'),
-        createElement('button', {
+      }, 'Search'),
+      createElement('button', {
           type: 'button',
           style: {
             flex: 1,
