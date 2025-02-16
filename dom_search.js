@@ -42,7 +42,7 @@ javascript: (function() {
           left: 0,
           width: '100%',
           height: '100%',
-          color: '#333'.
+          color: '#333',
           backgroundColor: 'rgba(0,0,0,0.5)',
           display: 'flex',
           alignItems: 'center',
@@ -53,7 +53,7 @@ javascript: (function() {
 
     const modalContent = createElement('div', {
         style: {
-          color: '#333'.
+          color: '#333',
           backgroundColor: '#fff',
           padding: '20px',
           borderRadius: '8px',
