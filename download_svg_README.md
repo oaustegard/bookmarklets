@@ -2,11 +2,11 @@
 
 ### Introduction
 
-In the world of web graphics, SVG (Scalable Vector Graphics) has become increasingly popular due to its scalability and small file size. Unlike raster image formats used in `<img>` tags, SVGs are vector-based and can be manipulated with CSS and JavaScript. However, downloading SVGs from web pages isn't always straightforward. This is where our SVG Download Bookmarklet comes in handy.
+SVG (Scalable Vector Graphics) has become increasingly popular due to its scalability and small file size. Unlike raster image formats used in `<img>` tags, SVGs are vector-based and can be manipulated with CSS and JavaScript. However, downloading SVGs from web pages isn't always straightforward. This is where the SVG Download Bookmarklet comes in handy.
 
 ### The Ask
 
-The goal was to create a bookmarklet that allows users to download any SVG element from a web page with a single click. This is particularly useful for developers and designers who frequently need to extract SVGs from web resources.
+The goal was to create a bookmarklet that allows users to download any SVG element from a web page with minimal effort. This is particularly useful for developers and designers who frequently need to extract SVGs from web resources.
 
 ### The Solution
 
