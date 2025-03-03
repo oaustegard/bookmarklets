@@ -10,7 +10,7 @@ javascript:(function() {
   }
   
   if (!textarea) {
-    alert('No textarea with id 1-10 found on this page. Are you sure you're on a Claude project page with the Custom Instructions dialog open?');
+    alert('No textarea with id 1-10 found on this page. Ensure you are on a Claude Project page with the Custom Instructions dialog open');
     return;
   }
   
@@ -61,5 +61,4 @@ javascript:(function() {
   setTimeout(function() {
     window.dispatchEvent(new Event('resize'));
   }, 100);
-  
 })();
