@@ -1,5 +1,6 @@
 javascript: /* From either a Jira ticket or Kanban board, adds a formatted link to the selected Jira ticket to your clipboard, in Markdown and HTML format */
 (function() {
+    /* Copy HTML and plain text to clipboard */
     function copyToClip(doc, html, text = null) {
         function listener(e) {
             e.clipboardData.setData("text/html", html);
@@ -11,29 +12,36 @@ javascript: /* From either a Jira ticket or Kanban board, adds a formatted link 
         doc.removeEventListener("copy", listener);
     }
 
-    function __$(selector, attribute = 'innerText') {
-        var element = document.querySelector(selector);
-        if (!element) return ' ';
-        return attribute === 'innerText' ? element.innerText.trim() : element.getAttribute(attribute).trim();
+    /* Get element value using Atlassian jQuery */
+    function getElementValue(selector) {
+        var result = AJS.$(selector).text().trim();
+        return result || '';
     }
 
-    var url = window.location.href.split(/[?#]/)[0];
-    var key = AJS.$('#key-val').text() || __$('#ghx-detail-issue', 'data-issuekey');
-    if (!key || key === ' ') {
+    /* Extract issue key - try both ticket view and Kanban view selectors */
+    var key = getElementValue('#key-val') || AJS.$('#ghx-detail-issue').attr('data-issuekey');
+    
+    if (!key) {
         alert("Please select a ticket.");
         return;
     }
 
-    var summary = AJS.$('#summary-val').text() || __$('#summary-val');
-    var status = AJS.$('#opsbar-transitions_more span').text() || __$('#status-val');
-    var priority = (AJS.$('#priority-val').text() || __$('#priority-val')).trim();
-    var type = (AJS.$('#type-val').text() || __$('#type-val')).trim();
-    var assignee = (AJS.$('#assignee-val').text() || __$('#assignee-val')).trim();
+    /* Create the correct issue URL (works for both ticket page and Kanban) */
+    var baseUrl = window.location.origin;
+    var ticketUrl = baseUrl + "/browse/" + key;
 
-    var markdownLink = `[${key}](${url})`;
+    /* Get ticket details */
+    var summary = getElementValue('#summary-val');
+    var status = getElementValue('#opsbar-transitions_more span') || getElementValue('#status-val');
+    var priority = getElementValue('#priority-val');
+    var type = getElementValue('#type-val');
+    var assignee = getElementValue('#assignee-val');
+
+    /* Format links */
+    var markdownLink = `[${key}](${ticketUrl})`;
     var description = `${summary} (${status}/${assignee}/${priority}/${type})`;
     var markdown = `_${markdownLink} - ${description}_`;
-    var htmlLink = `<a href="${url}">${key}</a>`;
+    var htmlLink = `<a href="${ticketUrl}">${key}</a>`;
     var html = `<em>${htmlLink} - ${description}</em>`;
 
     copyToClip(document, html, markdown);
