@@ -31,7 +31,7 @@ javascript: /* From either a Jira ticket or Kanban board, adds a formatted link 
     var assignee = (AJS.$('#assignee-val').text() || __$('#assignee-val')).trim();
 
     var markdownLink = `[${key}](${url})`;
-    var description = `${summary} (${status}/${priority}/${type}/${assignee})`;
+    var description = `${summary} (${status}/${assignee}/${priority}/${type})`;
     var markdown = `_${markdownLink} - ${description}_`;
     var htmlLink = `<a href="${url}">${key}</a>`;
     var html = `<em>${htmlLink} - ${description}</em>`;
