@@ -14,12 +14,12 @@ javascript: /* From either a Jira ticket or Kanban board, adds a formatted link 
 
     /* Get element value using Atlassian jQuery */
     function getElementValue(selector) {
-        var result = AJS.$(selector).text().trim();
+        const result = AJS.$(selector).text().trim();
         return result || '';
     }
 
     /* Extract issue key - try both ticket view and Kanban view selectors */
-    var key = getElementValue('#key-val') || AJS.$('#ghx-detail-issue').attr('data-issuekey');
+    const key = getElementValue('#key-val') || AJS.$('#ghx-detail-issue').attr('data-issuekey');
     
     if (!key) {
         alert("Please select a ticket.");
@@ -27,22 +27,22 @@ javascript: /* From either a Jira ticket or Kanban board, adds a formatted link 
     }
 
     /* Create the correct issue URL (works for both ticket page and Kanban) */
-    var baseUrl = window.location.origin;
-    var ticketUrl = baseUrl + "/browse/" + key;
+    const baseUrl = window.location.origin;
+    const ticketUrl = `${baseUrl}/browse/${key}`;
 
     /* Get ticket details */
-    var summary = getElementValue('#summary-val');
-    var status = getElementValue('#opsbar-transitions_more span') || getElementValue('#status-val');
-    var priority = getElementValue('#priority-val');
-    var type = getElementValue('#type-val');
-    var assignee = getElementValue('#assignee-val');
+    const summary = getElementValue('#summary-val');
+    const status = getElementValue('#opsbar-transitions_more span') || getElementValue('#status-val');
+    const priority = getElementValue('#priority-val');
+    const type = getElementValue('#type-val');
+    const assignee = getElementValue('#assignee-val');
 
     /* Format links */
-    var markdownLink = `[${key}](${ticketUrl})`;
-    var description = `${summary} (${status}/${assignee}/${priority}/${type})`;
-    var markdown = `_${markdownLink} - ${description}_`;
-    var htmlLink = `<a href="${ticketUrl}">${key}</a>`;
-    var html = `<em>${htmlLink} - ${description}</em>`;
+    const markdownLink = `[${key}](${ticketUrl})`;
+    const description = `${summary} (${status}/${assignee}/${priority}/${type})`;
+    const markdown = `_${markdownLink} - ${description}_`;
+    const htmlLink = `<a href="${ticketUrl}">${key}</a>`;
+    const html = `<em>${htmlLink} - ${description}</em>`;
 
     copyToClip(document, html, markdown);
 })();
