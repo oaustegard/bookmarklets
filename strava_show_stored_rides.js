@@ -21,7 +21,10 @@ javascript:(function() {
             'View Flybys', 
             'Show Less', 
             'View all', 
-            'Add private notes', 
+            'Add private notes',
+            'Add Others',
+            'Ride this route again to see how you\'re progressing.',
+            'Learn More',
             'Only you can view this activity. It won\'t appear on segment leaderboards and may not count toward some challenges'
         ];
         
