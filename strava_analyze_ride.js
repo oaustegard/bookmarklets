@@ -4,17 +4,28 @@ javascript:(function() {
      * and sends them to Claude for further analysis.
      */
 
+    /* Helper function to safely get text content from elements */
+    function getTextFromSelector(selector, parent = document) {
+        return parent.querySelector(selector)?.textContent.trim() || '';
+    }
+
+    /* Helper function to safely check if an element exists and has content */
+    function hasContent(selector, parent = document) {
+        const element = parent.querySelector(selector);
+        return element && element.innerHTML.trim() !== '';
+    }
+
     /* Get highlights from the page */
     function getHighlights() {
         console.log('Parsing highlights: title, stats, and top achievements');
         
-        const title = document.querySelector('h1.activity-name')?.textContent.trim() || '';
-        const stats = document.querySelector('div.activity-stats')?.textContent.trim() || '';
-        const achievements = document.querySelector('footer.achievements')?.textContent.trim() || '';
+        const title = getTextFromSelector('h1.activity-name');
+        const stats = getTextFromSelector('div.activity-stats');
+        const achievements = getTextFromSelector('footer.achievements');
         
         const riderName = document.querySelector('.details-container .avatar-athlete img')?.alt.trim() || '';
-        const dateTime = document.querySelector('.details time')?.textContent.trim() || '';
-        const location = document.querySelector('.details .location')?.textContent.trim() || '';
+        const dateTime = getTextFromSelector('.details time');
+        const location = getTextFromSelector('.details .location');
         
         const sauceInfo = parseSauceInfo();
         
@@ -26,7 +37,7 @@ javascript:(function() {
         const saucePanel = document.getElementById('sauce-infopanel');
         if (!saucePanel) return 'Sauce info not available';
 
-        const selectedOption = saucePanel.querySelector('.drop-down-menu .selection')?.textContent.trim() || '';
+        const selectedOption = getTextFromSelector('.drop-down-menu .selection', saucePanel);
         const tableRows = saucePanel.querySelectorAll('table tr');
         
         const sauceData = [`Selected Sauce Data: ${selectedOption}`];
@@ -47,20 +58,21 @@ javascript:(function() {
     function getInterestingSegments(powerThreshold, speedThreshold) {
         console.log('Parsing all segments');
         const allSegments = Array.from(document.querySelectorAll('table.segments tbody tr')).map(row => {
-            const name = row.querySelector('.name-col .name')?.textContent.trim() || '';
-            const stats = row.querySelector('.name-col .stats')?.textContent.replace(/\s+/g, ' ').trim() || '';
-            const speedText = row.querySelector('td:nth-child(7)')?.textContent.trim() || '';
-            const powerText = row.querySelector('td:nth-child(8)')?.textContent.trim() || '';
+            const name = getTextFromSelector('.name-col .name', row);
+            const stats = getTextFromSelector('.name-col .stats', row).replace(/\s+/g, ' ').trim();
+            const speedText = getTextFromSelector('td:nth-child(7)', row);
+            const powerText = getTextFromSelector('td:nth-child(8)', row);
             const speed = parseFloat(speedText.replace(/[^\d.]/g, '')) || 0;
             const power = parseFloat(powerText.replace(/[^\d.]/g, '')) || 0;
-            const time = row.querySelector('.time-col')?.textContent.trim() || '';
+            const time = getTextFromSelector('.time-col', row);
             
             const achievement = row.querySelector('.achievement-col div');
             const achievementTitle = achievement ? achievement.title : 'None';
             
             const isStarred = row.querySelector('.starred-col .starred.active') !== null;
             const hasAchievement = row.querySelector('.achievement-col div') !== null;
-            const isLocalLegend = row.querySelector('.local-legend-col').innerHTML.trim() !== '';
+            const isLocalLegend = hasContent('.local-legend-col', row);
+            
             const climbCatElement = row.querySelector('.climb-cat-col span');
             const climbCategory = climbCatElement ? climbCatElement.className.match(/icon-cat-([A-Za-z0-9]+)/)?.[1] || null : null;
             const isCategorized = climbCategory !== null;
@@ -124,6 +136,16 @@ ${highlights.sauceContent}`;
         window.open(url, '_blank');
     }
 
+    /* Error handling wrapper to catch and log any errors */
+    function executeWithErrorHandling() {
+        try {
+            displayRideSummary(300, 25);
+        } catch (error) {
+            console.error('Strava Analysis Bookmarklet Error:', error);
+            alert('Error analyzing Strava ride: ' + error.message);
+        }
+    }
+
     /* Main execution */
-    displayRideSummary(300, 25);
+    executeWithErrorHandling();
 })();
