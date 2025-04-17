@@ -39,4 +39,4 @@ You can modify the number of projects shown by editing the bookmarklet code and 
 
 ## Source Code
 
-The full source code is available on [GitHub](https://github.com/yourusername/bookmarklets/blob/main/jira_recent_projects.js)
+The full source code is available on [GitHub](https://github.com/oaustegard/bookmarklets/blob/main/jira_recent_projects.js)
