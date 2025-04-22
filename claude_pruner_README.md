@@ -68,6 +68,7 @@ Due to browser security (Same-Origin Policy), websites can't directly access dat
 ## System Components
 
 ### 1. Bookmarklet (`claude_pruner.js`)
+https://github.com/oaustegard/bookmarklets/blob/main/claude_pruner.js
 Responsibilities:
 - Verify it's running on claude.ai
 - Extract organization and conversation IDs from the URL
@@ -76,6 +77,7 @@ Responsibilities:
 - Send data using secure messaging
 
 ### 2. Pruner Interface (`claude-pruner.html`)
+https://github.com/oaustegard/oaustegard.github.io/blob/main/claude-pruner.html
 Features:
 - Two-column layout (messages and artifacts)
 - Interactive selection interface
