@@ -2,6 +2,8 @@
 
 [This bookmarklet](https://github.com/oaustegard/bookmarklets/blob/main/bsky_advanced_search.js) adds an advanced search panel to BlueSky, giving you easy access to all the powerful search features available on the platform.
 See [Bsky announcement](https://bsky.app/profile/austegard.com/post/3loqrukzbbk25)
+
+
 ![bafkreibp3hbxcvh5c4osmwgadkb5l3liid3kzddizuffruoxtb74l7tppq](https://github.com/user-attachments/assets/484e5340-00d8-45f4-ab1e-473fd9d44d40)
 
 
