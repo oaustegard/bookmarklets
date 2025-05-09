@@ -20,7 +20,7 @@ See [Bsky announcement](https://bsky.app/profile/austegard.com/post/3loqrukzbbk2
 ## Installation
 
 ### Easy Mode
-1. Go to this specific [BlueSky Advances Search Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=bsky_advanced_search.js)
+1. Go to the [BlueSky Advanced Search Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=bsky_advanced_search.js)
 2. Drag the link to your bookmarks bar
 ### Hard Mode
 1. Copy the entire JavaScript code from the bookmarklet file at https://github.com/oaustegard/bookmarklets/blob/main/bsky_advanced_search.js
