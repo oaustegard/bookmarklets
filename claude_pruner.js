@@ -14,7 +14,7 @@ javascript:(function() {
         localStorage.getItem('lastActiveOrg')
     }/chat_conversations/${
         window.location.pathname.split('/').pop()
-    }?tree=True&rendering_mode=messages&render_all_tools=false`;
+    }?tree=True&rendering_mode=messages&render_all_tools=true`;
 
     /* Open pruner in new window */
     const prunerWindow = window.open(PRUNER_URL, '_blank');
