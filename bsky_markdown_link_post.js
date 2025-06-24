@@ -4,9 +4,25 @@ var STORAGE_PREFIX = 'bsky_app_pass_';
 
 function getCurrentHandle() {
   try {
+    /* Try to get from bsky.app localStorage first */
     var storedHandle = localStorage.getItem('bsky-handle');
     if (storedHandle && storedHandle.includes('.')) {
       return storedHandle;
+    }
+    
+    /* Fallback: find any stored credentials and use that handle */
+    for (var i = 0; i < localStorage.length; i++) {
+      var key = localStorage.key(i);
+      if (key && key.startsWith(STORAGE_PREFIX)) {
+        try {
+          var stored = JSON.parse(localStorage.getItem(key));
+          if (stored && stored.handle && stored.handle.includes('.')) {
+            return stored.handle;
+          }
+        } catch (e) {
+          /* Skip invalid entries */
+        }
+      }
     }
   } catch (e) {
     console.log('Could not access localStorage:', e);
@@ -14,7 +30,7 @@ function getCurrentHandle() {
   return null;
 }
 
-function getStoredPassword(handle) {
+function getStoredCredentials(handle) {
   if (!handle) return null;
   try {
     var stored = localStorage.getItem(STORAGE_PREFIX + handle);
@@ -24,7 +40,7 @@ function getStoredPassword(handle) {
   }
 }
 
-function storePassword(handle, password) {
+function storeCredentials(handle, password) {
   if (!handle || !password) return false;
   try {
     var data = { password: password, stored: Date.now(), handle: handle };
@@ -111,8 +127,20 @@ async function getReplyRefs(parentUri, parentCid, parentRecord) {
 }
 
 var currentHandle = getCurrentHandle();
-var storedAuth = currentHandle ? getStoredPassword(currentHandle) : null;
-var hasStoredPassword = !!(storedAuth && storedAuth.password);
+var storedAuth = currentHandle ? getStoredCredentials(currentHandle) : null;
+
+function needsCredentials() {
+  /* Check what we're missing based on current state */
+  var handle = d.getElementById('bsky-handle') ? d.getElementById('bsky-handle').value.trim() : currentHandle;
+  var password = d.getElementById('app-pass') ? d.getElementById('app-pass').value.trim() : (storedAuth ? storedAuth.password : '');
+  
+  return {
+    handle: !handle || !handle.includes('.'),
+    password: !password,
+    currentHandle: handle,
+    currentPassword: password
+  };
+}
 
 /* Check if we're on a post page */
 var currentUrl = window.location.href;
@@ -122,27 +150,70 @@ var isOnPostPage = !!postInfo;
 console.log('Current URL:', currentUrl);
 console.log('Post info:', postInfo);
 console.log('Is on post page:', isOnPostPage);
+console.log('Current handle:', currentHandle);
+console.log('Needs handle:', needsHandle);
+console.log('Needs password:', needsPassword);
 
 var o=d.createElement('div');
 o.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99999;display:flex;align-items:center;justify-content:center;font-family:system-ui,-apple-system,sans-serif';
 var m=d.createElement('div');
 m.style.cssText='background:white;border-radius:12px;padding:24px;max-width:420px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,0.3)';
 
-var handleDisplay = currentHandle ? currentHandle : 'Unable to detect';
-var handleColor = currentHandle ? 'green' : 'red';
-var authStatus = hasStoredPassword ? '🔐 Password stored' : '🔑 Password needed';
+var handleDisplay = currentHandle ? currentHandle : 'Not detected';
+var handleColor = currentHandle ? 'green' : 'orange';
+var authStatus = (storedAuth && storedAuth.password) ? '🔐 Password stored' : '🔑 Password needed';
+
+var needsHandle = !currentHandle;
+var needsPassword = !(storedAuth && storedAuth.password);
+
+/* Build credential inputs */
+var credentialInputs = '';
+if (needsHandle) {
+  credentialInputs += '<div style="margin-bottom:12px"><input id="bsky-handle" type="text" placeholder="Your Bluesky handle (e.g., username.bsky.social)" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px;box-sizing:border-box" value="'+(currentHandle||'')+'"><div style="font-size:11px;color:#666;margin-top:4px">Your full Bluesky handle</div></div>';
+}
+if (needsPassword) {
+  credentialInputs += '<div style="margin-bottom:12px"><input id="app-pass" type="password" placeholder="App Password (from Settings → Privacy)" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px;box-sizing:border-box"><div style="font-size:11px;color:#666;margin-top:4px">Create at: Settings → Privacy & Security → App Passwords</div></div>';
+}
 
 /* Build action buttons based on context */
 var actionButtons = '';
 if (isOnPostPage) {
   /* On post page: show Reply and Quote buttons */
-  actionButtons = '<div style="display:flex;gap:8px"><button id="bsky-reply" style="flex:1;background:#1d9bf0;color:white;border:none;padding:12px;border-radius:6px;cursor:pointer;font-weight:500;font-size:14px"'+(currentHandle?'':'disabled')+'>Reply</button><button id="bsky-quote" style="flex:1;background:#28a745;color:white;border:none;padding:12px;border-radius:6px;cursor:pointer;font-weight:500;font-size:14px"'+(currentHandle?'':'disabled')+'>Quote</button><button id="bsky-cancel" style="background:#6c757d;color:white;border:none;padding:12px 16px;border-radius:6px;cursor:pointer;font-size:14px">Cancel</button></div>';
+  actionButtons = '<div style="display:flex;gap:8px"><button id="bsky-reply" style="flex:1;background:#1d9bf0;color:white;border:none;padding:12px;border-radius:6px;cursor:pointer;font-weight:500;font-size:14px">Reply</button><button id="bsky-quote" style="flex:1;background:#28a745;color:white;border:none;padding:12px;border-radius:6px;cursor:pointer;font-weight:500;font-size:14px">Quote</button><button id="bsky-cancel" style="background:#6c757d;color:white;border:none;padding:12px 16px;border-radius:6px;cursor:pointer;font-size:14px">Cancel</button></div>';
 } else {
   /* Not on post page: show Post button */
-  actionButtons = '<div style="display:flex;gap:8px"><button id="bsky-post" style="flex:1;background:#1d9bf0;color:white;border:none;padding:12px;border-radius:6px;cursor:pointer;font-weight:500;font-size:14px"'+(currentHandle?'':'disabled')+'>Post</button><button id="bsky-cancel" style="background:#6c757d;color:white;border:none;padding:12px 16px;border-radius:6px;cursor:pointer;font-size:14px">Cancel</button></div>';
+  actionButtons = '<div style="display:flex;gap:8px"><button id="bsky-post" style="flex:1;background:#1d9bf0;color:white;border:none;padding:12px;border-radius:6px;cursor:pointer;font-weight:500;font-size:14px">Post</button><button id="bsky-cancel" style="background:#6c757d;color:white;border:none;padding:12px 16px;border-radius:6px;cursor:pointer;font-size:14px">Cancel</button></div>';
 }
 
-m.innerHTML='<h3 style="margin:0 0 16px 0;color:#333">🦋 Post to Bluesky</h3><div style="font-size:13px;margin-bottom:12px"><span style="color:'+handleColor+'">Handle: '+handleDisplay+'</span><br><span style="color:'+(hasStoredPassword?'green':'orange')+'">'+authStatus+'</span>'+(isOnPostPage ? '<br><span style="color:blue">On post: '+postInfo.handle+'/'+postInfo.rkey+'</span>' : '')+'</div>'+(hasStoredPassword?'':'<div style="margin-bottom:12px"><input id="app-pass" type="password" placeholder="App Password (from Settings → Privacy)" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px;box-sizing:border-box"><div style="font-size:11px;color:#666;margin-top:4px">Create at: Settings → Privacy & Security → App Passwords</div></div>')+'<textarea id="bsky-txt" style="width:100%;height:90px;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px;box-sizing:border-box;margin-bottom:12px;resize:vertical" placeholder="Write with [text](url) markdown links"></textarea>'+actionButtons+'<div id="bsky-status" style="margin-top:12px;font-size:12px;color:#666;text-align:center"></div>';
+function updateButtonStates() {
+  var creds = needsCredentials();
+  var canPost = !creds.handle && !creds.password;
+  
+  var postBtn = d.getElementById('bsky-post');
+  var replyBtn = d.getElementById('bsky-reply');
+  var quoteBtn = d.getElementById('bsky-quote');
+  
+  if (postBtn) postBtn.disabled = !canPost;
+  if (replyBtn) replyBtn.disabled = !canPost;
+  if (quoteBtn) quoteBtn.disabled = !canPost;
+  
+  /* Update status */
+  if (creds.handle && creds.password) {
+    status('Enter your handle and app password to get started');
+  } else if (creds.handle) {
+    status('Enter your Bluesky handle');
+  } else if (creds.password) {
+    status('Enter your app password');
+  } else {
+    if (isOnPostPage) {
+      status('Ready to reply or quote this post');
+    } else {
+      status('Ready to create new post');
+    }
+  }
+}
+
+m.innerHTML='<h3 style="margin:0 0 16px 0;color:#333">🦋 Post to Bluesky</h3><div style="font-size:13px;margin-bottom:12px"><span style="color:'+handleColor+'">Handle: '+handleDisplay+'</span><br><span style="color:'+((storedAuth && storedAuth.password)?'green':'orange')+'">'+authStatus+'</span>'+(isOnPostPage ? '<br><span style="color:blue">On post: '+postInfo.handle+'/'+postInfo.rkey+'</span>' : '')+'</div>'+credentialInputs+'<textarea id="bsky-txt" style="width:100%;height:90px;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px;box-sizing:border-box;margin-bottom:12px;resize:vertical" placeholder="Write with [text](url) markdown links"></textarea>'+actionButtons+'<div id="bsky-status" style="margin-top:12px;font-size:12px;color:#666;text-align:center"></div>';
 
 o.appendChild(m);b.appendChild(o);
 
@@ -247,6 +318,9 @@ async function postToBluesky(handle, password, content, postType, postData) {
       throw new Error('Post failed: ' + (postError.message || postResp.status));
     }
     
+    /* Store credentials for future use */
+    storeCredentials(handle, password);
+    
     var successMsg = 'Posted successfully! 🎉';
     if (postType === 'reply') successMsg = 'Reply posted! 💬';
     else if (postType === 'quote') successMsg = 'Quote post created! 🔄';
@@ -290,70 +364,64 @@ async function preparePostData(postInfo, accessToken) {
 }
 
 function handleAction(postType) {
-  if (!currentHandle) {
-    status('Could not detect your handle. Make sure you\'re on bsky.app', true);
-    return;
-  }
-  
   var text = d.getElementById('bsky-txt').value.trim();
   if (!text) {
     status('Please enter some text', true);
     return;
   }
   
-  var password;
-  if (hasStoredPassword) {
-    password = storedAuth.password;
-  } else {
-    var appPassEl = d.getElementById('app-pass');
-    if (!appPassEl) {
-      status('App password input not found', true);
-      return;
-    }
-    password = appPassEl.value.trim();
-    if (!password) {
-      status('Please enter your app password', true);
-      return;
-    }
-    
-    if (storePassword(currentHandle, password)) {
-      console.log('Stored app password for future use');
-    }
+  var creds = needsCredentials();
+  
+  if (creds.handle) {
+    status('Please enter your Bluesky handle', true);
+    return;
+  }
+  
+  if (creds.password) {
+    status('Please enter your app password', true);
+    return;
   }
   
   var content = parseLinks(text);
-  postToBluesky(currentHandle, password, content, postType, null);
+  postToBluesky(creds.currentHandle, creds.currentPassword, content, postType, null);
 }
 
 /* Set up button click handlers based on context */
 if (isOnPostPage) {
   /* On post page: Reply and Quote buttons */
-  d.getElementById('bsky-reply').onclick = function() { handleAction('reply'); };
-  d.getElementById('bsky-quote').onclick = function() { handleAction('quote'); };
+  if (d.getElementById('bsky-reply')) {
+    d.getElementById('bsky-reply').onclick = function() { handleAction('reply'); };
+  }
+  if (d.getElementById('bsky-quote')) {
+    d.getElementById('bsky-quote').onclick = function() { handleAction('quote'); };
+  }
 } else {
   /* Not on post page: Post button */
-  d.getElementById('bsky-post').onclick = function() { handleAction('new'); };
+  if (d.getElementById('bsky-post')) {
+    d.getElementById('bsky-post').onclick = function() { handleAction('new'); };
+  }
 }
 
 d.getElementById('bsky-cancel').onclick = function() { o.remove(); };
 o.onclick = function(e) { if (e.target === o) o.remove(); };
 
-if (hasStoredPassword) {
-  d.getElementById('bsky-txt').focus();
-} else {
-  var appPassEl = d.getElementById('app-pass');
-  if (appPassEl) appPassEl.focus();
+/* Add input listeners for dynamic updates */
+if (d.getElementById('bsky-handle')) {
+  d.getElementById('bsky-handle').oninput = updateButtonStates;
+}
+if (d.getElementById('app-pass')) {
+  d.getElementById('app-pass').oninput = updateButtonStates;
 }
 
-if (!currentHandle) {
-  status('Navigate to bsky.app first, then try again', true);
-} else if (hasStoredPassword) {
-  if (isOnPostPage) {
-    status('Ready to reply or quote this post');
-  } else {
-    status('Ready to create new post');
-  }
+/* Set initial focus */
+if (needsHandle) {
+  d.getElementById('bsky-handle').focus();
+} else if (needsPassword) {
+  d.getElementById('app-pass').focus();
 } else {
-  status('Enter your app password (created in Settings)');
+  d.getElementById('bsky-txt').focus();
 }
+
+/* Set initial button states and status */
+updateButtonStates();
 })();
