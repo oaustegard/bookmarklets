@@ -29,3 +29,11 @@ This approach often fails now because `document.write()` (used to create the pop
 ## Source Code (Legacy)
 
 The original source code is available on [GitHub](https://github.com/oaustegard/bookmarklets/blob/main/copy_url.js) for historical purposes.
+
+## License
+
+MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main/LICENSE)
+
+## Author
+
+Created by [Oskar Austegard](https://austegard.com)

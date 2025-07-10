@@ -60,10 +60,22 @@ See [Bsky announcement](https://bsky.app/profile/austegard.com/post/3loqrukzbbk2
   - Language: Japanese
   - Hashtag: `technology`
 
+## Purpose
+
+This bookmarklet enhances the BlueSky social media platform by providing an intuitive graphical interface for constructing advanced search queries. It allows users to easily leverage BlueSky's powerful search operators without needing to remember the specific syntax.
+
 ## Technical Details
 
-- The bookmarklet injects a floating panel with form controls
-- Uses BlueSky's URL query parameters to construct complex searches
-- Styled to match BlueSky's dark theme
-- Fully keyboard accessible
-- Responsive and mobile-friendly
+- The bookmarklet injects a floating panel with form controls.
+- It uses BlueSky's URL query parameters to construct complex searches.
+- The panel is styled to match BlueSky's dark theme.
+- It is designed to be fully keyboard accessible.
+- The interface is responsive and mobile-friendly.
+
+## License
+
+MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main/LICENSE)
+
+## Author
+
+Created by [Oskar Austegard](https://austegard.com)

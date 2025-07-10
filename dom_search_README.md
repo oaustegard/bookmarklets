@@ -13,13 +13,23 @@
 - Protection against circular references
 - Clean path formatting for better readability
 
+## Purpose
+
+This bookmarklet is a powerful debugging tool for front-end developers. It provides an interactive interface to search through the properties of the `window` object in the current webpage's Document Object Model (DOM). Users can search for specific key names, values, or both, helping to locate and inspect dynamic data, functions, or configurations within a live web application.
+
 ## Installation
 
-1. Visit [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html)
-2. Either:
-   1. Select dom_search from the dropdown or 
-   2. Paste the bookmarklet code from https://raw.githubusercontent.com/oaustegard/bookmarklets/refs/heads/main/dom_search.js, then name the bookmarklet
-3. Drag the generated link to your bookmarks bar
+### Easy Install
+1. Visit the [DOM Search Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=dom_search.js)
+2. Drag the created bookmarklet link to your bookmarks bar.
+
+### Manual Install
+1. Go to the [source code on GitHub](https://raw.githubusercontent.com/oaustegard/bookmarklets/refs/heads/main/dom_search.js).
+2. Copy the entire JavaScript code.
+3. Visit the generic [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html).
+4. Paste the copied code into the text area.
+5. Name the bookmarklet (e.g., "DOM Search").
+6. Drag the generated link from the installer to your bookmarks bar.
 
 ## Usage
 
@@ -99,3 +109,11 @@ Compatible with modern browsers that support:
    - Implement property dependency graph
    - Add visual diff between search results
    - Show property access patterns
+
+## License
+
+MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main/LICENSE)
+
+## Author
+
+Created by [Oskar Austegard](https://austegard.com)

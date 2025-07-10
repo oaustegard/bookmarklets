@@ -185,6 +185,18 @@ Quote posts include an `embed` field with:
 - **Public posts only** - Cannot access private or deleted posts for replies/quotes
 - **Browser storage dependent** - Clearing browser data removes stored passwords
 
+## Purpose
+
+This bookmarklet enhances the user experience on the BlueSky social platform by enabling the use of Markdown link syntax (`[text](url)`) for creating posts, replies, and quote posts. It intelligently adapts its functionality based on whether the user is viewing a specific post or browsing other parts of the site.
+
 ## Source Code
 
 The full source code is available on [GitHub](https://github.com/oaustegard/bookmarklets/blob/main/bsky_markdown_link_post.js)
+
+## License
+
+MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main/LICENSE)
+
+## Author
+
+Created by [Oskar Austegard](https://austegard.com)

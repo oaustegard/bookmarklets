@@ -1,5 +1,12 @@
 # Overcoming Content Security Policy Challenges in Bookmarklet Development
 
+**Note:** This document is an article discussing the development process and challenges encountered while creating CSP-compliant bookmarklets for copying URLs as formatted links. For the specific READMEs for these bookmarklets, please see:
+- [`copy_url_as_link_light_README.md`](copy_url_as_link_light_README.md)
+- [`copy_url_as_link_dark_README.md`](copy_url_as_link_dark_README.md)
+- The deprecated older version: [`copy_url_README.md`](copy_url_README.md)
+
+---
+
 Bookmarklets provide a powerful way to extend browser functionality with just a snippet of JavaScript. However, modern web security measures, particularly Content Security Policy (CSP), can throw a wrench in the works. In this post, we'll explore a recent bookmarklet refactoring journey, from an old bookmarklet's initial failures to successful implementation of an updated approach, and share some lessons learned along the way.
 
 ## Our old URL Link bookmarklet hits a CSP Roadblock
@@ -231,3 +238,11 @@ javascript:(function() {
 7. Edit url or link text as desired
 8. Copy and Close
 9. Paste either as rich text or markdown, depending on the destination's capabilities
+
+## License
+
+MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main/LICENSE)
+
+## Author
+
+Article by [Oskar Austegard](https://austegard.com)
