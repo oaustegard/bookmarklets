@@ -375,6 +375,13 @@ Below is a list of available bookmarklets, their purpose, and links to their res
 
 ---
 
+### Jira Project Notifications & Recipients
+- **Purpose**: A comprehensive bookmarklet for Jira Datacenter administrators that provides a detailed view of notification events and their recipients, with intelligent role resolution that expands role-based recipients to show actual users and groups while clearly identifying dynamic notification targets.
+- **Source**: [`jira_project_role_notifications_and_users.js`](https://github.com/oaustegard/bookmarklets/blob/main/jira_project_role_notifications_and_users.js)
+- **Details**: [`jira_project_role_notifications_and_users_README.md`](https://github.com/oaustegard/bookmarklets/blob/main/jira_project_role_notifications_and_users_README.md)
+
+---
+
 ### Main Content to Claude
 - **Purpose**: Extracts the main content of a webpage (using a series of heuristics like `<main>`, `<article>`, etc.), cleans it, and sends it to Claude.ai.
 - **Source**: [`main_content_to_claude.js`](https://github.com/oaustegard/bookmarklets/blob/main/main_content_to_claude.js)
