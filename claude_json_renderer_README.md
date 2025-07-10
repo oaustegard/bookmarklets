@@ -65,3 +65,11 @@ This bookmarklet is designed to be used on a page displaying the raw JSON output
 ## Source Code
 
 The full source code is available on [GitHub](https://github.com/oaustegard/bookmarklets/blob/main/claude_json_renderer.js).
+
+## License
+
+MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main/LICENSE)
+
+## Author
+
+Created by [Oskar Austegard](https://austegard.com)

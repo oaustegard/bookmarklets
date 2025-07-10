@@ -1,72 +1,69 @@
-### Expand Elements to Prevent Horizontal Scroll with a One-Click Bookmarklet: emwiden
+# Emwiden - Expand Elements to Prevent Horizontal Scroll
 
-### Introduction
+A bookmarklet that allows users to select an element on a webpage, identify its nearest ancestor causing horizontal overflow, and expand that ancestor to fit its content, thereby eliminating unwanted horizontal scrollbars.
 
-In web development and browsing, encountering horizontal scrollbars can disrupt the user experience and indicate layout issues. Whether you're a developer debugging a webpage or a user navigating a site with design flaws, addressing horizontal overflow is essential. Manually inspecting and adjusting elements can be time-consuming and inefficient. This is where our **emwiden Bookmarklet** becomes useful.
+## Purpose
 
-### The Ask
+Horizontal scrollbars on webpages can disrupt user experience and indicate layout issues. The "Emwiden" bookmarklet provides a quick way to address this by allowing users to click on an element within an overflowing area. The script then attempts to find the parent element responsible for the horizontal scroll and widens it to accommodate its content. This is useful for developers debugging layouts, or for users who want to improve readability on pages with poorly constrained content (e.g., wide tables or code blocks).
 
-The objective was to create a bookmarklet that allows users to **expand any element or its parent elements** on a webpage to ensure that the content fits within the viewport, thereby eliminating unwanted horizontal scrollbars. This tool is particularly useful for developers, designers, and power users who need a quick and efficient way to manage and rectify layout issues without diving deep into the browser's developer tools.
+## Features
 
-### The Solution
+-   **Element Highlighting**: Highlights elements on hover with a semi-transparent overlay for easy identification.
+-   **Overflow Detection**: When an element is clicked, traverses up the DOM tree to find the nearest ancestor where `scrollWidth` is greater than `clientWidth`.
+-   **Automatic Expansion**: Sets the `width` and `minWidth` of the identified overflowing ancestor to its `scrollWidth`, effectively making it wide enough for its content.
+-   **Console Feedback**: Logs actions and status to the browser's developer console instead of using disruptive alerts.
+-   **Deactivation**: Pressing the `Escape` key deactivates the bookmarklet mode, removing overlays and event listeners.
 
-[emwiden.js](emwiden.js) is a JavaScript bookmarklet that:
+## Installation
 
-1. **Highlights Elements on Hover:** Provides visual feedback by overlaying a semi-transparent highlight on elements as you hover over them.
-2. **Selects and Expands Elements:** Allows users to click on an element, automatically identifying the nearest ancestor causing horizontal overflow and expanding it to fit its content.
-3. **Non-Intrusive Notifications:** Utilizes console logs for feedback instead of intrusive alerts.
-4. **Graceful Exit:** Enables users to deactivate the bookmarklet mode by pressing the `Esc` key, removing all overlays and event listeners.
+### Easy Install
+1.  Navigate to the [Bookmarklet Installer for emwiden.js](https://austegard.com/bookmarklet-installer.html?bookmarklet=emwiden.js).
+2.  Drag the "Emwiden" link to your bookmarks bar.
 
-### How to Install the Bookmarklet
+### Manual Install
+1.  Create a new bookmark in your browser.
+2.  Set the name to "Emwiden" or "Expand Overflowing Element".
+3.  Set the URL to the JavaScript code found in [`emwiden.js`](https://github.com/oaustegard/bookmarklets/blob/main/emwiden.js).
+4.  Save the bookmark.
 
-1. **Use my Bookmarklet Installer**
-   - Navigate to the [Bookmarklet Installer for emwiden.js](https://austegard.com/bookmarklet-installer.html?bookmarklet=emwiden.js)
-   - Drag the Emwiden link to your bookmarks
-2. Or copy the JavaScript into a bookmark, [the traditional way](https://en.wikipedia.org/wiki/Bookmarklet#Method_1:_Creating_a_New_Bookmark)
-   
-### Using the Bookmarklet
+## Usage
 
-1. **Navigate to a Web Page:**
-   - Open any webpage where you experience horizontal scrolling or suspect layout issues.
-   - Drag the Emwiden link to your bookmarks
-2. **Activate the Bookmarklet:**
-   - Click on the `Expand Element to Prevent Scroll` bookmarklet in your bookmarks bar.
-   - **Console Notification:** Open the browser's developer console (`F12` or `Ctrl+Shift+I`) to see the activation message:
-     ```
-     Bookmarklet activated. Hover to highlight elements and click to expand. Press Esc to deactivate.
-     ```
+1.  **Activate**: Navigate to a webpage with horizontal scrolling issues and click the "Emwiden" bookmarklet.
+    *   A message "Bookmarklet activated..." will appear in the browser's developer console.
+2.  **Interact**:
+    *   Hover over elements on the page; they will be highlighted with a blue overlay.
+    *   Click on an element that is part of, or contained within, an area causing horizontal scroll.
+3.  **Result**:
+    *   The script will attempt to find the overflowing parent and expand it. A message like "Expanded element: <div id="example">...</div>" will be logged to the console.
+    *   If no overflowing ancestor is found for the clicked element, it logs "No overflowing element found...".
+4.  **Deactivate**: Press the `Escape` key to exit the bookmarklet mode. A "Bookmarklet mode deactivated." message will appear in the console.
 
-3. **Select and Expand Elements:**
-   - **Visual Guidance:** As you move your mouse over elements, a semi-transparent blue overlay highlights them.
-   - **Click to Expand:** Click on the element you suspect is causing horizontal overflow. The script will:
-     - Traverse up the DOM tree to find the nearest ancestor with `scrollWidth > clientWidth`.
-     - Expand the identified element by setting its `width` and `minWidth` to its `scrollWidth`, ensuring content fits without causing horizontal scroll.
-     - Log the action in the console:
-       ```
-       Expanded element: <div id="example">...</div>
-       ```
-     - If no overflowing element is found, it logs:
-       ```
-       No overflowing element found for the selected element.
-       ```
+### Example Use Cases
+-   **Wide Code Blocks**: On sites like ChatGPT, code blocks can sometimes cause horizontal scrolling. Use Emwiden to expand the code block container.
+-   **Data Tables**: For wide tables that are constrained by a narrower parent container, clicking within the table can expand the container to show the full table width (e.g., historical crime tables from the FBI like [Table 4](https://ucr.fbi.gov/crime-in-the-u.s/2019/crime-in-the-u.s.-2019/topic-pages/tables/table-4)).
 
-4. **Deactivate the Bookmarklet:**
-   - **Press `Esc`:** To exit the bookmarklet mode and remove all overlays and event listeners, simply press the `Esc` key.
-   - **Console Notification:** Upon pressing `Esc`, you'll see:
-     ```
-     Bookmarklet mode deactivated.
-     ```
+## How It Works
 
-### Real-World Use Case
+1.  **Activation**:
+    *   Creates a hover overlay `div` and appends it to the body.
+    *   Sets up event listeners for `mouseover` (to position the overlay), `mouseout` (to hide the overlay), `click` (to select an element), and `keydown` (for Escape key).
+2.  **Hovering (`mouseover`, `mouseout`)**:
+    *   When hovering over an element, the overlay `div` is positioned and sized to match the hovered element, providing a visual highlight.
+3.  **Clicking an Element**:
+    *   When an element is clicked:
+        *   It starts with the clicked element and traverses up its parent chain (`element.parentElement`).
+        *   For each ancestor, it checks if `element.scrollWidth > element.clientWidth`.
+        *   If such an ancestor is found, its `width` and `minWidth` styles are set to `element.scrollWidth + 'px'`. The process stops, and the element is logged.
+        *   If the loop completes without finding an overflowing ancestor, a "No overflowing element found" message is logged.
+4.  **Deactivation (`keydown` for `Escape` key)**:
+    *   Removes all event listeners.
+    *   Removes the hover overlay `div` from the DOM.
+    *   Logs "Bookmarklet mode deactivated."
 
-An excellent example of where this bookmarklet proves beneficial is ChatGPT code blocks, see e.g. [the chat used to create this bookmarklet (and the draft of this README)](https://chatgpt.com/share/67588a62-1730-8004-afd2-30a97f6f461c). These code blocks frequently scroll horizontally, making the code harder to read than ideal. Using [emwiden.js](emwiden.js) on these code blocks widens them to fit the code content.
-Another example -- and the impetus for creating the bookmarklet -- are the historical crime tables from the FBI, e.g. [Table 4](https://ucr.fbi.gov/crime-in-the-u.s/2019/crime-in-the-u.s.-2019/topic-pages/tables/table-4) a tall and too-wide-for-its-container table that requires scrolling way down to then scroll side to side. 
+## License
 
-### Conclusion
+MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main/LICENSE)
 
-The **Expand Elements to Prevent Horizontal Scroll Bookmarklet** offers a streamlined solution to manage and rectify horizontal overflow issues on any webpage. By leveraging the power of JavaScript and modern browser APIs, this bookmarklet provides:
+## Author
 
-- **Efficiency:** Quickly identify and adjust elements causing layout issues without delving into developer tools.
-- **User-Friendly Interaction:** Visual overlays guide users in selecting the right elements, enhancing usability.
-- **Non-Intrusive Experience:** Reliance on console logs ensures a smooth browsing experience without disruptive alerts.
-- **Control and Flexibility:** The ability to deactivate the bookmarklet gracefully ensures that users retain full control over their browsing environment.
+Created by [Oskar Austegard](https://austegard.com)

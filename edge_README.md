@@ -56,3 +56,11 @@ The full source code is available on [GitHub](https://github.com/oaustegard/book
 ```javascript
 javascript:(function() { window.location.href = "microsoft-edge:" + window.location.href; })();
 ```
+
+## License
+
+MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main/LICENSE)
+
+## Author
+
+Created by [Oskar Austegard](https://austegard.com)

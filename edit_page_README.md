@@ -63,3 +63,11 @@ javascript:(function() {
     document.designMode = toggle === 'true' ? 'on' : 'off';
   })();
 ```
+
+## License
+
+MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main/LICENSE)
+
+## Author
+
+Created by [Oskar Austegard](https://austegard.com)

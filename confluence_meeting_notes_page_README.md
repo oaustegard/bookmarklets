@@ -63,3 +63,11 @@ This bookmarklet streamlines the process of starting meeting notes in Confluence
 ## Source Code
 
 The full source code is available on [GitHub](https://github.com/oaustegard/bookmarklets/blob/main/confluence_meeting_notes_page.js).
+
+## License
+
+MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main/LICENSE)
+
+## Author
+
+Created by [Oskar Austegard](https://austegard.com)

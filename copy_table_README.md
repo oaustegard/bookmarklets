@@ -12,11 +12,25 @@ This bookmarklet solves the common challenge of extracting data from HTML tables
 - Automatically copies the JSON data to your clipboard
 - Uses table headers (or first row) as property names for the resulting objects
 
+## Features
+
+- **Table Detection**: Automatically finds all `<table>` elements on the current page.
+- **Visual Table Selection**: If multiple tables are present, it highlights tables on hover and allows the user to click to select the desired one. A "Cancel" button is provided to exit selection mode.
+- **JSON Conversion**: Converts the rows and cells of the selected HTML table into a JSON array of objects.
+- **Header Detection**: Uses `<th>` elements in the `<thead>` as keys for the JSON objects. If no `<thead>` or `<th>` are found, it defaults to using the content of the first `<tr>` as keys.
+- **Clipboard Integration**: Copies the generated JSON string to the clipboard.
+- **User Feedback**: Provides alerts for success or if no tables are found.
+
 ## Installation
 
-1. Visit the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=copy_table.js)
-2. Drag the bookmarklet to your bookmarks bar
-3. Alternatively, create a new bookmark and paste the code manually
+### Easy Install
+1. Visit the [Table to JSON Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=copy_table.js)
+2. Drag the created bookmarklet link to your bookmarks bar.
+
+### Manual Install
+1. Create a new bookmark in your browser.
+2. Set the name to "Table to JSON" or similar.
+3. Set the URL to the JavaScript code found in [`copy_table.js`](https://github.com/oaustegard/bookmarklets/blob/main/copy_table.js).
 
 ## Usage
 
@@ -41,3 +55,11 @@ The bookmarklet:
 ## Source Code
 
 The full source code is available on [GitHub](https://github.com/oaustegard/bookmarklets/blob/main/copy_table.js)
+
+## License
+
+MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main/LICENSE)
+
+## Author
+
+Created by [Oskar Austegard](https://austegard.com) with Claude 3.7 Sonnet, inspired by Simon Willison.

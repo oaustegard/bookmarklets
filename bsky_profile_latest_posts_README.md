@@ -59,3 +59,15 @@ Works great on:
 - Uses MutationObserver to detect dynamically loaded content
 - Includes robust error handling and loading states
 - Console logging for debugging and status updates
+
+## Purpose
+
+This bookmarklet enhances the BlueSky browsing experience by allowing users to quickly preview a user's latest original posts without navigating to their profile. By simply hovering over a profile link, a pop-up dialog displays their most recent content, making it easier to decide whether to follow someone or engage with their posts.
+
+## License
+
+MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main/LICENSE)
+
+## Author
+
+Created by [Oskar Austegard](https://austegard.com)

@@ -81,3 +81,11 @@ This is useful for curating parts of a conversation for context, summarization, 
 ## Source Code
 
 The full source code is available on [GitHub](https://github.com/oaustegard/bookmarklets/blob/main/claude_prune_json.js).
+
+## License
+
+MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main/LICENSE)
+
+## Author
+
+Created by [Oskar Austegard](https://austegard.com)

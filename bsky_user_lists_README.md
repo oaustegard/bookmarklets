@@ -71,3 +71,17 @@ The bookmarklet handles various scenarios gracefully:
 - All API calls go directly to BlueSky's official endpoints
 - Runs entirely in your browser with no external dependencies
 - No tracking or analytics included
+
+## Purpose
+
+This bookmarklet provides a modal overlay to display all public lists created by a BlueSky user when viewing their profile page. While BlueSky profiles do show user lists, this bookmarklet was created to offer an alternative or more direct way to view them, especially if the native display is not prominent or if a user wishes to quickly see lists without scrolling through a profile.
+
+**Note:** BlueSky profile pages inherently display user-created lists. This bookmarklet was developed before this feature was widely noticed or perhaps as an alternative view, but much of its core functionality is now available natively on user profiles.
+
+## License
+
+MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main/LICENSE)
+
+## Author
+
+Created by [Oskar Austegard](https://austegard.com)

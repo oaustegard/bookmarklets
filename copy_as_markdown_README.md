@@ -61,3 +61,11 @@ This bookmarklet allows users to quickly grab a portion of a webpage and get its
 ## Source Code
 
 The full source code is available on [GitHub](https://github.com/oaustegard/bookmarklets/blob/main/copy_as_markdown.js).
+
+## License
+
+MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main/LICENSE)
+
+## Author
+
+Created by [Oskar Austegard](https://austegard.com)

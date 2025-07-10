@@ -9,14 +9,18 @@ A bookmarklet that instantly creates a new Excalidraw collaboration room with ti
 - Compatible with all major browsers
 - Works with bookmark management tools that don't differentiate based on URL fragments
 
+## Purpose
+
+This bookmarklet provides a quick and secure way to start a new collaborative drawing session on Excalidraw.com. It generates a unique room ID and a secret key, then opens Excalidraw in a new tab with these parameters, ready for collaboration. The inclusion of a timestamp helps ensure that a fresh version of the Excalidraw application is loaded.
+
 ## Installation
 
-### Preferred Method
-Use the Bookmarklet Installer by simply navigating to:
+### Easy Install
+Use the Bookmarklet Installer by navigating to:
+[Excalidraw New Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=excalidraw_new.js)
+Then drag the generated link to your bookmarks bar.
 
-https://austegard.com/bookmarklet-installer.html?bookmark=excalidraw_new.js
-
-### Manual Installation
+### Manual Install
 1. Create a new bookmark in your browser
 2. Name it "excalidraw_new"
 3. Copy the following code into the URL/location field:
@@ -47,3 +51,11 @@ The bookmarklet:
 - Room IDs and secrets are generated using the secure `crypto.getRandomValues()` API
 - The collaboration room is only accessible to those with the exact URL
 - No data is stored or transmitted except through the Excalidraw URL
+
+## License
+
+MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main/LICENSE)
+
+## Author
+
+Created by [Oskar Austegard](https://austegard.com)

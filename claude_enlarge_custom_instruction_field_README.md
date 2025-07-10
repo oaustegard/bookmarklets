@@ -14,9 +14,14 @@ When activated, this bookmarklet:
 
 ## Installation
 
-1. Visit the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=claude_enlarge_custom_instruction_field.js)
-2. Drag the bookmarklet to your bookmarks bar
-3. Alternatively, create a new bookmark and paste the code manually
+### Easy Install
+1. Visit the [Claude Custom Instructions Enlarger Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=claude_enlarge_custom_instruction_field.js)
+2. Drag the created bookmarklet link to your bookmarks bar.
+
+### Manual Install
+1. Create a new bookmark in your browser.
+2. Set the name to "Claude Enlarge CI" or similar.
+3. Set the URL to the JavaScript code found in [`claude_enlarge_custom_instruction_field.js`](https://github.com/oaustegard/bookmarklets/blob/main/claude_enlarge_custom_instruction_field.js).
 
 ## Usage
 
@@ -36,3 +41,11 @@ The bookmarklet:
 ## Source Code
 
 The full source code is available on [GitHub](https://github.com/oaustegard/bookmarklets/blob/main/claude_enlarge_custom_instruction_field.js)
+
+## License
+
+MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main/LICENSE)
+
+## Author
+
+Created by [Oskar Austegard](https://austegard.com)

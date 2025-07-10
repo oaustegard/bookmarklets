@@ -1,94 +1,111 @@
-### Streamlining SVG Downloads with a One-Click Bookmarklet
+# Download SVG Bookmarklet
 
-### Introduction
+This bookmarklet allows users to easily download SVG (Scalable Vector Graphics) elements from a webpage by selecting part of the SVG and clicking the bookmarklet.
 
-SVG (Scalable Vector Graphics) has become increasingly popular due to its scalability and small file size. Unlike raster image formats used in `<img>` tags, SVGs are vector-based and can be manipulated with CSS and JavaScript. However, downloading SVGs from web pages isn't always straightforward. This is where the SVG Download Bookmarklet comes in handy.
+## Purpose
 
-### The Ask
+SVG is a popular vector image format used on the web. However, downloading SVGs embedded in web pages isn't always straightforward. This bookmarklet aims to simplify this process, providing a one-click solution to find the nearest SVG element to the user's selection, convert it to a downloadable format, and trigger the download. It's particularly useful for developers and designers who frequently need to extract SVGs for documentation, presentations, or design work.
 
-The goal was to create a bookmarklet that allows users to download any SVG element from a web page with minimal effort. This is particularly useful for developers and designers who frequently need to extract SVGs from web resources.
+## Features
 
-### The Solution
+-   **Selection-Based**: Identifies the SVG to download based on the user's current text/element selection on the page.
+-   **Nearest SVG Detection**: Traverses up the DOM tree from the selected element to find the closest parent SVG element.
+-   **SVG Serialization**: Converts the live SVG DOM element into an XML string.
+-   **File Download**: Creates a Blob from the SVG content and initiates a download with the filename `downloaded_svg.svg`.
+-   **User Feedback**: Alerts the user if no SVG is found near the selection or if no selection is made.
 
-Below is a JavaScript bookmarklet that:
+## Installation
 
-1. Finds the nearest SVG element from the user's selection.
-2. Converts the SVG to a downloadable format.
-3. Triggers the download of the SVG file.
+### Easy Install
+1. Visit the [SVG Download Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=download_svg.js)
+2. Drag the created bookmarklet link to your bookmarks bar.
 
-Here's the JavaScript code for the bookmarklet:
-
-```javascript
-javascript:(function() {
-    /* Function to find the nearest SVG element */
-    function findNearestSVG(element) {
-        while (element && element.tagName.toLowerCase() !== 'svg') {
-            element = element.parentElement;
+### Manual Install
+1.  Create a new bookmark in your browser.
+2.  Set the name to "Download SVG" or similar.
+3.  In the URL/Location field, paste the following JavaScript code:
+    ```javascript
+    javascript:(function() {
+        /* Function to find the nearest SVG element */
+        function findNearestSVG(element) {
+            while (element && element.tagName.toLowerCase() !== 'svg') {
+                element = element.parentElement;
+            }
+            return element;
         }
-        return element;
-    }
 
-    /* Function to download the SVG */
-    function downloadSVG(svgElement) {
-        /* Get the SVG content */
-        var svgContent = new XMLSerializer().serializeToString(svgElement);
-        
-        /* Create a Blob with the SVG content */
-        var blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
-        
-        /* Create a download link */
-        var link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'downloaded_svg.svg';
-        
-        /* Append the link to the body, click it, and remove it */
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
+        /* Function to download the SVG */
+        function downloadSVG(svgElement) {
+            /* Get the SVG content */
+            var svgContent = new XMLSerializer().serializeToString(svgElement);
 
-    /* Main execution */
-    var selection = window.getSelection();
-    if (selection.rangeCount > 0) {
-        var selectedElement = selection.getRangeAt(0).commonAncestorContainer;
-        if (selectedElement.nodeType === Node.TEXT_NODE) {
-            selectedElement = selectedElement.parentElement;
+            /* Create a Blob with the SVG content */
+            var blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-f8' });
+
+            /* Create a download link */
+            var link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'downloaded_svg.svg';
+
+            /* Append the link to the body, click it, and remove it */
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
-        
-        var svgElement = findNearestSVG(selectedElement);
-        
-        if (svgElement) {
-            downloadSVG(svgElement);
+
+        /* Main execution */
+        var selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            var selectedElement = selection.getRangeAt(0).commonAncestorContainer;
+            if (selectedElement.nodeType === Node.TEXT_NODE) {
+                selectedElement = selectedElement.parentElement;
+            }
+
+            var svgElement = findNearestSVG(selectedElement);
+
+            if (svgElement) {
+                downloadSVG(svgElement);
+            } else {
+                alert('No SVG found in or around the selected element.');
+            }
         } else {
-            alert('No SVG found in or around the selected element.');
+            alert('Please select part of an SVG before using this bookmarklet.');
         }
-    } else {
-        alert('Please select part of an SVG before using this bookmarklet.');
-    }
-})();
-```
+    })();
+    ```
+4.  Save the bookmark.
 
-### How to Install the Bookmarklet
+Alternatively, the raw code can be found in [`download_svg.js`](https://github.com/oaustegard/bookmarklets/blob/main/download_svg.js).
 
-1. **Copy the JavaScript Code**: Select and copy the entire JavaScript code provided above.
-2. **Create a New Bookmark**: Open your browser's bookmark manager and create a new bookmark.
-3. **Paste the Code into the URL Field**: In the URL or Location field, paste the copied JavaScript code.
-4. **Name the Bookmark**: Give it a name like "Download SVG".
-5. **Save the Bookmark**: Click save or OK to create the bookmarklet.
+## Usage
 
-### Using the Bookmarklet
+1.  Navigate to a webpage containing an SVG element you wish to download.
+2.  Select any part of the SVG element on the page (e.g., click and drag over a piece of the graphic).
+3.  Click the "Download SVG" bookmarklet from your bookmarks bar.
+4.  The browser will initiate a download for a file named `downloaded_svg.svg`.
 
-1. **Navigate to a Web Page**: Open any web page containing SVG elements.
-2. **Select Part of an SVG**: Click and drag to select any part of an SVG on the page.
-3. **Click the Bookmarklet**: Click the "Download SVG" bookmarklet in your bookmarks bar.
-4. **Save the File**: The SVG will be downloaded automatically.
+### Example Use Case
+This bookmarklet is useful on documentation sites like the [Microsoft GraphRAG Documentation](https://microsoft.github.io/graphrag/posts/index/1-default_dataflow/), which uses SVG diagrams. Developers can use this tool to download these diagrams for their own documentation or presentations.
 
-### Real-World Use Case
+## How It Works
 
-An excellent example of where this bookmarklet could be useful is in documentation sites like the [Microsoft GraphRAG Documentation](https://microsoft.github.io/graphrag/posts/index/1-default_dataflow/). This site uses SVG diagrams to illustrate complex data flows and architectural concepts. With our bookmarklet, developers and architects can easily download SVGs like these for use in their own documentation or presentations, saving time and ensuring accuracy in their materials.
+1.  **Get Selection**: The bookmarklet first gets the current user selection (`window.getSelection()`).
+2.  **Find Starting Element**: It determines the common ancestor container of the selection. If it's a text node, it uses its parent element.
+3.  **Locate SVG (`findNearestSVG` function)**: Starting from the selected element, it traverses up the DOM tree (`element.parentElement`) until an element with the tag name `svg` is found.
+4.  **Serialize SVG (`downloadSVG` function)**:
+    *   If an SVG element is found, its content is serialized into an XML string using `new XMLSerializer().serializeToString(svgElement)`.
+    *   A `Blob` is created from this string with the MIME type `image/svg+xml;charset=utf-8`.
+5.  **Trigger Download**:
+    *   A temporary `<a>` (anchor) element is created.
+    *   Its `href` is set to an object URL created from the Blob (`URL.createObjectURL(blob)`).
+    *   Its `download` attribute is set to "downloaded_svg.svg".
+    *   The anchor is appended to the document body, programmatically clicked (`link.click()`), and then removed.
+6.  **Error Handling**: If no selection is made, or if no SVG element is found in the ancestry of the selected element, an alert message is displayed.
 
-### Conclusion
+## License
 
-This SVG Download Bookmarklet simplifies the process of extracting SVG graphics from web pages, making it an invaluable tool for developers, designers, and content creators. By leveraging the power of JavaScript and modern browser APIs, we've created a simple yet effective solution to a common problem.
+MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main/LICENSE)
 
-Whether you're working on documentation, creating presentations, or just collecting design inspiration, this bookmarklet can significantly streamline your workflow. Give it a try and see how it can enhance your productivity!
+## Author
+
+Created by [Oskar Austegard](https://austegard.com)
