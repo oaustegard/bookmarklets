@@ -9,7 +9,7 @@ Below is a list of available bookmarklets, their purpose, and links to their res
 ---
 
 ### _c - Console Alias
-- **Purpose**: Utility bookmarklet that aliases the `console` object to `_c` for more concise logging in other bookmarklets.
+- **Purpose**: Utility code that aliases the `console` object to `_c` for more concise logging in other bookmarklets.
 - **Source**: [`_c.js`](https://github.com/oaustegard/bookmarklets/blob/main/_c.js)
 - **Details**: [`_c_README.md`](https://github.com/oaustegard/bookmarklets/blob/main/_c_README.md)
 
