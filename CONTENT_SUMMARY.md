@@ -50,6 +50,13 @@ Below is a list of available bookmarklets, their purpose, and links to their res
 
 ---
 
+### Bicycle Rolling Resistance Table Sorter
+- **Purpose**: Enhances the data tables on `bicyclerollingresistance.com` by making them interactive and sortable.
+- **Source**: [`bicyclerollingresistance_table_sorter.js`](https://github.com/oaustegard/bookmarklets/blob/main/bicyclerollingresistance_table_sorter.js)
+- **Details**: [`bicyclerollingresistance_table_sorter_README.md`](https://github.com/oaustegard/bookmarklets/blob/main/bicyclerollingresistance_table_sorter_README.md)
+
+---
+
 ### BlueSky Advanced Search
 - **Purpose**: Enhances BlueSky by providing an intuitive graphical interface for constructing advanced search queries using BlueSky's search operators.
 - **Source**: [`bsky_advanced_search.js`](https://github.com/oaustegard/bookmarklets/blob/main/bsky_advanced_search.js)
