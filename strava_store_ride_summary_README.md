@@ -31,19 +31,19 @@ The tools work directly in your browser and store data locally, with no external
 
 Extracts the key data from a Strava ride and appends it to localStorage for subsequent display.
 
-[Code](https://github.com/oaustegard/bookmarklets/blob/main/strava_store_ride_summary.js) | [Install Bookmarklet](https://austegard.com/bookmarklet-installer.html?bookmarklet=strava_store_ride_summary.js)
+[Code](https://github.com/oaustegard/bookmarklets/blob/main/strava_store_ride_summary.js) | [Install Bookmarklet](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=strava_store_ride_summary.js)
 
 ### 2. Display Ride Summaries
 
 Retrieves all stored ride summaries and displays them in a formatted window with options to print or copy.
 
-[Code](https://github.com/oaustegard/bookmarklets/blob/main/strava_display_ride_summaries.js) | [Install Bookmarklet](https://austegard.com/bookmarklet-installer.html?bookmarklet=strava_display_ride_summaries.js)
+[Code](https://github.com/oaustegard/bookmarklets/blob/main/strava_display_ride_summaries.js) | [Install Bookmarklet](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=strava_display_ride_summaries.js)
 
 ### 3. Clear Stored Rides
 
 Removes all stored ride summaries from localStorage.
 
-[Code](https://github.com/oaustegard/bookmarklets/blob/main/strava_clear_stored_rides.js) | [Install Bookmarklet](https://austegard.com/bookmarklet-installer.html?bookmarklet=strava_clear_stored_rides.js)
+[Code](https://github.com/oaustegard/bookmarklets/blob/main/strava_clear_stored_rides.js) | [Install Bookmarklet](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=strava_clear_stored_rides.js)
 
 ## Installation
 

@@ -9,7 +9,7 @@ The `_lg` bookmarklet ensures a consistent way to log messages from other bookma
 ## Installation
 
 ### Easy Install
-1. Visit [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=_lg.js)
+1. Visit [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=_lg.js)
 2. Drag the created bookmarklet to your bookmarks bar.
 
 ### Manual Install

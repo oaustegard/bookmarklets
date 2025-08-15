@@ -9,7 +9,7 @@ Each file a different purpose.
 * [Index of bookmarklets with brief descriptions](CONTENT_SUMMARY.md)
 * [License](LICENSE)
 
-Use my handy [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html) to "install" each bookmarklet or to simply peruse the code of each (and for some, the READMEs).
+Use my handy [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html) to "install" each bookmarklet or to simply peruse the code of each (and for some, the READMEs).
 
 See the [Deep Wiki](https://deepwiki.com/oaustegard/bookmarklets/) for interactive documentation. 
 

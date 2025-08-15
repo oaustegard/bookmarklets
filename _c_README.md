@@ -9,7 +9,7 @@ This bookmarklet is a developer utility designed to shorten calls to the `consol
 ## Installation
 
 ### Easy Install
-1. Visit [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=_c.js)
+1. Visit [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=_c.js)
 2. Drag the created bookmarklet to your bookmarks bar.
 
 ### Manual Install

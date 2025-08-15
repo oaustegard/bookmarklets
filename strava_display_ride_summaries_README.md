@@ -17,11 +17,11 @@ This bookmarklet is a companion to others that might store Strava ride summaries
 ## Installation
 
 1.  **Easy Mode**:
-    *   Go to the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=strava_display_ride_summaries.js)
+    *   Go to the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=strava_display_ride_summaries.js)
     *   Drag the generated link to your bookmarks bar.
 2.  **Hard Mode**:
     *   Copy the entire JavaScript code from the [strava_display_ride_summaries.js file](https://github.com/oaustegard/bookmarklets/blob/main/strava_display_ride_summaries.js).
-    *   Go to the generic [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html).
+    *   Go to the generic [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html).
     *   Paste the code into the installer.
     *   Name the bookmarklet (e.g., "Show Stored Strava Rides").
     *   Drag the generated link to your bookmarks bar.

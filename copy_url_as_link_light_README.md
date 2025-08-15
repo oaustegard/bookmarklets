@@ -17,7 +17,7 @@ The primary purpose of this bookmarklet is to provide a quick and convenient way
 ## Installation
 
 ### Easy Install
-1. Visit the [Bookmarklet Installer for Light Theme](https://austegard.com/bookmarklet-installer.html?bookmarklet=copy_url_as_link_light.js)
+1. Visit the [Bookmarklet Installer for Light Theme](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=copy_url_as_link_light.js)
 2. Drag the created bookmarklet link to your bookmarks bar.
 
 ### Manual Install

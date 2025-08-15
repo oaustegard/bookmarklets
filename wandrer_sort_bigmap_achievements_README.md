@@ -14,7 +14,7 @@ This bookmarklet, https://github.com/oaustegard/bookmarklets/blob/main/wandrer_s
 
 To install the bookmarklet:
 
-1. Visit the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html)
+1. Visit the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html)
 2. Copy the code: (note there is currently a bug that if you clear the field it prepends a hello world alert -- delete that before continuing)
   a. From the dropdown list select wandrer_sort_bigmap_achievements.js:
   b. Alternatively copy the below into the text area, replacing the hello world code 

@@ -21,11 +21,11 @@ When browsing files in a GitHub repository, the default sort order is usually al
 ## Installation
 
 1.  **Easy Mode**:
-    *   Go to the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=github_sort_code_by_update.js)
+    *   Go to the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=github_sort_code_by_update.js)
     *   Drag the generated link to your bookmarks bar.
 2.  **Hard Mode**:
     *   Copy the entire JavaScript code from the [github_sort_code_by_update.js file](https://github.com/oaustegard/bookmarklets/blob/main/github_sort_code_by_update.js).
-    *   Go to the generic [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html).
+    *   Go to the generic [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html).
     *   Paste the code into the installer.
     *   Name the bookmarklet (e.g., "GitHub Sort by Update").
     *   Drag the generated link to your bookmarks bar.

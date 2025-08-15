@@ -16,7 +16,7 @@ A bookmarklet that adds markdown link support to Bluesky with smart context awar
 ## Installation
 
 ### Easy Mode
-1. Go to the [Bluesky Markdown Link Post Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=bsky_markdown_link_post.js)
+1. Go to the [Bluesky Markdown Link Post Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=bsky_markdown_link_post.js)
 2. Optionally rename the bookmarklet (click the name field)
 3. Drag the "**Bsky markdown link post**" link to your bookmarks bar
 

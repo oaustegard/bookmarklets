@@ -15,11 +15,11 @@ If you're browsing a user's profile on a smaller or different Mastodon/Fediverse
 ## Installation
 
 1.  **Easy Mode**:
-    *   Go to the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=mastodon.social_profile.js)
+    *   Go to the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=mastodon.social_profile.js)
     *   Drag the generated link to your bookmarks bar.
 2.  **Hard Mode**:
     *   Copy the entire JavaScript code from the [mastodon.social_profile.js file](https://github.com/oaustegard/bookmarklets/blob/main/mastodon.social_profile.js).
-    *   Go to the generic [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html).
+    *   Go to the generic [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html).
     *   Paste the code into the installer.
     *   Name the bookmarklet (e.g., "Profile on mastodon.social").
     *   Drag the generated link to your bookmarks bar.

@@ -27,7 +27,7 @@ This bookmarklet is designed to help users and developers quickly obtain a simpl
 ## Installation
 
 ### Easy Install
-1. Visit the [Extract Core HTML Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=extract_core_html.js)
+1. Visit the [Extract Core HTML Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=extract_core_html.js)
 2. Drag the created bookmarklet link to your bookmarks bar.
 
 ### Manual Install

@@ -17,11 +17,11 @@ Similar to `claude_json_renderer.js`, this bookmarklet is used on a page display
 ## Installation
 
 1.  **Easy Mode**:
-    *   Go to the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=claude_json_renderer2.js)
+    *   Go to the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=claude_json_renderer2.js)
     *   Drag the generated link to your bookmarks bar.
 2.  **Hard Mode**:
     *   Copy the entire JavaScript code from the [claude_json_renderer2.js file](https://github.com/oaustegard/bookmarklets/blob/main/claude_json_renderer2.js).
-    *   Go to the generic [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html).
+    *   Go to the generic [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html).
     *   Paste the code into the installer.
     *   Name the bookmarklet (e.g., "Render Claude JSON (Simple)").
     *   Drag the generated link to your bookmarks bar.

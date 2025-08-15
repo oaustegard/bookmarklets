@@ -17,11 +17,11 @@ This bookmarklet streamlines the process of starting meeting notes in Confluence
 ## Installation
 
 1.  **Easy Mode**:
-    *   Go to the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=confluence_meeting_notes_page.js)
+    *   Go to the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=confluence_meeting_notes_page.js)
     *   Drag the generated link to your bookmarks bar.
 2.  **Hard Mode**:
     *   Copy the entire JavaScript code from the [confluence_meeting_notes_page.js file](https://github.com/oaustegard/bookmarklets/blob/main/confluence_meeting_notes_page.js).
-    *   Go to the generic [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html).
+    *   Go to the generic [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html).
     *   Paste the code into the installer.
     *   Name the bookmarklet (e.g., "New Confluence Meeting Notes").
     *   Drag the generated link to your bookmarks bar.

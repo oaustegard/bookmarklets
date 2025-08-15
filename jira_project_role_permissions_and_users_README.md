@@ -15,7 +15,7 @@ This bookmarklet solves a common administrative challenge in Jira: understanding
 
 ## Installation
 
-1. Visit the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=jira_project_role_permissions_and_users.js)
+1. Visit the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=jira_project_role_permissions_and_users.js)
 2. Drag the bookmarklet to your bookmarks bar
 3. Alternatively, create a new bookmark and paste the code manually
 

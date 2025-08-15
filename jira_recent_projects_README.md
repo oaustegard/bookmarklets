@@ -13,7 +13,7 @@ This bookmarklet solves a common limitation in Jira: the default recent projects
 
 ## Installation
 
-1. Visit the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=jira_recent_projects.js)
+1. Visit the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=jira_recent_projects.js)
 2. Drag the bookmarklet to your bookmarks bar
 3. Alternatively, create a new bookmark and paste the code manually
 
