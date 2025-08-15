@@ -19,12 +19,12 @@ This bookmarklet helps users who need to access SharePoint files or folders dire
 ## Installation
 
 1.  **Easy Mode**:
-    *   Go to the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=sharepoint_file_path.js)
+    *   Go to the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=sharepoint_file_path.js)
     *   Drag the generated link to your bookmarks bar.
 2.  **Hard Mode**:
     *   Copy the entire JavaScript code from the [sharepoint_file_path.js file](https://github.com/oaustegard/bookmarklets/blob/main/sharepoint_file_path.js).
     *   **Important**: You may need to customize the `isValidDomain` function within the code to match your organization's SharePoint domains.
-    *   Go to the generic [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html).
+    *   Go to the generic [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html).
     *   Paste the modified code into the installer.
     *   Name the bookmarklet (e.g., "SP to File Path").
     *   Drag the generated link to your bookmarks bar.

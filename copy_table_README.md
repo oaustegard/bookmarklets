@@ -24,7 +24,7 @@ This bookmarklet solves the common challenge of extracting data from HTML tables
 ## Installation
 
 ### Easy Install
-1. Visit the [Table to JSON Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=copy_table.js)
+1. Visit the [Table to JSON Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=copy_table.js)
 2. Drag the created bookmarklet link to your bookmarks bar.
 
 ### Manual Install

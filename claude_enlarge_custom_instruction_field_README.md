@@ -15,7 +15,7 @@ When activated, this bookmarklet:
 ## Installation
 
 ### Easy Install
-1. Visit the [Claude Custom Instructions Enlarger Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=claude_enlarge_custom_instruction_field.js)
+1. Visit the [Claude Custom Instructions Enlarger Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=claude_enlarge_custom_instruction_field.js)
 2. Drag the created bookmarklet link to your bookmarks bar.
 
 ### Manual Install

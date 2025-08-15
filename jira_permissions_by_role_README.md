@@ -25,11 +25,11 @@ Jira's Project Permissions page typically lists permissions and then shows which
 ## Installation
 
 1.  **Easy Mode**:
-    *   Go to the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=jira_permissions_by_role.js)
+    *   Go to the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=jira_permissions_by_role.js)
     *   Drag the generated link to your bookmarks bar.
 2.  **Hard Mode**:
     *   Copy the entire JavaScript code from the [jira_permissions_by_role.js file](https://github.com/oaustegard/bookmarklets/blob/main/jira_permissions_by_role.js).
-    *   Go to the generic [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html).
+    *   Go to the generic [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html).
     *   Paste the code into the installer.
     *   Name the bookmarklet (e.g., "Jira Perms by Role").
     *   Drag the generated link to your bookmarks bar.

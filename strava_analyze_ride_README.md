@@ -24,12 +24,12 @@ This bookmarklet provides a curated summary of a Strava ride to Claude.ai for fo
 ## Installation
 
 1.  **Easy Mode**:
-    *   Go to the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=strava_analyze_ride.js)
+    *   Go to the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=strava_analyze_ride.js)
     *   Drag the generated link to your bookmarks bar.
 2.  **Hard Mode**:
     *   Copy the entire JavaScript code from the [strava_analyze_ride.js file](https://github.com/oaustegard/bookmarklets/blob/main/strava_analyze_ride.js).
     *   You can modify the default `powerThreshold` (300) and `speedThreshold` (25) in the `displayRideSummary` call at the end of the script if desired.
-    *   Go to the generic [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html).
+    *   Go to the generic [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html).
     *   Paste the code into the installer.
     *   Name the bookmarklet (e.g., "Analyze Strava Ride Highlights").
     *   Drag the generated link to your bookmarks bar.

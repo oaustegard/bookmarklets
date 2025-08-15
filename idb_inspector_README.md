@@ -16,7 +16,7 @@ A lightweight tool for inspecting IndexedDB databases in any web page. Install i
 
 ## Installation
 
-1. Visit [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=idb_inspector.js)
+1. Visit [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=idb_inspector.js)
 2. Drag the bookmarklet to your bookmarks bar
 
 ## Usage

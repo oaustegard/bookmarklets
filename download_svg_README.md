@@ -17,7 +17,7 @@ SVG is a popular vector image format used on the web. However, downloading SVGs 
 ## Installation
 
 ### Easy Install
-1. Visit the [SVG Download Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=download_svg.js)
+1. Visit the [SVG Download Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=download_svg.js)
 2. Drag the created bookmarklet link to your bookmarks bar.
 
 ### Manual Install

@@ -17,7 +17,7 @@ Horizontal scrollbars on webpages can disrupt user experience and indicate layou
 ## Installation
 
 ### Easy Install
-1.  Navigate to the [Bookmarklet Installer for emwiden.js](https://austegard.com/bookmarklet-installer.html?bookmarklet=emwiden.js).
+1.  Navigate to the [Bookmarklet Installer for emwiden.js](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=emwiden.js).
 2.  Drag the "Emwiden" link to your bookmarks bar.
 
 ### Manual Install

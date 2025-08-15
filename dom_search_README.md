@@ -20,13 +20,13 @@ This bookmarklet is a powerful debugging tool for front-end developers. It provi
 ## Installation
 
 ### Easy Install
-1. Visit the [DOM Search Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=dom_search.js)
+1. Visit the [DOM Search Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=dom_search.js)
 2. Drag the created bookmarklet link to your bookmarks bar.
 
 ### Manual Install
 1. Go to the [source code on GitHub](https://raw.githubusercontent.com/oaustegard/bookmarklets/refs/heads/main/dom_search.js).
 2. Copy the entire JavaScript code.
-3. Visit the generic [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html).
+3. Visit the generic [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html).
 4. Paste the copied code into the text area.
 5. Name the bookmarklet (e.g., "DOM Search").
 6. Drag the generated link from the installer to your bookmarks bar.

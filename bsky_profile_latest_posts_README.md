@@ -16,12 +16,12 @@
 ## Installation
 
 ### Easy Mode
-1. Go to the [BlueSky Profile Latest Posts Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=bsky_profile_latest_posts.js)
+1. Go to the [BlueSky Profile Latest Posts Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=bsky_profile_latest_posts.js)
 2. Drag the link to your bookmarks bar
 
 ### Hard Mode
 1. Copy the entire JavaScript code from the bookmarklet file at https://github.com/oaustegard/bookmarklets/blob/main/bsky_profile_latest_posts.js
-2. Go to [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html)
+2. Go to [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html)
 3. Paste the code
 4. Name the bookmarklet
 5. Drag the link to your bookmarks bar

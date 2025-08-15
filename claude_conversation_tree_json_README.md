@@ -21,11 +21,11 @@ This bookmarklet allows users to easily access the raw JSON data of their curren
 ## Installation
 
 1.  **Easy Mode**:
-    *   Go to the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=claude_conversation_tree_json.js)
+    *   Go to the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=claude_conversation_tree_json.js)
     *   Drag the generated link to your bookmarks bar.
 2.  **Hard Mode**:
     *   Copy the entire JavaScript code from the [claude_conversation_tree_json.js file](https://github.com/oaustegard/bookmarklets/blob/main/claude_conversation_tree_json.js).
-    *   Go to the generic [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html).
+    *   Go to the generic [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html).
     *   Paste the code into the installer.
     *   Name the bookmarklet (e.g., "Claude JSON Tree").
     *   Drag the generated link to your bookmarks bar.

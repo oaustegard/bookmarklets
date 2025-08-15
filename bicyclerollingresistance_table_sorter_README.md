@@ -17,7 +17,7 @@ The website `bicyclerollingresistance.com` provides valuable data on bicycle tir
 ## Installation
 
 ### Easy Install
-1. Visit the [Bicycle Rolling Resistance Table Sorter Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=bicyclerollingresistance_table_sorter.js)
+1. Visit the [Bicycle Rolling Resistance Table Sorter Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=bicyclerollingresistance_table_sorter.js)
 2. Drag the created bookmarklet link to your bookmarks bar.
 
 ### Manual Install

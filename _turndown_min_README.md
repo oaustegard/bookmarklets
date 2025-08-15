@@ -17,7 +17,7 @@ This script provides a minified version of the Turndown library (v7.1.2). Turndo
 As this is a utility script providing a library, direct installation as a standalone, clickable bookmarklet is primarily for making the `TurndownService` available for other bookmarklets or for development/testing purposes.
 
 ### Easy Install
-1. Visit [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=_turndown_min.js)
+1. Visit [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=_turndown_min.js)
 2. Drag the created bookmarklet to your bookmarks bar. Clicking this bookmarklet will load the Turndown library onto the current page.
 
 ### Manual Install

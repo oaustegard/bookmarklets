@@ -22,11 +22,11 @@ This bookmarklet provides a way to get a Markdown representation of the signific
 ## Installation
 
 1.  **Easy Mode**:
-    *   Go to the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=markdown_body.js)
+    *   Go to the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=markdown_body.js)
     *   Drag the generated link to your bookmarks bar.
 2.  **Hard Mode**:
     *   Copy the entire JavaScript code from the [markdown_body.js file](https://github.com/oaustegard/bookmarklets/blob/main/markdown_body.js).
-    *   Go to the generic [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html).
+    *   Go to the generic [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html).
     *   Paste the code into the installer.
     *   Name the bookmarklet (e.g., "Body to MD").
     *   Drag the generated link to your bookmarks bar.

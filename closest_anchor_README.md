@@ -15,11 +15,11 @@ This bookmarklet helps you quickly obtain a direct link to a specific section of
 ## Installation
 
 1.  **Easy Mode**:
-    *   Go to the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=closest_anchor.js)
+    *   Go to the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=closest_anchor.js)
     *   Drag the generated link to your bookmarks bar.
 2.  **Hard Mode**:
     *   Copy the entire JavaScript code from the [closest_anchor.js file](https://github.com/oaustegard/bookmarklets/blob/main/closest_anchor.js).
-    *   Go to the generic [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html).
+    *   Go to the generic [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html).
     *   Paste the code into the installer.
     *   Name the bookmarklet (e.g., "Link to Section").
     *   Drag the generated link to your bookmarks bar.

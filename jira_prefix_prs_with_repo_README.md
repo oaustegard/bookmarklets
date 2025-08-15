@@ -16,11 +16,11 @@ When a Jira issue has pull requests from multiple different repositories, the de
 ## Installation
 
 1.  **Easy Mode**:
-    *   Go to the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=jira_prefix_prs_with_repo.js)
+    *   Go to the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=jira_prefix_prs_with_repo.js)
     *   Drag the generated link to your bookmarks bar.
 2.  **Hard Mode**:
     *   Copy the entire JavaScript code from the [jira_prefix_prs_with_repo.js file](https://github.com/oaustegard/bookmarklets/blob/main/jira_prefix_prs_with_repo.js).
-    *   Go to the generic [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html).
+    *   Go to the generic [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html).
     *   Paste the code into the installer.
     *   Name the bookmarklet (e.g., "Jira PR Repo Names").
     *   Drag the generated link to your bookmarks bar.

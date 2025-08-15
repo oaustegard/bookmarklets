@@ -29,11 +29,11 @@ This bookmarklet allows for in-depth analysis of a Strava activity by leveraging
 ## Installation
 
 1.  **Easy Mode**:
-    *   Go to the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=strava_analyze_activity.js)
+    *   Go to the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=strava_analyze_activity.js)
     *   Drag the generated link to your bookmarks bar.
 2.  **Hard Mode**:
     *   Copy the entire JavaScript code from the [strava_analyze_activity.js file](https://github.com/oaustegard/bookmarklets/blob/main/strava_analyze_activity.js).
-    *   Go to the generic [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html).
+    *   Go to the generic [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html).
     *   Paste the code into the installer.
     *   Name the bookmarklet (e.g., "Analyze Strava Activity w/ Claude").
     *   Drag the generated link to your bookmarks bar.

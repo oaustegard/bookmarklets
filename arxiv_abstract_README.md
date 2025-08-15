@@ -18,7 +18,7 @@ Navigating between an arXiv paper's abstract page (e.g., `arxiv.org/abs/xxxx.xxx
 ## Installation
 
 ### Easy Install
-1. Visit [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=arxiv_abstract.js)
+1. Visit [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=arxiv_abstract.js)
 2. Drag the created bookmarklet to your bookmarks bar.
 
 ### Manual Install

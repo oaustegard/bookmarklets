@@ -20,11 +20,11 @@ Provides a way to copy the current page's URL and title as a formatted link (HTM
 ## Installation
 
 1.  **Easy Mode**:
-    *   Go to the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=copy_url_with_preview.js)
+    *   Go to the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=copy_url_with_preview.js)
     *   Drag the generated link to your bookmarks bar.
 2.  **Hard Mode**:
     *   Copy the entire JavaScript code from the [copy_url_with_preview.js file](https://github.com/oaustegard/bookmarklets/blob/main/copy_url_with_preview.js).
-    *   Go to the generic [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html).
+    *   Go to the generic [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html).
     *   Paste the code into the installer.
     *   Name the bookmarklet (e.g., "Copy URL w/ Preview").
     *   Drag the generated link to your bookmarks bar.

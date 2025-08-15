@@ -15,11 +15,11 @@ Some bookmarklets (like `strava_store_ride_summary.js`) may save Strava ride dat
 ## Installation
 
 1.  **Easy Mode**:
-    *   Go to the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=strava_clear_stored_rides.js)
+    *   Go to the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=strava_clear_stored_rides.js)
     *   Drag the generated link to your bookmarks bar.
 2.  **Hard Mode**:
     *   Copy the entire JavaScript code from the [strava_clear_stored_rides.js file](https://github.com/oaustegard/bookmarklets/blob/main/strava_clear_stored_rides.js).
-    *   Go to the generic [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html).
+    *   Go to the generic [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html).
     *   Paste the code into the installer.
     *   Name the bookmarklet (e.g., "Clear Stored Strava Rides").
     *   Drag the generated link to your bookmarks bar.

@@ -17,7 +17,7 @@ This bookmarklet provides a quick and secure way to start a new collaborative dr
 
 ### Easy Install
 Use the Bookmarklet Installer by navigating to:
-[Excalidraw New Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=excalidraw_new.js)
+[Excalidraw New Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=excalidraw_new.js)
 Then drag the generated link to your bookmarks bar.
 
 ### Manual Install

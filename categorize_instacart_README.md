@@ -16,7 +16,7 @@ The goal of this bookmarklet is to help users quickly understand the composition
 ## Installation
 
 ### Easy Install
-1. Visit [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=categorize_instacart.js)
+1. Visit [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=categorize_instacart.js)
 2. Drag the created bookmarklet to your bookmarks bar.
 
 ### Manual Install

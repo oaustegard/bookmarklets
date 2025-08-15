@@ -17,12 +17,12 @@ This bookmarklet displays all the lists created by any BlueSky user in a conveni
 ## Installation
 
 ### Easy Mode
-1. Go to the [BlueSky Lists Viewer Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=bsky_user_lists.js)
+1. Go to the [BlueSky Lists Viewer Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=bsky_user_lists.js)
 2. Drag the link to your bookmarks bar
 
 ### Hard Mode
 1. Copy the entire JavaScript code from the bookmarklet file
-2. Go to [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html)
+2. Go to [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html)
 3. Paste the code
 4. Name the bookmarklet (e.g., "BlueSky Lists")
 5. Drag the link to your bookmarks bar

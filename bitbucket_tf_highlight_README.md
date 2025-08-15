@@ -19,7 +19,7 @@ Bitbucket's default syntax highlighting for Terraform files can sometimes be sub
 ## Installation
 
 ### Easy Install
-1. Visit [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=bitbucket_tf_highlight.js)
+1. Visit [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=bitbucket_tf_highlight.js)
 2. Drag the created bookmarklet to your bookmarks bar.
 
 ### Manual Install

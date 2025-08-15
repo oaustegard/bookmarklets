@@ -18,13 +18,13 @@ This bookmarklet is designed to extract messages from Discord forum threads, inc
 ## Installation
 
 ### Easy Install
-1. Visit the [Discord Message Scraper Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=discord_scraper.js)
+1. Visit the [Discord Message Scraper Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=discord_scraper.js)
 2. Drag the created bookmarklet link to your bookmarks bar.
 
 ### Manual Install
 1. View the [source code](https://github.com/oaustegard/bookmarklets/blob/main/discord_scraper.js).
 2. Copy the entire JavaScript code.
-3. Visit the generic [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html).
+3. Visit the generic [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html).
 4. Paste the code into the installer's code area.
 5. Name the bookmarklet (e.g., "Discord Scraper").
 6. Drag the generated link from the installer to your bookmarks bar.

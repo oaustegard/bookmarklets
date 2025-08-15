@@ -29,7 +29,7 @@ When activated, this bookmarklet lets you select any element on the page and pin
 
 ### Simple Installation (Recommended)
 
-Visit [austegard.com/bookmarklet-installer.html?bookmarklet=sticky_element.js](https://austegard.com/bookmarklet-installer.html?bookmarklet=sticky_element.js) and drag the bookmarklet to your bookmarks bar.
+Visit [austegard.com/bookmarklet-installer.html?bookmarklet=sticky_element.js](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=sticky_element.js) and drag the bookmarklet to your bookmarks bar.
 
 ### Manual Install (Alternative)
 

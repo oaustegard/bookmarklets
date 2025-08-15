@@ -16,7 +16,7 @@ For users who want to explore a location with the rich, 3D satellite imagery and
 ## Installation
 
 ### Easy Install
-1. Visit the [GoogleMapToEarth Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=GoogleMapToEarth.js)
+1. Visit the [GoogleMapToEarth Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=GoogleMapToEarth.js)
 2. Drag the created bookmarklet link to your bookmarks bar.
 
 ### Manual Install

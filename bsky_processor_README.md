@@ -16,7 +16,7 @@ The primary purpose of this bookmarklet is to provide a quick way to analyze or 
 ## Installation
 
 ### Easy Install
-1. Visit [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=bsky_processor.js)
+1. Visit [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=bsky_processor.js)
 2. Drag the created bookmarklet to your bookmarks bar.
 
 ### Manual Install

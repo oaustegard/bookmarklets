@@ -45,7 +45,7 @@ Due to browser security (Same-Origin Policy), websites can't directly access dat
 ## Installation
 
 ### Easy Install
-1. Visit [Claude Pruner Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=claude_pruner.js)
+1. Visit [Claude Pruner Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=claude_pruner.js)
 2. Drag the created bookmarklet to your bookmarks bar
 
 ### Manual Install
@@ -124,8 +124,8 @@ Selected content is formatted with proper tags:
 
 ### Two-Step Alternative
 For maximum transparency, use these separate bookmarklets:
-1. Use [Export Conversation](https://austegard.com/bookmarklet-installer.html?bookmarklet=claude_conversation_tree_json.js) to open a new window with the conversation as JSON
-2. From that window run [Process JSON](https://austegard.com/bookmarklet-installer.html?bookmarklet=claude_prune_json.js)
+1. Use [Export Conversation](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=claude_conversation_tree_json.js) to open a new window with the conversation as JSON
+2. From that window run [Process JSON](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=claude_prune_json.js)
 
 ## Contributing
 

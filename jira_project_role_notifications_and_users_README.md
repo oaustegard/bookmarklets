@@ -18,7 +18,7 @@ This bookmarklet addresses the complexity of understanding who receives notifica
 
 ## Installation
 
-1. Visit the [Bookmarklet Installer](https://austegard.com/bookmarklet-installer.html?bookmarklet=jira_project_role_notifications_and_users.js)
+1. Visit the [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=jira_project_role_notifications_and_users.js)
 2. Drag the bookmarklet to your bookmarks bar
 3. Alternatively, create a new bookmark and paste the code manually
 
