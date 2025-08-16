@@ -4,6 +4,9 @@ javascript:(function() {
      * and sends them to Claude for further analysis.
      */
 
+    /* CONFIGURATION - Edit this to set your preferred Claude project */
+    const CLAUDE_PROJECT = ""; /* Set to your project UUID, or leave empty for default workspace */
+
     /* Helper function to safely get text content from elements */
     function getTextFromSelector(selector, parent = document) {
         return parent.querySelector(selector)?.textContent.trim() || '';
@@ -123,6 +126,21 @@ ${highlights.sauceContent}`;
         }).join('\n');
     }
 
+    /* Build Claude URL with optional project parameter */
+    function buildClaudeUrl(prompt, rideSummary) {
+        console.log('Building Claude URL with project parameter');
+        const baseUrl = "https://claude.ai/new";
+        const queryParams = new URLSearchParams();
+        
+        queryParams.set('q', prompt + "\n\n" + rideSummary);
+        
+        if (CLAUDE_PROJECT && CLAUDE_PROJECT.trim() !== '') {
+            queryParams.set('project', CLAUDE_PROJECT.trim());
+        }
+        
+        return baseUrl + '?' + queryParams.toString();
+    }
+
     /* Display ride summary and send to Claude for analysis */
     function displayRideSummary(powerThreshold, speedThreshold) {
         console.log('Combining all highlights and interesting segments');
@@ -132,7 +150,7 @@ ${highlights.sauceContent}`;
 
         console.log('Sending ride summary to Claude for analysis');
         const prompt = "Review this Strava ride summary and highlight the most notable achievements and interesting segments:";
-        const url = "https://claude.ai/new?q=" + encodeURIComponent(prompt + "\n\n" + rideSummary);
+        const url = buildClaudeUrl(prompt, rideSummary);
         window.open(url, '_blank');
     }
 
