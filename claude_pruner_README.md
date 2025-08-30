@@ -7,7 +7,7 @@ A sophisticated tool for managing and pruning Claude.ai conversations, preservin
 The Claude Conversation Pruner helps users handle Claude.ai's context window limitations by enabling selective export of conversation elements. This tool consists of three components working together to overcome browser security restrictions while maintaining privacy:
 
 1. **[Bookmarklet** (`claude_pruner.js`)](https://github.com/oaustegard/bookmarklets/blob/main/claude_pruner.js) - Runs in the Claude.ai context
-2. **[Static Pruner Interface** (`claude-pruner.html`)](https://github.com/oaustegard/oaustegard.github.io/blob/main/claude-pruner.html) - Hosted separately
+2. **[Static Pruner Interface** (`claude-pruner.html`)](https://github.com/oaustegard/oaustegard.github.io/blob/main/ai-tools/claude-pruner.html) - Hosted separately
 3. **Cross-Origin Communication** - Uses secure `postMessage` API
 
 ## Why This Architecture?
@@ -77,7 +77,7 @@ Responsibilities:
 - Send data using secure messaging
 
 ### 2. Pruner Interface (`claude-pruner.html`)
-https://github.com/oaustegard/oaustegard.github.io/blob/main/claude-pruner.html
+https://github.com/oaustegard/oaustegard.github.io/blob/main/ai-tools/claude-pruner.html
 Features:
 - Two-column layout (messages and artifacts)
 - Interactive selection interface
@@ -117,7 +117,7 @@ Selected content is formatted with proper tags:
 ## Self-Hosting Options
 
 ### Host Your Own Pruner
-1. Download `[claude-pruner.html](https://github.com/oaustegard/oaustegard.github.io/blob/main/claude-pruner.html)` from the repository
+1. Download `[claude-pruner.html](https://github.com/oaustegard/oaustegard.github.io/blob/main/ai-tools/claude-pruner.html)` from the repository
 2. Host it on your domain
 3. Modify the bookmarklet's `PRUNER_DOMAIN` constant
 4. Update your bookmarklet to point to your hosted version
@@ -131,7 +131,7 @@ For maximum transparency, use these separate bookmarklets:
 
 Contributions welcome! The project consists of:
 - `[https://github.com/oaustegard/bookmarklets/blob/main/claude_pruner.js](claude_pruner.js)` - The bookmarklet
-- `[claude-pruner.html](https://github.com/oaustegard/oaustegard.github.io/blob/main/claude-pruner.html)` - The pruner interface
+- `[claude-pruner.html](https://github.com/oaustegard/oaustegard.github.io/blob/main/ai-tools/claude-pruner.html)` - The pruner interface
 - Supporting documentation
 
 ## Security Considerations
@@ -172,5 +172,3 @@ Potential improvements:
 ## Acknowledgments
 
 Thanks to the Claude.ai team for their excellent platform and API.
-
-
