@@ -1,7 +1,7 @@
 javascript:(function() {
     /* Configuration */
     const PRUNER_DOMAIN = 'austegard.com';
-    const PRUNER_URL = `https://${PRUNER_DOMAIN}/claude-pruner.html`;
+    const PRUNER_URL = `https://${PRUNER_DOMAIN}/ai-tools/claude-pruner.html`;
     
     /* Logging utility */
     function log(message) {
