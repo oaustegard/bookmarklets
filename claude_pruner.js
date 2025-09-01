@@ -12,6 +12,30 @@ javascript:(function() {
         console.error(`[Claude Pruner Error] ${message}`);
     }
 
+    /* Get Organization ID */
+    const getCurrentOrgId = () => {
+      // Method 1: Extract from lastActiveOrg preference (escaped JSON)
+      const getLastActiveOrg = () => {
+        const scripts = document.querySelectorAll('script');
+        for (const script of scripts) {
+          const content = script.textContent;
+          if (content?.includes('lastActiveOrg')) {
+            const match = content.match(/\\"lastActiveOrg\\",\\"value\\":\\"([a-f0-9-]{36})\\"/);
+            if (match?.[1]) {
+              return { id: match[1], source: 'lastActiveOrg' };
+            }
+          }
+        }
+        return null;
+      };
+
+      const org = getLastActiveOrg();
+      if (org) {
+          return org.id;
+      }
+      return null;
+    };
+
     /* Check if we're on a Claude page */
     if (!window.location.hostname.includes('claude.ai')) {
         alert('This bookmarklet only works on claude.ai pages');
@@ -19,7 +43,12 @@ javascript:(function() {
     }
 
     /* Get organization and conversation IDs */
-    const orgId = localStorage.getItem('lastActiveOrg');
+    const orgId = getCurrentOrgId();
+    if (!orgId) {
+        logError('Could not find organization ID.');
+        alert('Could not find organization ID. The bookmarklet may need to be updated.');
+        return;
+    }
     const conversationId = window.location.pathname.split('/').pop();
     
     log(`Organization ID: ${orgId}`);
