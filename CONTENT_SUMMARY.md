@@ -43,6 +43,13 @@ Below is a list of available bookmarklets, their purpose, and links to their res
 
 ---
 
+### Bitbucket Compare Commits Helper
+- **Purpose**: Provides a user-friendly interface on Bitbucket's commit list page to select and compare any two commits.
+- **Source**: [`bitbucket_compare_pr_commits.js`](https://github.com/oaustegard/bookmarklets/blob/main/bitbucket_compare_pr_commits.js)
+- **Details**: [`bitbucket_compare_pr_commits_README.md`](https://github.com/oaustegard/bookmarklets/blob/main/bitbucket_compare_pr_commits_README.md)
+
+---
+
 ### Bitbucket Terraform Highlighter
 - **Purpose**: Applies JavaScript-like syntax highlighting to Terraform configuration files (`.tf`, `.tfvars`) viewed in Bitbucket. Click again to restore default highlighting.
 - **Source**: [`bitbucket_tf_highlight.js`](https://github.com/oaustegard/bookmarklets/blob/main/bitbucket_tf_highlight.js)
