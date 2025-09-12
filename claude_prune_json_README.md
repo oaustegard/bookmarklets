@@ -89,3 +89,7 @@ MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main
 ## Author
 
 Created by [Oskar Austegard](https://austegard.com)
+
+## Troubleshooting
+
+-   **Getting the JSON**: This bookmarklet works on a page that already contains the conversation's JSON data. To get the JSON, you can use the `claude_conversation_tree_json.js` bookmarklet from this repository. If that bookmarklet fails, it may need to be updated to reflect changes in the Claude.ai website.
