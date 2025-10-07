@@ -3,6 +3,12 @@
 ## Project Overview
 Collection of JavaScript bookmarklets for enhancing browser functionality. Each bookmarklet is a self-contained JavaScript snippet that runs in the browser context to add features, extract data, or modify web pages.
 
+## Agent Commands
+This repository contains commands specifically for AI agents, located in the `.claude/commands/` directory. These commands provide structured guidance for common development tasks, ensuring consistency with project standards.
+
+- **`/bookmarklet`**: Use this command to create a new bookmarklet. It outlines the required structure for both the JavaScript file and its corresponding README, ensuring all project conventions are met from the start.
+- **`/document`**: Use this command to generate or improve the README file for an existing bookmarklet. It provides a template and checklist to ensure the documentation is comprehensive and follows the project's standards.
+
 ## Commands
 
 ### Development
