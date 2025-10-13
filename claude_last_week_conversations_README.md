@@ -1,7 +1,7 @@
 # Claude Last Week's Conversations
 
 ## Purpose
-This bookmarklet fetches all your Claude.ai conversations from the last 7 days and generates a summary in Markdown format. It's useful for weekly reviews, creating backups, or sharing progress with a team.
+The [claude_last_week_conversations.js](./claude_last_week_conversations.js) bookmarklet fetches all your Claude.ai conversations from the last 7 days and generates a summary in Markdown format. It's useful for weekly reviews, creating backups, or sharing progress with a team.
 
 ## Features
 - Fetches conversations from the last 7 days.
