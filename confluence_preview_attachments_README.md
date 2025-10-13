@@ -11,7 +11,7 @@ This bookmarklet enhances the Confluence attachments page by adding a "Preview" 
 ## Installation
 
 ### Easy Install
-Drag this link to your bookmarks bar: [Confluence Preview Attachments](javascript:(function()%7Bconst%20t%3Ddocument.querySelector(%22.tableview.attachments%22),e%3Dt.querySelectorAll(%22tbody%20>%20tr%22),o%3De%5B0%5D,l%3Ddocument.createElement(%22th%22)%3Bl.innerText%3D%22Preview%22,o.insertBefore(l,o.querySelector(%22.filename-column%22).nextElementSibling)%3Bfor(let%20t%3D1%3Bt<e.length%3Bt%2B%2B)%7Bconst%20o%3De%5Bt%5D,l%3Ddocument.createElement(%22td%22)%3Bl.style.minWidth%3D%22150px%22,l.style.width%3D%22150px%22%3Bconst%20n%3Do.querySelector(%22.filename-column%20a.filename%22)%3Bif(n)%7Bconst%20t%3Dn.getAttribute(%22href%22),e%3Ddocument.createElement(%22img%22)%3Be.src%3Dt,e.style.maxWidth%3D%22150px%22,l.appendChild(e)%7Do.insertBefore(l,o.querySelector(%22.filename-column%22).nextElementSibling)%7D%7D)())
+[Install via Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=confluence_preview_attachments.js)
 
 ### Manual Install
 1. Create a new bookmark in your browser.

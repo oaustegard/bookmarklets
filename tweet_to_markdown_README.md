@@ -13,7 +13,7 @@ This bookmarklet captures the author, content, and URL of a tweet from a tweet p
 ## Installation
 
 ### Easy Install
-Drag this link to your bookmarks bar: [Tweet to Markdown](javascript:(function()%7Bconst%20t%3D/%5Ehttps%3F:%5C/%5C/(twitter%5C.com%7Cx%5C.com)%5C/.%2B%5C/status%5C/%5Cd+/%2Co%3D/%5E(.+)%20on%20X:%20%22(.+)%22%20%5C/%20X%24/%2Ct%3Dwindow.location.href,e%3Dwindow.document.title%3Bif(!t.test(t))return%20void%20alert(%22This%20bookmarklet%20only%20works%20on%20X.com%20(formerly%20Twitter)%20tweet%20pages%22)%3Bconst%20n%3De.match(o)%3Bif(!n)return%20void%20alert(%22Unable%20to%20parse%20the%20tweet.%20The%20page%20format%20might%20have%20changed.%22)%3Bconst%20a%3Dn%5B1%5D,i%3Dn%5B2%5D.replace(/https%3F:%5C/%5C/t%5C.co%5C/%5Cw+/,"").trim(),d%3D%60%5B%24%7Ba%7D%20on%20X:%5D(%24%7Bt%7D)%5Cn%3E%20%24%7Bi%7D%60%3Bnavigator.clipboard.writeText(d).catch((function()%7Balert(%22Failed%20to%20copy%20to%20clipboard.%20Your%20browser%20might%20not%20support%20this%20feature.%22)%7D))%7D)())
+[Install via Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=tweet_to_markdown.js)
 
 ### Manual Install
 1. Create a new bookmark in your browser.

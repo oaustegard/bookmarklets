@@ -11,7 +11,7 @@ This bookmarklet captures the heading text from a Strava activity page and store
 ## Installation
 
 ### Easy Install
-Drag this link to your bookmarks bar: [Strava Short Excerpt](javascript:(function()%7Bvar%20e%3Ddocument.querySelector(%22section%23heading%22).innerText,t%3DJSON.parse(localStorage.getItem(%22rideSummaries%22))%7C%7C%5B%5D%3Bt.push(e),localStorage.setItem(%22rideSummaries%22,JSON.stringify(t))%7D)())
+[Install via Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=strava_short_excerpt.js)
 
 ### Manual Install
 1. Create a new bookmark in your browser.

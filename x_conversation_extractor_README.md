@@ -12,7 +12,7 @@ This bookmarklet automatically scrolls through an entire X.com (formerly Twitter
 ## Installation
 
 ### Easy Install
-Drag this link to your bookmarks bar: [X Conversation Extractor](javascript:(function()%7Blet%20t%3Dnew%20Set%3Bfunction%20e()%7Bdocument.querySelectorAll(%22article%22).forEach((e%3D>%7Bconst%20o%3De.querySelector('div%5Bdata-testid%3D%22tweetText%22%5D'),n%3De.querySelector('div%5Brole%3D%22group%22%5D')%3Bo%26%26n%26%26(e%3Do.innerText.trim(),o%3Dn.ariaLabel%3Fn.ariaLabel.trim():%22No%20popularity%20data%22,n%3D%60%24%7Be%7D%20-%20%24%7Bo%7D%60,t.add(n))%7D))%7Dfunction%20o()%7Be(),window.scrollBy(0,window.innerHeight),window.innerHeight+window.pageYOffset<document.body.scrollHeight%3FsetTimeout(o,200):(n%3Dwindow.open(%22%22,%22_blank%22)).document.write(%22<pre>%22+Array.from(t).join(%22%5Cn%5Cn%22)+%22</pre>%22)%7Dvar%20n%3Bo()%7D)())
+[Install via Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=x_conversation_extractor.js)
 
 ### Manual Install
 1. Create a new bookmark in your browser.
