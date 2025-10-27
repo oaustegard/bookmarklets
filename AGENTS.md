@@ -229,7 +229,18 @@ document.addEventListener('keydown', (e) => {
 
 ## Common Patterns
 
-### URL Pattern Detection
+**IMPORTANT FOR AI AGENTS**: Check the `snippets/` folder for reusable code patterns before writing new implementations. The snippets folder contains:
+- Site-specific utilities (authentication, API patterns)
+- DOM manipulation helpers
+- CSP/CORS workarounds
+- UI patterns (modals, overlays)
+- Common helper functions
+
+Browse `snippets/README.md` for the complete catalog and usage examples.
+
+### Basic Patterns (Always Use These)
+
+#### URL Pattern Detection
 ```javascript
 if (!window.location.hostname.includes('expected-site.com')) {
     alert('This bookmarklet only works on expected-site.com');
@@ -237,7 +248,7 @@ if (!window.location.hostname.includes('expected-site.com')) {
 }
 ```
 
-### Safe DOM Element Selection
+#### Safe DOM Element Selection
 ```javascript
 const element = document.querySelector('.target-class');
 if (!element) {
@@ -246,7 +257,7 @@ if (!element) {
 }
 ```
 
-### Loading External Libraries
+#### Loading External Libraries
 ```javascript
 function loadScript(url) {
     return new Promise((resolve, reject) => {
