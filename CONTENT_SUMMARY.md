@@ -577,6 +577,13 @@ Below is a list of available snippets, their purpose, and links to their respect
 
 ---
 
+### get-claude-organization-id - Claude Organization ID Extractor
+- **Purpose**: Extracts the active Claude.ai organization ID from the page's JavaScript context.
+- **Source**: [`get-claude-organization-id.js`](https://github.com/oaustegard/bookmarklets/blob/main/snippets/get-claude-organization-id.js)
+- **Details**: [`get-claude-organization-id.md`](https://github.com/oaustegard/bookmarklets/blob/main/snippets/get-claude-organization-id.md)
+
+---
+
 ## Other Files
 
 ### [.gitignore](https://github.com/oaustegard/bookmarklets/blob/main/.gitignore)
