@@ -8,34 +8,6 @@ Below is a list of available bookmarklets, their purpose, and links to their res
 
 ---
 
-### _c - Console Alias
-- **Purpose**: Utility code that aliases the `console` object to `_c` for more concise logging in other bookmarklets.
-- **Source**: [`_c.js`](https://github.com/oaustegard/bookmarklets/blob/main/_c.js)
-- **Details**: [`_c_README.md`](https://github.com/oaustegard/bookmarklets/blob/main/_c_README.md)
-
----
-
-### _copyToClip - Clipboard Utility
-- **Purpose**: A utility function to copy provided HTML (and optionally plain text) to the clipboard. Designed to be included or used by other bookmarklets.
-- **Source**: [`_copyToClip.js`](https://github.com/oaustegard/bookmarklets/blob/main/_copyToClip.js)
-- **Details**: [`_copyToClip_README.md`](https://github.com/oaustegard/bookmarklets/blob/main/_copyToClip_README.md)
-
----
-
-### _lg - Global Logger Utility
-- **Purpose**: Provides a global `_lg()` function for logging messages to the console, useful when `console.log` might not work reliably in all bookmarklet contexts.
-- **Source**: [`_lg.js`](https://github.com/oaustegard/bookmarklets/blob/main/_lg.js)
-- **Details**: [`_lg_README.md`](https://github.com/oaustegard/bookmarklets/blob/main/_lg_README.md)
-
----
-
-### _turndown_min - HTML to Markdown Conversion Utility
-- **Purpose**: Provides a minified version of the Turndown library (v7.1.2) to convert HTML content into Markdown, intended for use by other bookmarklets.
-- **Source**: [`_turndown_min.js`](https://github.com/oaustegard/bookmarklets/blob/main/_turndown_min.js)
-- **Details**: [`_turndown_min_README.md`](https://github.com/oaustegard/bookmarklets/blob/main/_turndown_min_README.md)
-
----
-
 ### arXiv Abstract/PDF Toggle
 - **Purpose**: Allows quick switching between an arXiv paper's abstract page and its PDF version (or vice-versa) in a new tab.
 - **Source**: [`arxiv_abstract.js`](https://github.com/oaustegard/bookmarklets/blob/main/arxiv_abstract.js)
@@ -568,6 +540,40 @@ Below is a list of available bookmarklets, their purpose, and links to their res
 - **Purpose**: Collects tweets and their engagement data from a Twitter/X.com conversation page by scrolling and extracting information, then displays it.
 - **Source**: [`x_conversation_extractor.js`](https://github.com/oaustegard/bookmarklets/blob/main/x_conversation_extractor.js)
 - **Details**: (No specific README, summary from source: Extracts Twitter/X conversation data.)
+
+---
+
+## Snippets
+
+Below is a list of available snippets, their purpose, and links to their respective source code and detailed README files.
+
+---
+
+### create-console-alias - Console Alias
+- **Purpose**: Utility code that aliases the `console` object to `_c` for more concise logging in other bookmarklets.
+- **Source**: [`create-console-alias.js`](https://github.com/oaustegard/bookmarklets/blob/main/snippets/create-console-alias.js)
+- **Details**: [`create-console-alias.md`](https://github.com/oaustegard/bookmarklets/blob/main/snippets/create-console-alias.md)
+
+---
+
+### copy-html-and-text-to-clipboard - Clipboard Utility
+- **Purpose**: A utility function to copy provided HTML (and optionally plain text) to the clipboard. Designed to be included or used by other bookmarklets.
+- **Source**: [`copy-html-and-text-to-clipboard.js`](https://github.com/oaustegard/bookmarklets/blob/main/snippets/copy-html-and-text-to-clipboard.js)
+- **Details**: [`copy-html-and-text-to-clipboard.md`](https://github.com/oaustegard/bookmarklets/blob/main/snippets/copy-html-and-text-to-clipboard.md)
+
+---
+
+### create-console-log-helper - Global Logger Utility
+- **Purpose**: Provides a global `_lg()` function for logging messages to the console, useful when `console.log` might not work reliably in all bookmarklet contexts.
+- **Source**: [`create-console-log-helper.js`](https://github.com/oaustegard/bookmarklets/blob/main/snippets/create-console-log-helper.js)
+- **Details**: [`create-console-log-helper.md`](https://github.com/oaustegard/bookmarklets/blob/main/snippets/create-console-log-helper.md)
+
+---
+
+### load-turndown-library-minified - HTML to Markdown Conversion Utility
+- **Purpose**: Provides a minified version of the Turndown library (v7.1.2) to convert HTML content into Markdown, intended for use by other bookmarklets.
+- **Source**: [`load-turndown-library-minified.js`](https://github.com/oaustegard/bookmarklets/blob/main/snippets/load-turndown-library-minified.js)
+- **Details**: [`load-turndown-library-minified.md`](https://github.com/oaustegard/bookmarklets/blob/main/snippets/load-turndown-library-minified.md)
 
 ---
 
