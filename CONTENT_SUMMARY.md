@@ -99,6 +99,13 @@ Below is a list of available bookmarklets, their purpose, and links to their res
 
 ---
 
+### Claude Skills Viewer
+- **Purpose**: Displays all active skills in your Claude.ai organization with quick copy functionality. Shows skill names, descriptions, and update dates in a top-right dialog.
+- **Source**: [`claude_list_skills.js`](https://github.com/oaustegard/bookmarklets/blob/main/claude_list_skills.js)
+- **Details**: [`claude_list_skills_README.md`](https://github.com/oaustegard/bookmarklets/blob/main/claude_list_skills_README.md)
+
+---
+
 ### Claude JSON Renderer
 - **Purpose**: Renders a Claude.ai conversation JSON export into a styled HTML page for easy reading, sharing, and downloading. Uses `marked.js` and `highlight.js`.
 - **Source**: [`claude_json_renderer.js`](https://github.com/oaustegard/bookmarklets/blob/main/claude_json_renderer.js)
