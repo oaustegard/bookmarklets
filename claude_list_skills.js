@@ -96,6 +96,31 @@ javascript: (function() {
       gap: 8px;
     }
 
+    #claude-skills-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #claude-skills-sort-toggle {
+      cursor: pointer;
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
+      color: #b0b0b0;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-family: inherit;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    #claude-skills-sort-toggle:hover {
+      background: #333;
+      border-color: #4a4a4a;
+      color: #fff;
+    }
+
     #claude-skills-close {
       cursor: pointer;
       background: transparent;
@@ -271,7 +296,10 @@ javascript: (function() {
   modal.innerHTML = `
     <div id="claude-skills-header">
       <h2>🔧 Active Skills</h2>
-      <button id="claude-skills-close">&times;</button>
+      <div id="claude-skills-controls">
+        <button id="claude-skills-sort-toggle">Sort: A-Z</button>
+        <button id="claude-skills-close">&times;</button>
+      </div>
     </div>
     <div id="claude-skills-content">
       <div class="claude-loading">
@@ -331,6 +359,121 @@ javascript: (function() {
     }
   }
 
+  /* Sort mode state - default to alphabetical */
+  const SORT_KEY = 'claude-skills-sort-mode';
+  let currentSortMode = localStorage.getItem(SORT_KEY) || 'alphabetical';
+  let enabledSkills = [];
+
+  /* Update sort toggle button text */
+  function updateSortButton() {
+    const button = document.getElementById('claude-skills-sort-toggle');
+    if (button) {
+      button.textContent = currentSortMode === 'alphabetical' ? 'Sort: A-Z' : 'Sort: Recent';
+    }
+  }
+
+  /* Render skills with current sort */
+  function renderSkills() {
+    const content = document.getElementById('claude-skills-content');
+
+    if (enabledSkills.length === 0) {
+      content.innerHTML = `
+        <div class="claude-empty">
+          <div class="claude-empty-icon">📭</div>
+          <p>No active skills found in this organization.</p>
+        </div>
+      `;
+      return;
+    }
+
+    /* Sort skills based on current mode */
+    let sortedSkills;
+    if (currentSortMode === 'alphabetical') {
+      sortedSkills = [...enabledSkills].sort((a, b) => {
+        const nameA = (a.name || 'Unnamed skill').toLowerCase();
+        const nameB = (b.name || 'Unnamed skill').toLowerCase();
+        return nameA.localeCompare(nameB);
+      });
+    } else {
+      /* Reverse chronological (newest first) */
+      sortedSkills = [...enabledSkills].sort((a, b) => {
+        const dateA = new Date(a.updated_at || a.created_at || 0);
+        const dateB = new Date(b.updated_at || b.created_at || 0);
+        return dateB - dateA;
+      });
+    }
+
+    /* Generate skills HTML */
+    const skillsHtml = sortedSkills.map(skill => {
+      const name = skill.name || 'Unnamed skill';
+      const description = skill.description || 'No description';
+      const updateDate = skill.updated_at || skill.created_at;
+
+      let dateStr = 'Unknown date';
+      if (updateDate) {
+        const date = new Date(updateDate);
+        dateStr = date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+      }
+
+      /* Truncate long descriptions */
+      let displayDesc = description;
+      if (description.length > 120) {
+        displayDesc = description.substring(0, 120) + '...';
+      }
+
+      /* Escape HTML in text */
+      const escapeHtml = (str) => {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      };
+
+      return `
+        <div class="claude-skill-item" data-skill-name="${escapeHtml(name)}">
+          <h3 class="claude-skill-name">${escapeHtml(name)}</h3>
+          <p class="claude-skill-description">${escapeHtml(displayDesc)}</p>
+          <p class="claude-skill-date">Updated: ${dateStr}</p>
+        </div>
+      `;
+    }).join('');
+
+    content.innerHTML = `
+      <div class="claude-skill-count">
+        <strong>${sortedSkills.length}</strong> skill${sortedSkills.length === 1 ? '' : 's'} found
+      </div>
+      ${skillsHtml}
+    `;
+
+    /* Add click handlers to skill items */
+    document.querySelectorAll('.claude-skill-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const skillName = item.getAttribute('data-skill-name');
+        copyToClipboard(skillName, skillName);
+      });
+    });
+
+    updateSortButton();
+  }
+
+  /* Toggle sort mode */
+  function toggleSort() {
+    currentSortMode = currentSortMode === 'alphabetical' ? 'chronological' : 'alphabetical';
+    localStorage.setItem(SORT_KEY, currentSortMode);
+    renderSkills();
+  }
+
+  /* Add sort toggle handler */
+  setTimeout(() => {
+    const sortButton = document.getElementById('claude-skills-sort-toggle');
+    if (sortButton) {
+      sortButton.addEventListener('click', toggleSort);
+    }
+  }, 0);
+
   /* Fetch skills */
   async function fetchSkills() {
     try {
@@ -344,83 +487,14 @@ javascript: (function() {
       }
 
       const data = await response.json();
-      const content = document.getElementById('claude-skills-content');
 
       /* Check if we have skills */
       const skills = data.skills || data || [];
 
       /* Filter to only show enabled skills */
-      const enabledSkills = Array.isArray(skills) ? skills.filter(skill => skill.enabled === true) : [];
+      enabledSkills = Array.isArray(skills) ? skills.filter(skill => skill.enabled === true) : [];
 
-      if (enabledSkills.length === 0) {
-        content.innerHTML = `
-          <div class="claude-empty">
-            <div class="claude-empty-icon">📭</div>
-            <p>No active skills found in this organization.</p>
-          </div>
-        `;
-        return;
-      }
-
-      /* Sort skills by update date (newest first) */
-      const sortedSkills = [...enabledSkills].sort((a, b) => {
-        const dateA = new Date(a.updated_at || a.created_at || 0);
-        const dateB = new Date(b.updated_at || b.created_at || 0);
-        return dateB - dateA;
-      });
-
-      /* Generate skills HTML */
-      const skillsHtml = sortedSkills.map(skill => {
-        const name = skill.name || 'Unnamed skill';
-        const description = skill.description || 'No description';
-        const updateDate = skill.updated_at || skill.created_at;
-
-        let dateStr = 'Unknown date';
-        if (updateDate) {
-          const date = new Date(updateDate);
-          dateStr = date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          });
-        }
-
-        /* Truncate long descriptions */
-        let displayDesc = description;
-        if (description.length > 120) {
-          displayDesc = description.substring(0, 120) + '...';
-        }
-
-        /* Escape HTML in text */
-        const escapeHtml = (str) => {
-          const div = document.createElement('div');
-          div.textContent = str;
-          return div.innerHTML;
-        };
-
-        return `
-          <div class="claude-skill-item" data-skill-name="${escapeHtml(name)}">
-            <h3 class="claude-skill-name">${escapeHtml(name)}</h3>
-            <p class="claude-skill-description">${escapeHtml(displayDesc)}</p>
-            <p class="claude-skill-date">Updated: ${dateStr}</p>
-          </div>
-        `;
-      }).join('');
-
-      content.innerHTML = `
-        <div class="claude-skill-count">
-          <strong>${sortedSkills.length}</strong> skill${sortedSkills.length === 1 ? '' : 's'} found
-        </div>
-        ${skillsHtml}
-      `;
-
-      /* Add click handlers to skill items */
-      document.querySelectorAll('.claude-skill-item').forEach(item => {
-        item.addEventListener('click', () => {
-          const skillName = item.getAttribute('data-skill-name');
-          copyToClipboard(skillName, skillName);
-        });
-      });
+      renderSkills();
 
     } catch (error) {
       console.error('Error fetching skills:', error);
