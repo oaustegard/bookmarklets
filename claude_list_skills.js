@@ -123,6 +123,25 @@ javascript: (function() {
       flex: 1;
     }
 
+    #claude-skills-footer {
+      padding: 12px 20px;
+      border-top: 1px solid #333;
+      background: #1a1a1a;
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    #claude-skills-footer a {
+      color: #888;
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s ease;
+    }
+
+    #claude-skills-footer a:hover {
+      color: #fff;
+    }
+
     .claude-skill-item {
       background: #2a2a2a;
       border: 1px solid #3a3a3a;
@@ -260,6 +279,9 @@ javascript: (function() {
         <div>Loading skills...</div>
       </div>
     </div>
+    <div id="claude-skills-footer">
+      <a href="https://claude.ai/settings/capabilities" target="_blank">Manage Skills →</a>
+    </div>
   `;
 
   document.body.appendChild(modal);
@@ -327,18 +349,21 @@ javascript: (function() {
       /* Check if we have skills */
       const skills = data.skills || data || [];
 
-      if (!Array.isArray(skills) || skills.length === 0) {
+      /* Filter to only show enabled skills */
+      const enabledSkills = Array.isArray(skills) ? skills.filter(skill => skill.enabled === true) : [];
+
+      if (enabledSkills.length === 0) {
         content.innerHTML = `
           <div class="claude-empty">
             <div class="claude-empty-icon">📭</div>
-            <p>No skills found in this organization.</p>
+            <p>No active skills found in this organization.</p>
           </div>
         `;
         return;
       }
 
       /* Sort skills by update date (newest first) */
-      const sortedSkills = [...skills].sort((a, b) => {
+      const sortedSkills = [...enabledSkills].sort((a, b) => {
         const dateA = new Date(a.updated_at || a.created_at || 0);
         const dateB = new Date(b.updated_at || b.created_at || 0);
         return dateB - dateA;
