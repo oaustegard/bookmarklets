@@ -327,18 +327,21 @@ javascript: (function() {
       /* Check if we have skills */
       const skills = data.skills || data || [];
 
-      if (!Array.isArray(skills) || skills.length === 0) {
+      /* Filter to only show enabled skills */
+      const enabledSkills = Array.isArray(skills) ? skills.filter(skill => skill.enabled === true) : [];
+
+      if (enabledSkills.length === 0) {
         content.innerHTML = `
           <div class="claude-empty">
             <div class="claude-empty-icon">📭</div>
-            <p>No skills found in this organization.</p>
+            <p>No active skills found in this organization.</p>
           </div>
         `;
         return;
       }
 
       /* Sort skills by update date (newest first) */
-      const sortedSkills = [...skills].sort((a, b) => {
+      const sortedSkills = [...enabledSkills].sort((a, b) => {
         const dateA = new Date(a.updated_at || a.created_at || 0);
         const dateB = new Date(b.updated_at || b.created_at || 0);
         return dateB - dateA;
