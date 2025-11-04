@@ -123,6 +123,25 @@ javascript: (function() {
       flex: 1;
     }
 
+    #claude-skills-footer {
+      padding: 12px 20px;
+      border-top: 1px solid #333;
+      background: #1a1a1a;
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    #claude-skills-footer a {
+      color: #888;
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s ease;
+    }
+
+    #claude-skills-footer a:hover {
+      color: #fff;
+    }
+
     .claude-skill-item {
       background: #2a2a2a;
       border: 1px solid #3a3a3a;
@@ -259,6 +278,9 @@ javascript: (function() {
         <div class="claude-loading-icon">⏳</div>
         <div>Loading skills...</div>
       </div>
+    </div>
+    <div id="claude-skills-footer">
+      <a href="https://claude.ai/settings/capabilities" target="_blank">Manage Skills →</a>
     </div>
   `;
 
