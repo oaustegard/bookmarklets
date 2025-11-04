@@ -118,13 +118,13 @@ javascript: (function() {
     }
 
     #claude-skills-content {
-      padding: 16px 20px;
+      padding: 12px 16px;
       overflow-y: auto;
       flex: 1;
     }
 
     #claude-skills-footer {
-      padding: 12px 20px;
+      padding: 10px 16px;
       border-top: 1px solid #333;
       background: #1a1a1a;
       flex-shrink: 0;
@@ -134,7 +134,7 @@ javascript: (function() {
     #claude-skills-footer a {
       color: #888;
       text-decoration: none;
-      font-size: 13px;
+      font-size: 12px;
       transition: color 0.2s ease;
     }
 
@@ -145,9 +145,9 @@ javascript: (function() {
     .claude-skill-item {
       background: #2a2a2a;
       border: 1px solid #3a3a3a;
-      border-radius: 8px;
-      padding: 14px;
-      margin-bottom: 10px;
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-bottom: 6px;
       cursor: pointer;
       transition: all 0.2s ease;
     }
@@ -159,30 +159,30 @@ javascript: (function() {
     }
 
     .claude-skill-name {
-      margin: 0 0 6px 0;
+      margin: 0 0 4px 0;
       color: #fff;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
     }
 
     .claude-skill-description {
-      margin: 0 0 8px 0;
+      margin: 0 0 4px 0;
       color: #b0b0b0;
-      font-size: 13px;
-      line-height: 1.4;
+      font-size: 12px;
+      line-height: 1.3;
     }
 
     .claude-skill-date {
       margin: 0;
       color: #777;
-      font-size: 11px;
+      font-size: 10px;
     }
 
     .claude-skill-count {
       color: #888;
-      font-size: 13px;
-      margin-bottom: 12px;
-      padding-bottom: 12px;
+      font-size: 12px;
+      margin-bottom: 8px;
+      padding-bottom: 8px;
       border-bottom: 1px solid #333;
     }
 
