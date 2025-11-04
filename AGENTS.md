@@ -71,7 +71,7 @@ javascript:(function(){
 ### Core Files
 - `*.js` - Bookmarklet JavaScript files
 - `*_README.md` - Documentation for each bookmarklet
-- `CONTENT_SUMMARY.md` - Master index of all bookmarklets
+- `CONTENT_SUMMARY.md` - Master index of all bookmarklets (only consult when needing inventory)
 - `README.md` - Repository landing page
 
 ### Archived Files

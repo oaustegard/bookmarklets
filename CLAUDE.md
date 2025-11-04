@@ -8,7 +8,7 @@
 - CSP/CORS workarounds and troubleshooting
 - Site-specific implementation notes
 
-Also review [CONTENT_SUMMARY.md](./CONTENT_SUMMARY.md) for the repository structure and existing bookmarklets.
+**OPTIONAL**: If you need an inventory of existing bookmarklets, consult [CONTENT_SUMMARY.md](./CONTENT_SUMMARY.md).
 
 ## Claude-Specific Configuration
 
