@@ -49,14 +49,21 @@ javascript:(function() {
         alert('Could not find organization ID. The bookmarklet may need to be updated.');
         return;
     }
-    const conversationId = window.location.pathname.split('/').pop();
-    
+
+    /* Detect if this is a shared conversation */
+    const pathname = window.location.pathname;
+    const isShared = pathname.includes('/share/');
+    const conversationId = pathname.split('/').pop();
+
     log(`Organization ID: ${orgId}`);
     log(`Conversation ID: ${conversationId}`);
+    log(`Is Shared: ${isShared}`);
 
-    /* Constants */
-    const API_URL = `https://claude.ai/api/organizations/${orgId}/chat_conversations/${conversationId}?tree=True&rendering_mode=messages&render_all_tools=true`;
-    
+    /* Construct the appropriate API URL */
+    const API_URL = isShared
+        ? `https://claude.ai/api/organizations/${orgId}/chat_snapshots/${conversationId}?rendering_mode=messages&render_all_tools=true`
+        : `https://claude.ai/api/organizations/${orgId}/chat_conversations/${conversationId}?tree=True&rendering_mode=messages&render_all_tools=true`;
+
     log(`API URL: ${API_URL}`);
 
     /* Open pruner in new window */
