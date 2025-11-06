@@ -33,9 +33,17 @@ javascript: (function() {
     return;
   }
 
-  /* Get the conversation ID from the current URL */
-  const conversationId = window.location.pathname.split('/').pop(); 
-  /* Construct the API URL */
-  const apiUrl = `https://claude.ai/api/organizations/${orgId}/chat_conversations/${conversationId}?tree=True&rendering_mode=messages&render_all_tools=True`;
+  /* Detect if this is a shared conversation */
+  const pathname = window.location.pathname;
+  const isShared = pathname.includes('/share/');
+
+  /* Get the conversation/share ID from the current URL */
+  const conversationId = pathname.split('/').pop();
+
+  /* Construct the appropriate API URL */
+  const apiUrl = isShared
+    ? `https://claude.ai/api/organizations/${orgId}/chat_snapshots/${conversationId}?rendering_mode=messages&render_all_tools=true`
+    : `https://claude.ai/api/organizations/${orgId}/chat_conversations/${conversationId}?tree=True&rendering_mode=messages&render_all_tools=True`;
+
   window.open(apiUrl, '_blank');
 })();
