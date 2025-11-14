@@ -284,6 +284,13 @@ Below is a list of available bookmarklets, their purpose, and links to their res
 
 ---
 
+### Fat Jules
+- **Purpose**: Widens the chat input area on jules.google.com to reduce vertical scrolling.
+- **Source**: [`fat_jules.js`](https://github.com/oaustegard/bookmarklets/blob/main/fat_jules.js)
+- **Details**: [`fat_jules_README.md`](https://github.com/oaustegard/bookmarklets/blob/main/fat_jules_README.md)
+
+---
+
 ### Find and Replace Text on Page
 - **Purpose**: Prompts for text to find and text to replace it with, then performs a case-insensitive search and replace on all text content of the current page.
 - **Source**: [`find_and_replace.js`](https://github.com/oaustegard/bookmarklets/blob/main/find_and_replace.js)
