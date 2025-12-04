@@ -3,7 +3,6 @@ javascript:
 /* @description: Toggles between arXiv PDF and abstract views, working in both directions */
 /* @domains: arxiv.org */
 (function() {
-    /* 
     if (window.location.hostname !== 'arxiv.org') {
         alert('This bookmarklet only works on arxiv.org');
         return;
