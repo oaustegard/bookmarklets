@@ -1,5 +1,6 @@
 javascript:(function() {
-  /* Video speed bookmarklet with cross-origin fallback instructions */
+  /* @title: Speed Up Video */
+  /* @description: Increases video playback speed and enables controls, including in iframes */
   var MULTIPLIER = 1.5;
   var found = 0;
   var blocked = [];

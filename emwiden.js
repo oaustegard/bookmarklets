@@ -1,4 +1,6 @@
 javascript:(function(){
+    /* @title: Expand Overflowing Element */
+    /* @description: Click on elements to expand their width to fit overflowing content */
     /* Create a semi-transparent overlay to highlight elements on hover */
     var overlay = document.createElement('div');
     overlay.style.position = 'absolute';

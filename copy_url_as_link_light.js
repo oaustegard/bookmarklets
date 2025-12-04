@@ -1,4 +1,6 @@
 javascript:(function() {
+    /* @title: Copy URL as Markdown Link (Light) */
+    /* @description: Copies the page title and URL as a markdown link with light mode styling */
     var loc = window.location;
     var page_title = window.document.title;
     var w = window.open('about:blank', '_blank', 'height=200,width=400');

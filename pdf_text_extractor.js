@@ -1,4 +1,6 @@
 javascript:(function() {
+    /* @title: Extract PDF Text */
+    /* @description: Redirects to a PDF text extraction utility with the current PDF URL */
     let targetUrl = window.location.href;
 
     /* Special handling for arXiv abstract pages */

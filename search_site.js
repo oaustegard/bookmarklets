@@ -1,1 +1,1 @@
-javascript:(function(){window.open("https://www.google.com/search?q=site:"+location.hostname.replace("www.","")+" "+window.prompt("Enter site search terms"))})()
+javascript:/* @title: Search Current Site */ /* @description: Opens a Google search restricted to the current website domain */ (function(){window.open("https://www.google.com/search?q=site:"+location.hostname.replace("www.","")+" "+window.prompt("Enter site search terms"))})()

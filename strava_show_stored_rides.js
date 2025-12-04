@@ -1,4 +1,7 @@
 javascript:(function() {
+    /* @title: Show Stored Strava Rides */
+    /* @description: Displays all ride data stored in localStorage by Strava bookmarklets */
+    /* @domains: strava.com */
     /* Get the stored ride summaries from localStorage */
     function getStoredRides() {
         /* Use the same key as the extraction bookmarklet */

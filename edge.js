@@ -1,1 +1,1 @@
-javascript:(function() { window.location.href = "microsoft-edge:" + window.location.href; })();
+javascript:/* @title: Open in Edge */ /* @description: Opens the current page in Microsoft Edge browser */ (function() { window.location.href = "microsoft-edge:" + window.location.href; })();

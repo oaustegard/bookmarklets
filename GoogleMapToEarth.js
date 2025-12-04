@@ -1,4 +1,6 @@
-javascript:(function(){ /* Gets parameters from Google Maps and opens in Google Earth */
+javascript:(function(){
+/* @title: Google Maps to Earth */
+/* @description: Opens the current Google Maps location in Google Earth */
     var mapsUrl = window.location.href;
     var coordsMatch = mapsUrl.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
     var searchTermMatch = mapsUrl.match(/place\/([^\/]+)\//);

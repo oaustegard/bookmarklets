@@ -1,8 +1,7 @@
 javascript:(function(){
-    /* Strava Analysis Bookmarklet
-     * This bookmarklet extracts detailed ride data from a Strava activity page,
-     * formats it as JSON, and sends it to Claude for analysis.
-     */
+    /* @title: Analyze Strava Activity */
+    /* @description: Extracts ride data from current Strava activity and sends it to Claude for analysis */
+    /* @domains: strava.com */
 
     function extractData() {
         function safeGet(selector, property = 'innerText', fallback = 'N/A', context = document) {

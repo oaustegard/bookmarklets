@@ -1,5 +1,6 @@
 javascript:(function() {
-/* For a given Sharepoint document library/list location, generates an equivalent file path which can be opened in Windows Explorer */
+/* @title: Get SharePoint File Path */
+/* @description: Generates a Windows Explorer-compatible file path for SharePoint document libraries */
     /* Verify we're on a SharePoint site */
     if (typeof SP === 'undefined' || typeof SP.Site === 'undefined') {
         alert('This doesn\'t appear to be a SharePoint site.');

@@ -1,4 +1,7 @@
 javascript:(function(){
+    /* @title: Extract Strava Activity Data */
+    /* @description: Extracts detailed ride data including segments, efforts, and statistics from Strava activities */
+    /* @domains: strava.com */
     function extractData() {
         function safeGet(selector, property = 'innerText', fallback = 'N/A', context = document) {
             const element = context.querySelector(selector);

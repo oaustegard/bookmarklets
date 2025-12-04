@@ -1,5 +1,8 @@
 javascript:
 (function() {
+    /* @title: Display Strava Ride Summaries */
+    /* @description: Displays all stored ride summaries from localStorage in a formatted view */
+    /* @domains: strava.com */
     /* get the stored ride summaries and display them in a new window */
     var rideSummaries = JSON.parse(localStorage.getItem('rideSummaries')) || [];
     /* get rid of the following phrases */

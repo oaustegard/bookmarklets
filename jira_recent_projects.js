@@ -1,4 +1,7 @@
 javascript:(function() {
+  /* @title: Display Recent Jira Projects */
+  /* @description: Shows a list of recently accessed Jira projects for quick navigation */
+  /* @domains: jira.meso-scale.com */
   /* Configuration */
   const config = {
     maxProjects: 20,

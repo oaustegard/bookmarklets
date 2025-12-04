@@ -1,4 +1,7 @@
 javascript: (function () {
+    /* @title: Strava Year-over-Year Analysis */
+    /* @description: Analyzes and compares Strava performance metrics year-over-year for progress tracking */
+    /* @domains: strava.com */
     const DEFAULT_FTP = 270; /* Set your default FTP here */
 
     /* Utility function to calculate FTP */

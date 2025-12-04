@@ -1,4 +1,6 @@
 javascript: (function() {
+	/* @title: Drag and Delete Elements */
+	/* @description: Drag elements around the page or press Delete/Backspace to remove them */
 	let outlinedElement = null;
 	let offsetX, offsetY;
 	const outlineOnHover = (e) => {

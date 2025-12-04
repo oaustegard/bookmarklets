@@ -1,4 +1,6 @@
 javascript:(function() {
+    /* @title: Download SVG */
+    /* @description: Hover over any SVG element and click to download it as an SVG file */
     /* Style for highlighting SVGs */
     var style = document.createElement('style');
     style.textContent = `

@@ -1,4 +1,7 @@
-javascript:(function() { /* Augment Jira's PR listing with repo info */ 
+javascript:(function() {
+    /* @title: Augment Jira PR Listing */
+    /* @description: Prefixes pull request links in Jira with their repository names for clarity */
+    /* @domains: jira.meso-scale.com */ 
     var dialog = document.getElementById('devstatus-pullrequest-detail-dialog');
     if (dialog) {
         dialog.style.width = '1200px';

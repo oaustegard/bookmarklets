@@ -1,4 +1,6 @@
 javascript:(function(){
+    /* @title: Compare Bitbucket PR Commits */
+    /* @description: Opens a comparison view between commits in a Bitbucket pull request */
     console.log('Bitbucket Compare Helper: Starting...');
     
     /* Check if we're on a Bitbucket commits page */

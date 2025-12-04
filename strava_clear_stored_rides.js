@@ -1,4 +1,7 @@
 javascript:(function() {
+    /* @title: Clear Stored Strava Rides */
+    /* @description: Clears all ride data stored in localStorage by Strava bookmarklets */
+    /* @domains: strava.com */
     /* Function to clear stored Strava ride data */
     function clearStoredRides() {
         /* Check if there are any rides stored */

@@ -1,4 +1,7 @@
 javascript:(function() {
+    /* @title: Copy Confluence Link */
+    /* @description: Copies a formatted markdown link to the current Confluence page to clipboard */
+    /* @domains: confluence.meso-scale.com */
     document.body.appendChild(Object.assign(document.createElement('script'), {textContent: '_c=window.console||{};Object.keys(console).forEach(k=>{_c[k]=console[k];});'}));
     
     function copyToClip(doc, html, text = null) {

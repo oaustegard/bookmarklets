@@ -1,5 +1,7 @@
 javascript: (function() {
-  /* Bluesky Profile Hover Posts Viewer */
+  /* @title: Show BlueSky Latest Posts on Hover */
+  /* @description: Displays latest posts from a BlueSky user when hovering over their profile */
+  /* @domains: bsky.app */
   console.log('Starting Bluesky Profile Hover Posts Viewer...');
   
   /* Remove existing styles if present */

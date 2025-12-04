@@ -1,4 +1,7 @@
-javascript: /* From either a Jira ticket or Kanban board, adds a formatted link to the selected Jira ticket to your clipboard, in Markdown and HTML format */
+javascript:
+/* @title: Copy Jira Link */
+/* @description: Copies a formatted markdown link to the current Jira ticket to clipboard */
+/* @domains: jira.meso-scale.com */
 (function() {
     /* Copy HTML and plain text to clipboard */
     function copyToClip(doc, html, text = null) {

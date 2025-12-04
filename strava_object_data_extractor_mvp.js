@@ -1,4 +1,7 @@
 javascript:(function() {
+    /* @title: Extract Strava Segment Data */
+    /* @description: Extracts segment data and performance metrics from Strava activities */
+    /* @domains: strava.com */
     /* Segment Data Extractor for Bike Coaches -- https://claude.ai/chat/a5f510fd-eac5-4913-bc54-0064effd7e5c */
     function extractSegmentData() {
         const segmentEfforts = pageView._segmentEffortsTableContext.segmentEfforts.models;

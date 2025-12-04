@@ -1,4 +1,6 @@
 javascript: (function() {
+  /* @title: Search DOM Properties */
+  /* @description: Search window object properties by key, value, regex, or range with interactive UI */
   /* Helper function to create elements with properties */
   function createElement(tag, props = {}, ...children) {
     const elem = document.createElement(tag);

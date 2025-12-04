@@ -1,4 +1,6 @@
-(function() {
+javascript:(function() {
+    /* @title: Sort GitHub Files by Update */
+    /* @description: Sorts GitHub repository files by last commit date instead of alphabetically */
     console.log('GitHub repo sort by date bookmarklet started');
     
     /* Find the table using aria-labelledby attribute */

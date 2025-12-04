@@ -1,5 +1,6 @@
 javascript:(function() {
-    /* Quick and easy access to IndexedDB tables and data */
+    /* @title: IndexedDB Inspector */
+    /* @description: Browse, search, and inspect IndexedDB stores and data with an interactive UI */
     /* Load idb library */
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/idb@8/build/umd.js';

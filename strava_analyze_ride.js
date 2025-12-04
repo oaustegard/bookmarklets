@@ -1,9 +1,7 @@
 javascript:(function() {
-    /* Enhanced Strava Analysis Bookmarklet
-     * Extracts concise ride summaries from Strava activity pages and sends to Claude for analysis.
-     * Includes configurable thresholds for power, speed, and climb characteristics.
-     * Optimized for URL length limits by focusing only on interesting segments.
-     */
+    /* @title: Analyze Strava Ride */
+    /* @description: Extracts ride summaries from Strava and sends them to Claude for analysis */
+    /* @domains: strava.com */
 
     /* ========== CONFIGURATION SECTION - Edit these values as needed ========== */
     const CLAUDE_PROJECT = ""; /* Set to your project UUID, or leave empty for default workspace */

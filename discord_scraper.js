@@ -1,5 +1,6 @@
 javascript:(function() {
-/* When run on a Discord forum page first captures the latest 50 messages, then as the user scrolls up/backwards in time each successive 50-messages batch is prepended, finally at download or copy the messages are threaded for optimization */
+/* @title: Scrape Discord Forum */
+/* @description: Captures and threads Discord forum messages as you scroll through conversation history */
     /* Initialize storage */
     let messages = new Map();
 

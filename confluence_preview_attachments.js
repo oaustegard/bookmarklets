@@ -1,4 +1,7 @@
 javascript:(function() {
+  /* @title: Preview Confluence Attachments */
+  /* @description: Displays preview thumbnails of all attachments on a Confluence page */
+  /* @domains: confluence.meso-scale.com */
   const table = document.querySelector('.tableview.attachments');
   const rows = table.querySelectorAll('tbody > tr');
   

@@ -1,4 +1,7 @@
 javascript: (function() {
+	/* @title: Add Strava GPX Download Link */
+	/* @description: Adds GPX download links to Strava ride pages for easy route export */
+	/* @domains: strava.com */
 	for (let e of document.querySelectorAll('[data-field-name=name]')) {
 		let h = e.href;
 		let a = document.createElement("a");

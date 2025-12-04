@@ -1,5 +1,7 @@
 javascript:(function(){
-/* From a Jira Data Center's Project Permissions page, reformats the permissions by role rather than permission */
+/* @title: Format Jira Permissions by Role */
+/* @description: Reformats Jira permissions table to show permissions grouped by role */
+/* @domains: jira.meso-scale.com */
     /* Find the Jira permissions table */
     const permissionsTable = document.querySelector('jira-permissions-table');
     if (!permissionsTable) {

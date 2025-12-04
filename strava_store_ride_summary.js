@@ -1,4 +1,7 @@
 javascript:(function() {
+    /* @title: Store Strava Ride Summary */
+    /* @description: Stores ride summary data in localStorage for later reference and analysis */
+    /* @domains: strava.com */
     /* Extract ride data from Strava page */
     function extractRideData() {
         /* Get the heading section with ride summary */

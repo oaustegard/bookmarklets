@@ -1,4 +1,6 @@
 javascript:(function() {
+  /* @title: Extract X Conversation */
+  /* @description: Scrolls through and extracts all tweets from an X/Twitter conversation thread */
   let collectedTweets = new Set();
 
   function collectData() {

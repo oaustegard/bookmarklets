@@ -1,4 +1,7 @@
 javascript:(function() {
+  /* @title: Recent Conversation Summaries */
+  /* @description: Generate AI-powered summaries of recently updated Claude conversations */
+  /* @domains: claude.ai */
   /* Configuration */
   const RATE_LIMIT_TICK = 200; /* Base delay unit. Set to 1 for instant, 200 for polite */
   const BATCH_DELAY_MULTIPLIER = 1; /* Delay between API requests */
