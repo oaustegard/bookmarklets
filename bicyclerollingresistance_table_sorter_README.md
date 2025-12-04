@@ -57,4 +57,4 @@ MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main
 
 ## Author
 
-Created by [Oskar Austegard](https://austegard.com)
+Concept and edits by [Oskar Austegard](https://austegard.com) Code and Readme by Claude
