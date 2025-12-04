@@ -8,7 +8,7 @@ Quickly extract text content from PDF files by redirecting to a hosted PDF text 
 
 ## Features
 
-- **Universal PDF Extraction**: Works with any PDF URL by passing it to the extraction tool
+- **Universal PDF Extraction**: Works with any PDF URL by passing it to the extraction tool - see https://github.com/oaustegard/oaustegard.github.io/blob/main/web-utilities/pdf-text-extractor_README.md
 - **arXiv Abstract Support**: Automatically converts arXiv abstract URLs (e.g., `arxiv.org/abs/2512.02543`) to PDF URLs (e.g., `arxiv.org/pdf/2512.02543`)
 - **Simple Redirect**: Seamlessly redirects to the extraction tool with the appropriate URL
 - **One-Click Operation**: Extract PDF text with a single bookmark click
@@ -38,23 +38,18 @@ The bookmarklet performs the following steps:
 1. **Captures Current URL**: Stores the current page's URL in a variable
 2. **arXiv Detection**: Checks if the URL contains `arxiv.org` and `/abs/`
    - If detected, replaces `/abs/` with `/pdf/`
-3. **Redirect**: Navigates to `https://austegard.com/web-utilities/pdf-text-extractor.html` with the target URL as a query parameter
+3. **Redirect**: Navigates to the purely client-side https://austegard.com/web-utilities/pdf-text-extractor.html with the target URL as a query parameter
+   - See https://github.com/oaustegard/oaustegard.github.io/blob/main/web-utilities/pdf-text-extractor_README.md for information about how the text extractor works
 
 The extraction tool at the destination URL handles the actual PDF text extraction process.
 
 ## Technical Notes
 
 - **Browser Compatibility**: Works in all modern browsers (Chrome, Firefox, Safari, Edge)
+- **PDF Compatibility**: Will only extract text from PDFs. PDFs composed of images will yield little meaningful info
 - **arXiv URL Formats**: Handles both old and new arXiv identifier formats
 - **URL Preservation**: For non-arXiv URLs, passes the current URL unchanged
-- **Extraction Tool**: Requires the hosted PDF text extractor at austegard.com to be available
-
-## Example Use Cases
-
-- Extracting text from research papers on arXiv for citation or analysis
-- Converting PDF content to searchable text
-- Accessing PDF content on mobile devices where PDF viewers may be limited
-- Quickly extracting text from technical documentation in PDF format
+- **Extraction Tool**: Requires the hosted PDF text extractor at austegard.com to be available - hosted on github so should be up!
 
 ## License
 
@@ -62,4 +57,4 @@ MIT License - See [LICENSE](https://github.com/oaustegard/bookmarklets/blob/main
 
 ## Author
 
-Created by [Oskar Austegard](https://austegard.com)
+Concept and edits by [Oskar Austegard](https://austegard.com) Code and Readme by Claude
