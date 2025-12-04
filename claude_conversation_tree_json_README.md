@@ -14,8 +14,10 @@ This bookmarklet allows users to easily access the raw JSON data of their curren
 ## Features
 
 - **Direct API Access**: Constructs and opens the specific API endpoint URL that returns the conversation tree.
-- **Automatic ID Extraction**: Retrieves the necessary organization ID from `localStorage` and conversation ID from the current URL.
+- **Automatic ID Extraction**: Retrieves the necessary organization ID from page scripts and conversation ID from the current URL.
+- **Shared Conversation Support**: Automatically detects shared conversations and uses the appropriate API endpoint.
 - **Full Tree Export**: Fetches the complete conversation tree, including all messages and tool usage, by setting appropriate URL parameters (`tree=True`, `rendering_mode=messages`, `render_all_tools=True`).
+- **Error Handling**: Displays an alert if the organization ID cannot be found.
 - **New Tab Output**: Opens the JSON data in a new browser tab for easy viewing or saving.
 
 ## Installation
@@ -32,7 +34,7 @@ This bookmarklet allows users to easily access the raw JSON data of their curren
 
 ## Usage
 
-1.  Navigate to an active Claude.ai conversation page (e.g., `https://claude.ai/chat/YOUR_CONVERSATION_ID`).
+1.  Navigate to an active Claude.ai conversation page (e.g., `https://claude.ai/chat/YOUR_CONVERSATION_ID`) or a shared conversation (e.g., `https://claude.ai/share/YOUR_SHARE_ID`).
 2.  Click the "Claude JSON Tree" bookmarklet in your bookmarks bar.
 3.  A new tab will open displaying the JSON data of the conversation. You can then save this data (e.g., right-click -> Save As, or copy-paste).
 
@@ -40,17 +42,24 @@ This bookmarklet allows users to easily access the raw JSON data of their curren
 
 The bookmarklet performs the following steps:
 
-1.  **Checks Hostname**: (Implicitly, as it relies on Claude's `localStorage` and URL structure).
-2.  **Retrieves Organization ID**: Reads `localStorage.getItem('lastActiveOrg')` to get the user's active organization ID.
-3.  **Retrieves Conversation ID**: Parses `window.location.pathname` to extract the current conversation's unique ID.
+1.  **Retrieves Organization ID**: Searches inline script tags for the `lastActiveOrg` preference in escaped JSON format to get the user's active organization ID. If not found, displays an error alert.
+2.  **Detects Conversation Type**: Checks if the URL path contains `/share/` to determine if this is a shared conversation or a regular chat.
+3.  **Retrieves Conversation/Share ID**: Parses `window.location.pathname` to extract the last segment (conversation ID or share ID).
 4.  **Constructs API URL**: Builds a URL targeting Claude's internal API:
-    `https://api.claude.ai/api/organizations/{orgId}/chat_conversations/{conversationId}?tree=True&rendering_mode=messages&render_all_tools=True`
+    - For shared conversations: `https://claude.ai/api/organizations/{orgId}/chat_snapshots/{shareId}?rendering_mode=messages&render_all_tools=true`
+    - For regular conversations: `https://claude.ai/api/organizations/{orgId}/chat_conversations/{conversationId}?tree=True&rendering_mode=messages&render_all_tools=True`
+
     The parameters ensure the full message tree and tool details are included.
 5.  **Opens URL**: Calls `window.open(apiUrl, '_blank')` to open the constructed URL in a new tab, which then displays the JSON response.
 
 ## Technical Details
 
--   Relies on the structure of Claude.ai's URLs and its use of `localStorage` for the organization ID. Changes to these by Anthropic could break the bookmarklet.
+-   Uses a sophisticated organization ID detection method that searches for `lastActiveOrg` in inline script tags with escaped JSON.
+-   Supports both regular conversations (`/chat/`) and shared conversations (`/share/`).
+-   Uses different API endpoints depending on conversation type:
+    - `chat_conversations` for regular chats (includes full tree)
+    - `chat_snapshots` for shared conversations
+-   Relies on the structure of Claude.ai's URLs and page scripts. Changes to these by Anthropic could break the bookmarklet.
 -   Directly accesses an API endpoint that may be internal and subject to change without notice.
 -   The API provides a rich JSON object containing messages, roles, timestamps, and potentially other metadata related to the conversation.
 
