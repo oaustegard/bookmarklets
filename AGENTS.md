@@ -136,7 +136,7 @@ Each README should include:
 - **How It Works**: Technical explanation
 - **Technical Notes**: Browser/site-specific issues
 - **License**: MIT
-- **Author**: Link to austegard.com
+- **Author**: Concept and edits by [Oskar Austegard](https://austegard.com) Code and Readme by Claude
 
 ### Git Workflow
 - Direct commits to main branch
