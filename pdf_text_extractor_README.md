@@ -9,7 +9,7 @@ Quickly extract text content from PDF files by redirecting to a hosted PDF text 
 ## Features
 
 - **Universal PDF Extraction**: Works with any PDF URL by passing it to the extraction tool
-- **arXiv Abstract Support**: Automatically converts arXiv abstract URLs (e.g., `arxiv.org/abs/2512.02543`) to PDF URLs (e.g., `arxiv.org/pdf/2512.02543.pdf`)
+- **arXiv Abstract Support**: Automatically converts arXiv abstract URLs (e.g., `arxiv.org/abs/2512.02543`) to PDF URLs (e.g., `arxiv.org/pdf/2512.02543`)
 - **Simple Redirect**: Seamlessly redirects to the extraction tool with the appropriate URL
 - **One-Click Operation**: Extract PDF text with a single bookmark click
 
@@ -34,7 +34,7 @@ Quickly extract text content from PDF files by redirecting to a hosted PDF text 
 ### For arXiv Abstract Pages
 1. Navigate to an arXiv abstract page (e.g., `https://arxiv.org/abs/2512.02543`)
 2. Click the "Extract PDF Text" bookmarklet
-3. The bookmarklet automatically converts the URL to the PDF version (`https://arxiv.org/pdf/2512.02543.pdf`)
+3. The bookmarklet automatically converts the URL to the PDF version (`https://arxiv.org/pdf/2512.02543`)
 4. You'll be redirected to the extraction tool with the PDF URL pre-filled
 
 ## How it Works
@@ -44,7 +44,6 @@ The bookmarklet performs the following steps:
 1. **Captures Current URL**: Stores the current page's URL in a variable
 2. **arXiv Detection**: Checks if the URL contains `arxiv.org` and `/abs/`
    - If detected, replaces `/abs/` with `/pdf/`
-   - Ensures the URL ends with `.pdf` extension
 3. **Redirect**: Navigates to `https://austegard.com/web-utilities/pdf-text-extractor.html` with the target URL as a query parameter
 
 The extraction tool at the destination URL handles the actual PDF text extraction process.
