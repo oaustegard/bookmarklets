@@ -1,4 +1,7 @@
 javascript:(function() {
+    /* @title: Prune Conversation */
+    /* @description: Load and prune Claude conversations using an external pruning interface */
+    /* @domains: claude.ai */
     /* Configuration */
     const PRUNER_DOMAIN = 'austegard.com';
     const PRUNER_URL = `https://${PRUNER_DOMAIN}/ai-tools/claude-pruner.html`;

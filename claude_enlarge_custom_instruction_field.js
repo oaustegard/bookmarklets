@@ -1,4 +1,7 @@
 javascript:(function() {
+  /* @title: Enlarge Custom Instructions Field */
+  /* @description: Expand the custom instructions textarea in Claude projects for easier editing */
+  /* @domains: claude.ai */
   /* Find the textarea with id from 1-10 */
   let textarea = null;
   for (let i = 1; i <= 10; i++) {

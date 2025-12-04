@@ -1,5 +1,6 @@
 javascript:(function() {
-/* Creates a firework and text eruption effect on a webpage when clicked. */  
+/* @title: Text Eruption Effect */
+/* @description: Creates a firework and text eruption effect on a webpage when clicked */  
     /* Style reset to prevent interference */
     const style = document.createElement('style');
     style.textContent = `

@@ -1,4 +1,6 @@
 javascript:(function() {
+    /* @title: Upload to Pastebin */
+    /* @description: Uploads selected text or full page content to Pastebin via API */
     /* EDIT THIS: Replace with your actual Pastebin API developer key from https://pastebin.com/doc_api */
     const API_DEV_KEY = 'YOUR_API_KEY_HERE';
     

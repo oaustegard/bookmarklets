@@ -1,5 +1,6 @@
 javascript:(function(){
-  /* Copy a Tweet page's url, author and tweet in Markdown format */
+  /* @title: Copy Tweet as Markdown */
+  /* @description: Copies the current X/Twitter post as a markdown-formatted quote with link */
   const urlRegex = /^https?:\/\/(twitter\.com|x\.com)\/.+\/status\/\d+/;
   
   /* Regular expression for X.com page titles */

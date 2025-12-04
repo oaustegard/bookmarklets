@@ -1,4 +1,7 @@
 javascript:(function(){
+/* @title: Create BlueSky Markdown Link */
+/* @description: Creates a markdown-formatted link from the current BlueSky post */
+/* @domains: bsky.app */
 var d=document,b=d.body;
 var STORAGE_PREFIX = 'bsky_app_pass_';
 

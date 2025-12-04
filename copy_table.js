@@ -1,5 +1,6 @@
 javascript:(function() {
-    /* See https://github.com/oaustegard/bookmarklets/blob/main/copy_table_README.md */
+    /* @title: Copy Table */
+    /* @description: Copies the selected HTML table to clipboard in a pasteable format */
     const tables = document.querySelectorAll('table');
     
     if (tables.length === 0) {

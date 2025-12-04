@@ -1,5 +1,7 @@
 javascript:(function(){
-/* Gets the roles for a Jira project and the associated users, with option to copy output as markdown */
+/* @title: Get Jira Project Role Users */
+/* @description: Retrieves and displays users assigned to each role in a Jira project */
+/* @domains: jira.meso-scale.com */
     /* Extract project key from URL */
     const projectKey = window.location.pathname.match(/\/project-config\/([^\/]+)/)?.[1] || 
                       prompt('Enter project key (e.g., AS):');

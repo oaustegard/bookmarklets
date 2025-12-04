@@ -1,5 +1,6 @@
 javascript:(function(){
-/* Generate a new Excalidraw drawing by crafting a random url, along with a throwaway QSP to allow bookmarking in Raindrop.io etc */
+/* @title: Create New Excalidraw */
+/* @description: Generates a new Excalidraw drawing with a random shareable URL */
 
     /* Generate random hex string of specified length */
     function randomHex(length){

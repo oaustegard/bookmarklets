@@ -1,5 +1,6 @@
 javascript:(function(){
-    /* Finds all datalist elements on the page and sorts them alphabetically */
+    /* @title: Sort Datalists Alphabetically */
+    /* @description: Finds and sorts all datalist elements on the page alphabetically */
     const datalists = document.querySelectorAll('datalist');
     console.log(`Found ${datalists.length} datalist(s) to sort`);
     

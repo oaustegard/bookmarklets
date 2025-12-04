@@ -1,4 +1,6 @@
 javascript:(function() {
+  /* @title: Make Element Sticky */
+  /* @description: Select any element to keep it visible as a sticky overlay while scrolling */
   /* Check if bookmarklet is already running */
   if (window.__stickyElementBookmarklet) {
     alert('Sticky element selection is already active. Press Esc to cancel.');

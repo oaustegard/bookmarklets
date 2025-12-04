@@ -1,4 +1,7 @@
 javascript:(function(){
+  /* @title: Render Conversation JSON as HTML (v2) */
+  /* @description: Alternative HTML renderer for Claude conversation JSON with enhanced formatting */
+  /* @domains: claude.ai */
   /* Process the conversation data into HTML */
   function getConversationPath(data) {
     const messageMap = new Map(data.chat_messages.map(msg => [msg.uuid, msg]));

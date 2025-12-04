@@ -1,4 +1,6 @@
 javascript:(function() {
+    /* @title: GitHub.io to Repository */
+    /* @description: Redirects from a GitHub Pages URL to its corresponding repository */
     /* Get the current URL */
     var currentUrl = window.location.href;
 

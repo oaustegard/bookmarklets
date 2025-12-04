@@ -1,4 +1,6 @@
 javascript:(function() {
+    /* @title: Copy URL with Preview */
+    /* @description: Copies the URL with a preview overlay showing the copied content */
     var loc = window.location;
     var page_title = window.document.title;
     var w = window.open('about:blank', '_blank', 'height=420,width=500');

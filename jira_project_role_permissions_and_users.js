@@ -1,12 +1,15 @@
 javascript:(function(){
+    /* @title: List Jira Role Permissions */
+    /* @description: Lists all role permissions and associated users for a Jira project */
+    /* @domains: jira.meso-scale.com */
     /* Extract project key from URL */
     const projectKey = window.location.pathname.match(/\/project-config\/([^\/]+)/)?.[1];
-    
+
     if (!projectKey) {
         alert('Must be run from a project permissions page');
         return;
     }
-    
+
     console.log('Processing roles and permissions for project:', projectKey);
     
     /* Find the Jira permissions table */

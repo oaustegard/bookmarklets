@@ -1,5 +1,7 @@
 javascript:(function() {
-  /* Bookmarklet that pops up an advanced search form for Bsky posts -- see README at ./bsky_advanced_search_README.md */
+  /* @title: BlueSky Advanced Search */
+  /* @description: Opens an advanced search form for BlueSky with filtering options */
+  /* @domains: bsky.app */
   /* Redirect if not on BlueSky */
   if (!window.location.hostname.includes('bsky.app')) {
     alert('Redirecting to BlueSky search. Please click the bookmarklet again once the page loads.');

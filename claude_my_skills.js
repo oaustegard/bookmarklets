@@ -1,4 +1,7 @@
 javascript:(function() {
+  /* @title: View My Skills */
+  /* @description: Display a sortable list of all available Claude skills with descriptions and domains */
+  /* @domains: claude.ai */
   /* Close existing overlay if present */
   const existing = document.getElementById('claude-skills-overlay');
   if (existing) {

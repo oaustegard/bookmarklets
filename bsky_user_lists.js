@@ -1,5 +1,7 @@
 javascript: (function() {
-  /* Bluesky Lists Viewer with Native UX */
+  /* @title: Display BlueSky User Lists */
+  /* @description: Shows all user lists and memberships for the current BlueSky profile */
+  /* @domains: bsky.app */
   console.log('Starting Bluesky Lists Viewer...');
   
   let currentUrl = window.location.href;

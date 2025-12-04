@@ -1,4 +1,7 @@
 javascript:(function() {
+  /* @title: Visualize Strava Performance Trends */
+  /* @description: Creates visual performance trend analysis with fitted curves for recent Strava efforts */
+  /* @domains: strava.com */
   /* Visualizes performance trends on Strava segment history charts by adding a linear regression line and improvement rate calculation. */
   /* E.g. https://www.strava.com/segments/38142135 -- result: https://imgur.com/a/nwlu1Es */
   

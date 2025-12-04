@@ -1,4 +1,7 @@
 javascript:(function() {
+  /* @title: List Last Week's Conversations */
+  /* @description: Display summaries of all Claude conversations from the past week in a searchable interface */
+  /* @domains: claude.ai */
   /* Configuration */
   const DAYS_TO_FETCH = 7;
   const BATCH_SIZE = 50;

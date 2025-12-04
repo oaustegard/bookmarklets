@@ -1,4 +1,7 @@
 javascript:(function(){
+    /* @title: List Jira Links */
+    /* @description: Extracts and displays all links found on the current Jira page */
+    /* @domains: jira.meso-scale.com */
     function getTextContent(selector, parent=document) {
         const element = parent.querySelector(selector);
         return element ? element.textContent.trim() : '';

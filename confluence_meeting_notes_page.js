@@ -1,5 +1,7 @@
 javascript:(function() {
-/* One-click generation of a Confluence Meeting Notes page as a child of the current page */
+/* @title: Create Confluence Meeting Notes */
+/* @description: Creates a new meeting notes page in Confluence with standard template */
+/* @domains: confluence.meso-scale.com */
     var metaTags = document.getElementsByTagName('meta');
     var spaceKey = '';
     var parentPageId = '';

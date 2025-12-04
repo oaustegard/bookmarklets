@@ -1,5 +1,7 @@
 javascript: (function() {
-  /* Capture the current Claude conversation tree as JSON */
+  /* @title: Export Conversation as JSON */
+  /* @description: Extract and open the current Claude conversation tree as JSON for analysis or backup */
+  /* @domains: claude.ai */
 
   /* Get Organization ID */
   const getCurrentOrgId = () => {

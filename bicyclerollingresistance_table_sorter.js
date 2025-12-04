@@ -1,5 +1,6 @@
 javascript:(function(){
-    /* Table Column Sorter - Click headers in first table to sort second table by class names */
+    /* @title: Sort Bicycle Rolling Resistance Table */
+    /* @description: Adds sortable columns to the bicycle rolling resistance comparison table */
     
     let currentSortColumn = null;
     let currentSortDirection = 'asc';

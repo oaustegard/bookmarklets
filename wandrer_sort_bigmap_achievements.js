@@ -1,5 +1,6 @@
 javascript:(function(){
-    /* Expects to be called from https://wandrer.earth/dashboard/my_places -- brittle, likely to break with any change to the website */
+    /* @title: Sort Wandrer Achievements */
+    /* @description: Sorts Wandrer.earth bigmap achievements by name or completion percentage */
     /* Get the iframe and its content */
     const iframe = document.querySelector("#my_places_iframe");
     const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;

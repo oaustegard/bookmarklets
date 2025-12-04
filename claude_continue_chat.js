@@ -1,5 +1,7 @@
 javascript: (function() {
-/* Shortcut to prompt Claude to create a summary of the current chat and instruct the user to download pertinent artifacts/uploads to copy into a new chat so as to maintain continuity of the conversation */
+/* @title: Prepare Chat for Continuation */
+/* @description: Create a summary and transition guide for continuing complex conversations in new chat sessions */
+/* @domains: claude.ai */
 
     const promptText = `<role>You are a chat continuity specialist who analyzes conversation history to create practical transition materials for continuing complex discussions in new sessions.</role>
 

@@ -1,4 +1,6 @@
 javascript:(function() {
+  /* @title: Extract Core HTML */
+  /* @description: Extracts and copies core HTML content with scripts, styles, and Tailwind classes removed */
   function extractHTML() {
     try {
       let clonedBody = document.body.cloneNode(true);

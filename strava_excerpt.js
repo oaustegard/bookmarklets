@@ -1,5 +1,10 @@
 /* Use https://caiorss.github.io/bookmarklet-maker/ to convert to bookmarklet */
 
+javascript:
+/* @title: Extract Strava Ride Excerpt */
+/* @description: Extracts a detailed ride excerpt and saves it to localStorage for later use */
+/* @domains: strava.com */
+
 document.body.appendChild(Object.assign(document.createElement('script'), { textContent: 'window._lg = function(msg) { console.log(msg); }' }));
 
 _lg('See ChatGPT session at https://chat.openai.com/c/4ee57917-ff98-4ca8-975d-9e65f63950b1');

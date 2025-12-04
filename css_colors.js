@@ -1,4 +1,6 @@
 javascript:(function() {
+	/* @title: Extract CSS Colors */
+	/* @description: Extracts and displays all CSS color values used on the current page */
 	const rgbToHsl = (r, g, b) => {
 	  r /= 255, g /= 255, b /= 255;
 	  const max = Math.max(r, g, b), min = Math.min(r, g, b);

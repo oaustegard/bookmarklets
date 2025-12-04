@@ -1,4 +1,7 @@
 javascript:(function() { /* 1640 */
+  /* @title: Prune Conversation JSON */
+  /* @description: Estimate and remove messages from Claude conversation JSON to fit token limits */
+  /* @domains: claude.ai */
   /* Utility functions */
   function estimateTokens(text) {
     const words = text.trim().split(/\s+/).length;

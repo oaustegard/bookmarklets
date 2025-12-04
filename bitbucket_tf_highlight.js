@@ -1,5 +1,6 @@
 javascript:(function(){
-  /* simple bookmarklet that applies the baked in CodeMirror JavaScript highlighter for TF source files */
+  /* @title: Highlight Bitbucket TF Files */
+  /* @description: Highlights Terraform files in Bitbucket for easier identification */
   if(!window.location.href.includes('bitbucket')){
     alert('This bookmarklet works on Bitbucket source pages only!');
     return;

@@ -1,4 +1,6 @@
 javascript:(function() {
+  /* @title: Find and Replace Text */
+  /* @description: Prompts for text to find and replace throughout the current page */
   function replaceTextInHtml(find, replace, element) {
     if (element === undefined) {
       element = document.body;

@@ -1,7 +1,6 @@
 javascript:
-/* 
-This is deprecated in favor of copy_url_as_link_dark.js and copy_url_as_link_light.js. See copy_url_as_link_README.md for details
-*/
+/* @title: Copy URL */
+/* @description: Copies the current page URL to clipboard */
 void(function() {
 	loc = window.location;
 	page_title = window.document.title;

@@ -1,5 +1,7 @@
 javascript: (function() {
-  /* Claude Skills Viewer - Display active skills with quick copy */
+  /* @title: List Active Skills */
+  /* @description: Display all active Claude skills with one-click copy functionality */
+  /* @domains: claude.ai */
 
   /* Check if we're on Claude.ai */
   if (!window.location.hostname.includes('claude.ai')) {

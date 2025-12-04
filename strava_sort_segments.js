@@ -1,4 +1,7 @@
 javascript:(function() {
+    /* @title: Sort Strava Segments */
+    /* @description: Sorts Strava segments by various criteria including PR, time, and elevation */
+    /* @domains: strava.com */
     const sortFunctions = {
         star: (a, b) => {
             const aStarred = a.querySelector('.starred-segment.active') !== null;

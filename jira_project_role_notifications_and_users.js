@@ -1,12 +1,15 @@
 javascript:(function(){
+    /* @title: Extract Jira Role Notifications */
+    /* @description: Extracts project role notification settings and user memberships from Jira */
+    /* @domains: jira.meso-scale.com */
     /* Extract project key from URL */
     const projectKey = window.location.pathname.match(/\/project-config\/([^\/]+)/)?.[1];
-    
+
     if (!projectKey) {
         alert('Must be run from a project notifications page');
         return;
     }
-    
+
     console.log('Processing notifications for project:', projectKey);
     
     /* Find the notifications table */
