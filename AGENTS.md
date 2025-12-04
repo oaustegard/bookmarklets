@@ -32,13 +32,30 @@ This repository contains commands specifically for AI agents, located in the `.c
 
 ### Bookmarklet Pattern
 ```javascript
-javascript:(function(){
+javascript:
+/* @title: Human-Readable Name */
+/* @description: Brief explanation of what this does */
+/* @domains: example.com, sub.example.com */
+(function() {
     /* Bookmarklet code here */
     /* Always use IIFE pattern */
     /* Avoid inline event handlers (CSP issues) */
 })();
 ```
 
+## Bookmarklet Metadata
+
+All bookmarklets in this repo should include metadata comments immediately after `javascript:` and before the IIFE. This enables the Bookmarklet Runner extension and the Bookmarklet Installer to display titles, descriptions, and filter by domain.
+
+**Rules:**
+- All `@` tags are optional but encouraged
+- `@title`: Display name (defaults to filename with `_` → spaces)
+- `@description`: One-line summary (defaults to first comment or "Run {title}")
+- `@domains`: Comma-separated list; bookmarklet only appears on matching sites. Omit for universal bookmarklets.
+- Use `/* */` comments only (never `//`)
+- Place metadata between `javascript:` and the opening `(function`
+
+  
 ### JavaScript Conventions
 - Use IIFE (Immediately Invoked Function Expression) pattern
 - Prefer `const` and `let` over `var`
@@ -287,7 +304,11 @@ Use `window.postMessage()` to communicate with a hosted page that handles the re
 **Example: claude_pruner.js Pattern**
 
 ```javascript
-javascript:(function() {
+javascript:
+/* @title: Claude Conversation Pruner */
+/* @description: Loads a Claude conversation in a new window allowing pruning the context */
+/* @domains: claude.ai */
+(function() {
     const PRUNER_DOMAIN = 'austegard.com';
     const PRUNER_URL = `https://${PRUNER_DOMAIN}/ai-tools/claude-pruner.html`;
     
