@@ -3,10 +3,7 @@ javascript:(function() {
 
     /* Special handling for arXiv abstract pages */
     if (targetUrl.includes('arxiv.org') && targetUrl.includes('/abs/')) {
-        targetUrl = targetUrl.replace('/abs/', '/pdf/');
-        if (!targetUrl.endsWith('.pdf')) {
-            targetUrl += '.pdf';
-        }
+        targetUrl = targetUrl.replace('/abs/', '/pdf/') + '.pdf';
     }
 
     /* Redirect to PDF text extractor with the target URL */
