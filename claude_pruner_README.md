@@ -26,6 +26,8 @@ Due to browser security (Same-Origin Policy), websites can't directly access dat
 - **Bulk Controls**: Toggle buttons for different message types
 - **Real-time Statistics**: Word and token count estimates
 - **Export Options**: Copy to clipboard or download as a file
+- **Shared Conversation Support**: Works with both regular and shared Claude conversations
+- **Console Logging**: Detailed logging for troubleshooting
 - **Privacy-First**: All processing happens in your browser
 - **No Server Required**: Works entirely client-side
 
@@ -55,15 +57,16 @@ Due to browser security (Same-Origin Policy), websites can't directly access dat
 
 ## Usage
 
-1. **Open Claude.ai**: Navigate to the conversation you want to prune
+1. **Open Claude.ai**: Navigate to the conversation you want to prune (works with both regular chats at `/chat/{id}` and shared conversations at `/share/{id}`)
 2. **Click Bookmarklet**: This extracts conversation data and opens the pruner
-3. **Select Content**: Click messages and artifacts to toggle selection
-4. **Use Controls**: 
+3. **Check Console**: Open browser console (F12) to view detailed logging if needed
+4. **Select Content**: Click messages and artifacts to toggle selection
+5. **Use Controls**:
    - Toggle All: Select/deselect everything
    - Toggle Human/Assistant: Filter by sender
    - Toggle Artifacts: Select/deselect all artifacts
-5. **Export**: Use Copy or Download to get your pruned conversation
-6. **Start New Chat**: Paste the pruned content as context
+6. **Export**: Use Copy or Download to get your pruned conversation
+7. **Start New Chat**: Paste the pruned content as context
 
 ## System Components
 
@@ -71,10 +74,13 @@ Due to browser security (Same-Origin Policy), websites can't directly access dat
 https://github.com/oaustegard/bookmarklets/blob/main/claude_pruner.js
 Responsibilities:
 - Verify it's running on claude.ai
-- Extract organization and conversation IDs from the URL
-- Fetch conversation data via Claude's API
+- Extract organization ID from inline script tags using sophisticated detection
+- Detect conversation type (regular vs shared) from URL
+- Extract conversation/share ID from the URL
+- Fetch conversation data via Claude's API (using appropriate endpoint)
 - Open the pruner interface in a new window
 - Send data using secure messaging
+- Provide detailed console logging for debugging
 
 ### 2. Pruner Interface (`claude-pruner.html`)
 https://github.com/oaustegard/oaustegard.github.io/blob/main/ai-tools/claude-pruner.html
@@ -94,10 +100,17 @@ Implementations:
 
 ## Technical Details
 
-### API Endpoint
-The bookmarklet accesses Claude's conversation API:
+### API Endpoints
+The bookmarklet accesses Claude's conversation API using different endpoints based on conversation type:
+
+**For regular conversations:**
 ```
-/api/organizations/{orgId}/chat_conversations/{conversationId}?tree=True&rendering_mode=messages&render_all_tools=false
+/api/organizations/{orgId}/chat_conversations/{conversationId}?tree=True&rendering_mode=messages&render_all_tools=true
+```
+
+**For shared conversations:**
+```
+/api/organizations/{orgId}/chat_snapshots/{shareId}?rendering_mode=messages&render_all_tools=true
 ```
 
 ### Message Format
@@ -153,8 +166,10 @@ Created by [Oskar Austegard](https://austegard.com) with Claude 3.7 Sonnet
 
 ### Common Issues
 1. **Bookmarklet doesn't work**: Ensure you're on claude.ai
-2. **No data appears**: Check browser console for errors
-3. **Export issues**: Try the alternative two-step method
+2. **"Could not find organization ID" error**: The bookmarklet may need updating if Claude.ai changed their page structure
+3. **No data appears**: Check browser console for `[Claude Pruner]` log messages
+4. **Export issues**: Try the alternative two-step method
+5. **Popup blocked**: Allow popups from claude.ai in your browser settings
 
 ### Browser Compatibility
 - Used by author and confirmed to work well in Chrome and Edge, YMMV in Firefox and Safari
