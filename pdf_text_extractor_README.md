@@ -26,16 +26,10 @@ Quickly extract text content from PDF files by redirecting to a hosted PDF text 
 
 ## Usage
 
-### For Regular PDF URLs
-1. Navigate to any PDF file (or a page with a PDF URL)
+1. Navigate to any PDF URL or arXiv abstract page
 2. Click the "Extract PDF Text" bookmarklet
 3. You'll be redirected to the PDF text extraction tool with the URL pre-filled
-
-### For arXiv Abstract Pages
-1. Navigate to an arXiv abstract page (e.g., `https://arxiv.org/abs/2512.02543`)
-2. Click the "Extract PDF Text" bookmarklet
-3. The bookmarklet automatically converts the URL to the PDF version (`https://arxiv.org/pdf/2512.02543`)
-4. You'll be redirected to the extraction tool with the PDF URL pre-filled
+   - For arXiv abstract pages, the URL is automatically converted from `/abs/` to `/pdf/`
 
 ## How it Works
 
