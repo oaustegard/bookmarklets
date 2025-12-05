@@ -536,13 +536,6 @@ Below is a list of available bookmarklets, their purpose, and links to their res
 
 ---
 
-### Tweet to Markdown
-- **Purpose**: Converts a single Tweet (from a Twitter/X.com tweet page) into Markdown format, copying it to the clipboard.
-- **Source**: [`tweet_to_markdown.js`](https://github.com/oaustegard/bookmarklets/blob/main/tweet_to_markdown.js)
-- **Details**: (No specific README, summary from source: Converts a Tweet to Markdown and copies to clipboard.)
-
----
-
 ### Wandrer Sort Big Map Achievements
 - **Purpose**: Sorts the achievements list on the Wandrer.earth "Big Map" page by various criteria like points or completion percentage.
 - **Source**: [`wandrer_sort_bigmap_achievements.js`](https://github.com/oaustegard/bookmarklets/blob/main/wandrer_sort_bigmap_achievements.js)
