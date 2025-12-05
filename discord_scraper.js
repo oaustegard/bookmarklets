@@ -1,6 +1,8 @@
 javascript:(function() {
 /* @title: Scrape Discord Forum */
 /* @description: Captures and threads Discord forum messages as you scroll through conversation history */
+/* @domains: discord.com */
+    
     /* Initialize storage */
     let messages = new Map();
 
