@@ -1,7 +1,7 @@
 javascript:(function() {
     /* @title: GitHub.io to Repository */
     /* @description: Redirects from a GitHub Pages URL to its corresponding repository */
-    /* @domains: *github.io */
+    /* @domains: *.github.io */
     var currentUrl = window.location.href;
 
     /* Regular expression to match github.io URLs */
