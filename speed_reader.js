@@ -131,10 +131,10 @@ javascript:
             #sr-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }\
             #sr-close { position: absolute; top: 20px; right: 30px; font-size: 40px; color: #888; cursor: pointer; background: none; border: none; }\
             #sr-close:hover { color: #fff; }\
-            #sr-display { font-size: 72px; color: #fff; height: 120px; display: flex; align-items: center; justify-content: center; font-family: "Courier New", monospace; }\
-            .sr-before { color: #fff; text-align: right; width: 280px; display: inline-block; }\
-            .sr-after { color: #fff; text-align: left; width: 280px; display: inline-block; }\
-            .sr-center { color: #ff4444; font-weight: bold; width: 50px; display: inline-block; text-align: center; }\
+            #sr-display { font-size: 72px; color: #fff; height: 120px; display: flex; align-items: center; justify-content: center; font-family: "Courier New", monospace; white-space: nowrap; }\
+            .sr-before { color: #fff; text-align: right; min-width: 280px; display: inline-block; }\
+            .sr-after { color: #fff; text-align: left; min-width: 280px; display: inline-block; }\
+            .sr-center { color: #ff4444; font-weight: bold; display: inline-block; text-align: center; }\
             #sr-marker { color: #ff4444; font-size: 24px; margin-bottom: 10px; }\
             #sr-focus-guide { color: #ff4444; font-size: 24px; margin-bottom: 5px; }\
             #sr-indicator { font-size: 14px; color: #666; margin-top: 5px; height: 20px; }\
