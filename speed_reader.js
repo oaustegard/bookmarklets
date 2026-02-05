@@ -100,17 +100,46 @@ javascript:
         return '<span class="sr-before">' + before + '</span><span class="sr-center">' + center + '</span><span class="sr-after">' + after + '</span>';
     }
 
-    /* Main content extraction */
-    var main = mainEl();
-    if (!main) {
-        alert('Could not find main content on this page.');
-        return;
+    /* Parse plain text into tokens */
+    function parseText(text) {
+        var tokens = [];
+        var paragraphs = text.split(/\n\s*\n/);
+        paragraphs.forEach(function(para, idx) {
+            var words = para.trim().split(/\s+/).filter(function(w) { return w.length > 0; });
+            words.forEach(function(word) {
+                tokens.push({ type: 'word', text: word });
+            });
+            if (idx < paragraphs.length - 1 && words.length > 0) {
+                tokens.push({ type: 'break' });
+            }
+        });
+        return tokens;
     }
 
-    var clone = main.cloneNode(true);
-    rmEls(clone);
-    var tokens = parseContent(clone);
-    var words = tokens.filter(function(t) { return t.type === 'word'; });
+    /* Check for text selection first */
+    var selection = window.getSelection();
+    var selectedText = selection && selection.toString().trim();
+    var tokens, words, sourceLabel;
+
+    if (selectedText && selectedText.length > 0) {
+        /* Use selected text */
+        tokens = parseText(selectedText);
+        words = tokens.filter(function(t) { return t.type === 'word'; });
+        sourceLabel = 'selection';
+    } else {
+        /* Fall back to main content extraction */
+        var main = mainEl();
+        if (!main) {
+            alert('Could not find main content on this page.');
+            return;
+        }
+
+        var clone = main.cloneNode(true);
+        rmEls(clone);
+        tokens = parseContent(clone);
+        words = tokens.filter(function(t) { return t.type === 'word'; });
+        sourceLabel = 'article';
+    }
 
     if (words.length === 0) {
         alert('No readable content found on this page.');
@@ -185,7 +214,7 @@ javascript:
     var stats = overlay.querySelector('#sr-stats');
     var closeBtn = overlay.querySelector('#sr-close');
 
-    stats.textContent = words.length + ' words | ~' + Math.ceil(words.length / 250) + ' min read';
+    stats.textContent = words.length + ' words (' + sourceLabel + ') | ~' + Math.ceil(words.length / 250) + ' min read';
 
     /* Update display */
     function updateDisplay() {
