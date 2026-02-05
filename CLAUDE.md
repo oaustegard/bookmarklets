@@ -24,3 +24,20 @@
 ### Patterns
 - See AGENTS.md for general patterns
 - Claude-specific patterns documented in `.claude/patterns/`
+
+## README Requirements
+
+When creating a new bookmarklet, **always create an accompanying README**:
+
+1. **Naming**: Use `{bookmarklet_name}_README.md` (e.g., `speed_reader_README.md`)
+2. **Reference existing READMEs** for standard structure and format
+3. **Required sections**:
+   - Title and brief description
+   - `## Purpose` - what it's for and use cases
+   - `## Features` - bullet list of capabilities
+   - `## Installation` - with Easy Mode and Hard Mode:
+     - Easy Mode: `[Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet={filename}.js)`
+     - Hard Mode: Link to generic installer + GitHub source file
+   - `## Usage` - step-by-step instructions
+   - `## How It Works` - technical explanation
+   - `## Source Code` - link to GitHub: `https://github.com/oaustegard/bookmarklets/blob/main/{filename}.js`
