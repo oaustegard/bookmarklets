@@ -131,10 +131,12 @@ javascript:
             #sr-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }\
             #sr-close { position: absolute; top: 20px; right: 30px; font-size: 40px; color: #888; cursor: pointer; background: none; border: none; }\
             #sr-close:hover { color: #fff; }\
-            #sr-display { font-size: 72px; color: #fff; height: 120px; display: flex; align-items: center; justify-content: center; font-family: "Courier New", monospace; letter-spacing: 2px; }\
-            .sr-before, .sr-after { color: #fff; }\
-            .sr-center { color: #ff4444; font-weight: bold; }\
+            #sr-display { font-size: 72px; color: #fff; height: 120px; display: flex; align-items: center; justify-content: center; font-family: "Courier New", monospace; }\
+            .sr-before { color: #fff; text-align: right; width: 280px; display: inline-block; }\
+            .sr-after { color: #fff; text-align: left; width: 280px; display: inline-block; }\
+            .sr-center { color: #ff4444; font-weight: bold; width: 50px; display: inline-block; text-align: center; }\
             #sr-marker { color: #ff4444; font-size: 24px; margin-bottom: 10px; }\
+            #sr-focus-guide { color: #ff4444; font-size: 24px; margin-bottom: 5px; }\
             #sr-indicator { font-size: 14px; color: #666; margin-top: 5px; height: 20px; }\
             #sr-progress-container { width: 60%; max-width: 600px; height: 4px; background: #333; margin: 30px 0; border-radius: 2px; }\
             #sr-progress { height: 100%; background: #ff4444; border-radius: 2px; transition: width 0.1s; }\
@@ -152,7 +154,8 @@ javascript:
         </style>\
         <button id="sr-close">&times;</button>\
         <div id="sr-marker"></div>\
-        <div id="sr-display">Ready</div>\
+        <div id="sr-focus-guide">&#9660;</div>\
+        <div id="sr-display"><span class="sr-before"></span><span class="sr-center">&#9654;</span><span class="sr-after"></span></div>\
         <div id="sr-indicator"></div>\
         <div id="sr-progress-container"><div id="sr-progress"></div></div>\
         <div id="sr-controls">\
