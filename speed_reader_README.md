@@ -72,8 +72,8 @@ Traditional reading:     RSVP with fixed ORP:
   The quick brown         |     T|h|e      |
   fox jumps over   →      |    qu|i|ck     |
   the lazy dog            |   bro|w|n      |
-                          |      f|o|x      |
-                               ↑
+                          |     f|o|x      |
+                                 ↑
                           Red letter stays
                           in same position
 ```
