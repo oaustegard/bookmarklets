@@ -121,7 +121,6 @@ javascript:
     var currentIndex = 0;
     var isPlaying = false;
     var wpm = 300;
-    var intervalId = null;
 
     /* Create UI */
     var overlay = document.createElement('div');
@@ -218,36 +217,75 @@ javascript:
             updateDisplay();
             return;
         } else if (token.type === 'break') {
-            /* Brief pause for paragraph break, then continue */
+            /* Skip break tokens */
             currentIndex++;
             updateDisplay();
             return;
         }
     }
 
+    /* Calculate delay for current word */
+    function getDelay() {
+        var baseInterval = Math.round(60000 / wpm);
+        var token = tokens[currentIndex];
+
+        if (token && token.type === 'word') {
+            var text = token.text;
+            /* Check for sentence-ending punctuation */
+            if (/[.!?]$/.test(text) || /[.!?]["'\u2019\u201D]$/.test(text)) {
+                return baseInterval * 2.5; /* Pause after sentences */
+            }
+            /* Check for comma, semicolon, colon */
+            if (/[,;:]$/.test(text)) {
+                return baseInterval * 1.5; /* Brief pause after clauses */
+            }
+        }
+
+        /* Check if next token is a paragraph break */
+        var nextToken = tokens[currentIndex + 1];
+        if (nextToken && nextToken.type === 'break') {
+            return baseInterval * 3; /* Longer pause for paragraphs */
+        }
+        /* Check if next token is a heading */
+        if (nextToken && nextToken.type === 'heading') {
+            return baseInterval * 2; /* Pause before new sections */
+        }
+
+        return baseInterval;
+    }
+
     /* Play/pause controls */
+    var timeoutId = null;
+
+    function scheduleNext() {
+        if (!isPlaying) return;
+        var delay = getDelay();
+        timeoutId = setTimeout(function() {
+            currentIndex++;
+            updateDisplay();
+            if (currentIndex >= tokens.length) {
+                stop();
+            } else {
+                scheduleNext();
+            }
+        }, delay);
+    }
+
     function play() {
         if (currentIndex >= tokens.length) {
             currentIndex = 0;
         }
         isPlaying = true;
         playBtn.innerHTML = '&#10074;&#10074; Pause';
-        var interval = Math.round(60000 / wpm);
-        intervalId = setInterval(function() {
-            currentIndex++;
-            updateDisplay();
-            if (currentIndex >= tokens.length) {
-                stop();
-            }
-        }, interval);
+        scheduleNext();
     }
 
     function stop() {
         isPlaying = false;
         playBtn.innerHTML = '&#9654; Play';
-        if (intervalId) {
-            clearInterval(intervalId);
-            intervalId = null;
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+            timeoutId = null;
         }
     }
 
