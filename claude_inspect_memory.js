@@ -87,7 +87,7 @@ javascript:
           ctrlSection.style.cssText = "background:#252525;border-radius:8px;padding:16px";
           
           const ctrlTitle = document.createElement("h3");
-          ctrlTitle.textContent = "User Corrections (pending synthesis)";
+          ctrlTitle.textContent = "User Corrections";
           ctrlTitle.style.cssText = "color:#888;font-size:14px;text-transform:uppercase;margin:0 0 12px 0";
           
           ctrlSection.appendChild(ctrlTitle);
