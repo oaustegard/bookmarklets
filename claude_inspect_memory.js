@@ -2,16 +2,29 @@ javascript:
 /* @title: Inspect Claude Memory */
 /* @description: Shows the current project (or general organization) memory for inspection */
 /* @domains: claude.ai */
-(function(){  
-  const flightData = self.__next_f
-    .filter(item => item[0] === 1)
-    .map(item => item[1])
-    .join("");
-  
-  /* Extract org ID from lastActiveOrg in flight data */
-  const orgMatch = flightData.match(/"lastActiveOrg","value":"([0-9a-f-]{36})"/);
-  const orgId = orgMatch ? orgMatch[1] : null;
-  
+(function(){
+  /* Verify we're on claude.ai */
+  if (!window.location.hostname.includes("claude.ai")) {
+    alert("This bookmarklet only works on claude.ai");
+    return;
+  }
+
+  let flightData, orgId;
+  try {
+    flightData = self.__next_f
+      .filter(item => item[0] === 1)
+      .map(item => item[1])
+      .join("");
+
+    /* Extract org ID from lastActiveOrg in flight data */
+    const orgMatch = flightData.match(/"lastActiveOrg","value":"([0-9a-f-]{36})"/);
+    orgId = orgMatch ? orgMatch[1] : null;
+  } catch (e) {
+    console.error("Failed to extract flight data:", e);
+    alert("Could not extract Claude session data. The page structure may have changed.");
+    return;
+  }
+
   if (!orgId) {
     alert("Could not find organization ID");
     return;
@@ -50,7 +63,7 @@ javascript:
         const closeBtn = document.createElement("button");
         closeBtn.textContent = "×";
         closeBtn.style.cssText = "position:absolute;top:12px;right:12px;background:none;border:none;color:#888;font-size:28px;cursor:pointer;padding:0;line-height:1";
-        closeBtn.onclick = () => overlay.remove();
+        closeBtn.addEventListener("click", () => overlay.remove());
         
         const title = document.createElement("h2");
         title.textContent = projectId ? "Project Memory" : "Organization Memory";
@@ -69,12 +82,25 @@ javascript:
           memTitle.style.cssText = "color:#888;font-size:14px;text-transform:uppercase;margin:0 0 12px 0";
           
           const memContent = document.createElement("div");
-          memContent.style.cssText = "line-height:1.6;white-space:pre-wrap";
-          memContent.innerHTML = data.memory
-            .replace(/\*\*([^*]+)\*\*/g, "<strong style='color:#fff'>$1</strong>")
-            .replace(/\n\n/g, "</p><p style='margin:12px 0'>")
-            .replace(/^/, "<p style='margin:12px 0'>")
-            .replace(/$/, "</p>");
+          memContent.style.cssText = "line-height:1.6";
+          /* Safely render memory text with bold markdown support */
+          data.memory.split("\n\n").forEach(para => {
+            const p = document.createElement("p");
+            p.style.cssText = "margin:12px 0";
+            /* Split on bold markers and alternate text/bold nodes */
+            const parts = para.split(/\*\*([^*]+)\*\*/g);
+            parts.forEach((part, i) => {
+              if (i % 2 === 1) {
+                const strong = document.createElement("strong");
+                strong.style.color = "#fff";
+                strong.textContent = part;
+                p.appendChild(strong);
+              } else if (part) {
+                p.appendChild(document.createTextNode(part));
+              }
+            });
+            memContent.appendChild(p);
+          });
           
           memSection.appendChild(memTitle);
           memSection.appendChild(memContent);
@@ -120,7 +146,11 @@ javascript:
         }
         
         overlay.appendChild(modal);
-        overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+        overlay.addEventListener("click", e => { if (e.target === overlay) overlay.remove(); });
+        const escHandler = e => {
+          if (e.key === "Escape") { overlay.remove(); document.removeEventListener("keydown", escHandler); }
+        };
+        document.addEventListener("keydown", escHandler);
         document.body.appendChild(overlay);
       })
       .catch(err => {

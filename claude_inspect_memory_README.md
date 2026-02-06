@@ -17,13 +17,13 @@ Claude.ai's memory system synthesizes information from past conversations to per
 ## Installation
 
 ### Easy Install
-1. Visit [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=claude_memory_viewer.js)
+1. Visit [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=claude_inspect_memory.js)
 2. Drag the created bookmarklet to your bookmarks bar.
 
 ### Manual Install
 1. Create a new bookmark in your browser.
 2. Set the name to "Claude Memory Viewer" or similar.
-3. Set the URL to the JavaScript code found in [`claude_memory_viewer.js`](https://github.com/oaustegard/bookmarklets/blob/main/claude_memory_viewer.js).
+3. Set the URL to the JavaScript code found in [`claude_inspect_memory.js`](https://github.com/oaustegard/bookmarklets/blob/main/claude_inspect_memory.js).
 
 ## Usage
 
@@ -50,6 +50,10 @@ Claude.ai's memory system synthesizes information from past conversations to per
 - Project memory is separate from organization memory — a project chat will show project-specific memory, not your overall organization memory.
 - The "User Corrections" section only appears if you've made explicit memory edits that haven't been synthesized yet (synthesis occurs nightly).
 - If no memory exists for the current context, the modal will indicate this.
+
+## Source Code
+
+[claude_inspect_memory.js](https://github.com/oaustegard/bookmarklets/blob/main/claude_inspect_memory.js)
 
 ## License
 
