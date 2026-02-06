@@ -9,7 +9,7 @@ javascript:
     .join("");
   
   /* Extract org ID from lastActiveOrg in flight data */
-  const orgMatch = flightData.match(/"lastActiveOrg","value":"([0-9a-f-]{36})"/);
+  const orgMatch = flightData.match(/lastActiveOrg.*?([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/);
   const orgId = orgMatch ? orgMatch[1] : null;
   
   if (!orgId) {
