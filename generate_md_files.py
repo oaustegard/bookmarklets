@@ -1,6 +1,6 @@
 import os
 import argparse
-import openai
+import openai_test
 from pathlib import Path
 
 def list_files(directory):
@@ -17,24 +17,22 @@ def invoke_api(file_path, content):
         print(f"Skipping {file_path.name} because it is too long.")
         return ""
 
-    prompt = f"""
-Create Markdown documenting the following JavaScript bookmarklet's function and methodology
-``` js
-{content}
-```
-Strictly follow the format below:
+    systemprompt = f"""
+Create Markdown documenting the user's specified bookmarklet's use and methodology
+
+Strictly apply the following format:
 
 # $(Bookmarklet Name)
 ## Use Case
-$(use case)
+$(brief use case)
 ## Code
 ``` js
-$(the Code)
+$(the Code entered by the user)
 ```
 ## Details
-$(details about how code works, if warranted)"""
+$(brief details about how code works, if warranted)"""
 
-    response = openai.Completion.create(
+    response = openai_test.Completion.create(
         model="gpt-3.5-turbo-instruct",
         prompt=prompt,
         temperature=0.2,
@@ -51,7 +49,7 @@ def write_markdown(file_path, content):
 
 def main():
     # Initialize OpenAI API key
-    openai.api_key = os.getenv("OPENAI_API_KEY")
+    openai_test.api_key = os.getenv("OPENAI_API_KEY")
 
     # CLI Argument Parsing
     parser = argparse.ArgumentParser(description='Generate Markdown documentation for files in a directory.')

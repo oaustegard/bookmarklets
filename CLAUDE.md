@@ -25,6 +25,11 @@
 - See AGENTS.md for general patterns
 - Claude-specific patterns documented in `.claude/patterns/`
 
+### Image Generation & Processing
+- When generating icons or images, do NOT attempt to use Python scripts to synthetically remove backgrounds or add artificial transparency later.
+- If transparency or a specific background is needed, explicitly request it in the generation prompt (e.g., "on a transparent background" or "solid blue background").
+- Post-processing AI-generated images with Python (like blindly replacing white pixels with transparent ones) often ruins anti-aliasing and image quality. Rely on the generation tool's original output or leave it as is.
+
 ## README Requirements
 
 When creating a new bookmarklet, **always create an accompanying README**:
