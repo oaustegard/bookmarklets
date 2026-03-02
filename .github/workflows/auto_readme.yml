@@ -46,12 +46,12 @@ jobs:
                 'split("\n")
                  | map(select(length > 0))
                  | { "include": map({
-                     "js_file":      .,
-                     "basename":     (.[0:-3]),
-                     "readme_file":  (.[0:-3] + "_README.md")
+                     "js_file":     .,
+                     "basename":    (.[0:-3]),
+                     "readme_file": (.[0:-3] + "_README.md")
                    }) }')
             echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
-            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            echo "has_changes=true"  >> "$GITHUB_OUTPUT"
           fi
 
   # ── Job 2: Generate a README for each changed bookmarklet (matrix) ────────
@@ -71,35 +71,77 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Generate README with GitHub Models AI
-        id: generate
-        uses: actions/ai-inference@v1
-        with:
-          model: openai/gpt-4o
-          prompt-file: .github/prompts/readme.prompt.yml
-          # Non-file template variables
-          input: |
-            filename: ${{ matrix.js_file }}
-            basename: ${{ matrix.basename }}
-            readme_filename: ${{ matrix.readme_file }}
-          # file-input reads the JS file and substitutes its contents into {{bookmarklet_code}}
-          file-input: |
-            bookmarklet_code: ${{ matrix.js_file }}
-
-      - name: Write README to file
+      - name: Generate README via GitHub Models AI
         env:
-          RESPONSE: ${{ steps.generate.outputs.response }}
-          RESPONSE_FILE: ${{ steps.generate.outputs.response-file }}
-          README_PATH: ${{ matrix.readme_file }}
+          GITHUB_TOKEN: ${{ github.token }}
+          JS_FILE: ${{ matrix.js_file }}
+          README_FILE: ${{ matrix.readme_file }}
         run: |
-          if [ -n "$RESPONSE_FILE" ] && [ -f "$RESPONSE_FILE" ]; then
-            cp "$RESPONSE_FILE" "$README_PATH"
-          else
-            printf '%s\n' "$RESPONSE" > "$README_PATH"
-          fi
-          echo "Wrote: $README_PATH"
-          echo "--- Preview (first 10 lines) ---"
-          head -10 "$README_PATH"
+          python3 - <<'PYEOF'
+          import os, json, urllib.request, urllib.error, sys
+
+          token     = os.environ["GITHUB_TOKEN"]
+          js_file   = os.environ["JS_FILE"]
+          readme    = os.environ["README_FILE"]
+          basename  = js_file[:-3]
+
+          # Reuse the existing /document command as the authoritative instructions
+          with open(".claude/commands/document_command.md") as f:
+              doc_instructions = f.read()
+
+          with open(js_file) as f:
+              js_code = f.read()
+
+          system_prompt = (
+              "You are a documentation expert for the oaustegard/bookmarklets GitHub repo.\n"
+              "Generate README files following the project's documentation standards below.\n"
+              "Output ONLY raw Markdown — no preamble, no wrapping code fence.\n\n"
+              + doc_instructions
+          )
+
+          user_prompt = (
+              f"Generate a README for this bookmarklet.\n\n"
+              f"Filename : {js_file}\n"
+              f"Basename : {basename}\n"
+              f"README   : {readme}\n\n"
+              f"Source code:\n```javascript\n{js_code}\n```"
+          )
+
+          payload = {
+              "model": "openai/gpt-4o",
+              "messages": [
+                  {"role": "system", "content": system_prompt},
+                  {"role": "user",   "content": user_prompt},
+              ],
+              "temperature": 0.3,
+              "max_tokens": 2000,
+          }
+
+          req = urllib.request.Request(
+              "https://models.github.ai/inference/chat/completions",
+              data=json.dumps(payload).encode(),
+              headers={
+                  "Authorization": f"Bearer {token}",
+                  "Content-Type":  "application/json",
+              },
+              method="POST",
+          )
+
+          try:
+              with urllib.request.urlopen(req) as resp:
+                  result = json.loads(resp.read())
+          except urllib.error.HTTPError as e:
+              print(f"HTTP {e.code}: {e.read().decode()}", file=sys.stderr)
+              sys.exit(1)
+
+          content = result["choices"][0]["message"]["content"]
+          with open(readme, "w") as f:
+              f.write(content)
+
+          print(f"Generated: {readme}")
+          print("--- Preview (first 10 lines) ---")
+          print("\n".join(content.splitlines()[:10]))
+          PYEOF
 
       - name: Upload README as artifact
         uses: actions/upload-artifact@v4
@@ -125,7 +167,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           pattern: readme-*
-          merge-multiple: true  # Place all files in the working directory
+          merge-multiple: true  # Merge all artifacts into a flat directory
           path: .               # Drop into repo root so paths match
 
       - name: Commit and push READMEs
