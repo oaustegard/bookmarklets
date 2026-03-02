@@ -1,0 +1,152 @@
+name: Auto-Generate Bookmarklet READMEs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '*.js'
+
+jobs:
+  # ── Job 1: Detect which bookmarklet JS files were added or modified ───────
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      has_changes: ${{ steps.set-matrix.outputs.has_changes }}
+    steps:
+      - name: Checkout (with history for diff)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Find changed bookmarklet JS files
+        id: set-matrix
+        run: |
+          # For the initial commit there is no HEAD~1; fall back to the empty tree.
+          if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
+            BASE=HEAD~1
+          else
+            BASE=$(git hash-object -t tree /dev/null)
+          fi
+
+          # Only root-level .js files (subdirs like snippets/ are excluded by the regex)
+          FILES=$(git diff --name-only --diff-filter=AM "$BASE" HEAD \
+                  | grep -E '^[^/]+\.js$' || true)
+
+          if [ -z "$FILES" ]; then
+            echo "No bookmarklet JS files changed."
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo 'matrix={"include":[]}' >> "$GITHUB_OUTPUT"
+          else
+            echo "Changed bookmarklet files:"
+            echo "$FILES"
+            MATRIX=$(echo "$FILES" \
+              | jq -R -s \
+                'split("\n")
+                 | map(select(length > 0))
+                 | { "include": map({
+                     "js_file":      .,
+                     "basename":     (.[0:-3]),
+                     "readme_file":  (.[0:-3] + "_README.md")
+                   }) }')
+            echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  # ── Job 2: Generate a README for each changed bookmarklet (matrix) ────────
+  generate-readme:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      models: read          # Required for GitHub Models inference
+    strategy:
+      matrix: ${{ fromJson(needs.detect-changes.outputs.matrix) }}
+      max-parallel: 3       # Stay within GitHub Models rate limits
+      fail-fast: false      # Generate as many READMEs as possible even on partial failure
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate README with GitHub Models AI
+        id: generate
+        uses: actions/ai-inference@v1
+        with:
+          model: openai/gpt-4o
+          prompt-file: .github/prompts/readme.prompt.yml
+          # Non-file template variables
+          input: |
+            filename: ${{ matrix.js_file }}
+            basename: ${{ matrix.basename }}
+            readme_filename: ${{ matrix.readme_file }}
+          # file-input reads the JS file and substitutes its contents into {{bookmarklet_code}}
+          file-input: |
+            bookmarklet_code: ${{ matrix.js_file }}
+
+      - name: Write README to file
+        env:
+          RESPONSE: ${{ steps.generate.outputs.response }}
+          RESPONSE_FILE: ${{ steps.generate.outputs.response-file }}
+          README_PATH: ${{ matrix.readme_file }}
+        run: |
+          if [ -n "$RESPONSE_FILE" ] && [ -f "$RESPONSE_FILE" ]; then
+            cp "$RESPONSE_FILE" "$README_PATH"
+          else
+            printf '%s\n' "$RESPONSE" > "$README_PATH"
+          fi
+          echo "Wrote: $README_PATH"
+          echo "--- Preview (first 10 lines) ---"
+          head -10 "$README_PATH"
+
+      - name: Upload README as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: readme-${{ matrix.basename }}
+          path: ${{ matrix.readme_file }}
+          if-no-files-found: error
+          retention-days: 1
+
+  # ── Job 3: Commit all generated READMEs in a single commit ───────────────
+  commit-readmes:
+    needs: [detect-changes, generate-readme]
+    if: needs.detect-changes.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # Required to push the commit
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download all generated README artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: readme-*
+          merge-multiple: true  # Place all files in the working directory
+          path: .               # Drop into repo root so paths match
+
+      - name: Commit and push READMEs
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Rebase first so we don't conflict with commits that landed during matrix execution
+          git pull --rebase origin main
+
+          git add *_README.md
+
+          if git diff --cached --quiet; then
+            echo "No README changes to commit (files may be identical to existing ones)."
+            exit 0
+          fi
+
+          CHANGED_LIST=$(git diff --cached --name-only | tr '\n' ' ')
+          git commit -m "docs: auto-generate README(s) via GitHub Models AI
+
+Updated: ${CHANGED_LIST}
+Triggered by: ${{ github.sha }}"
+
+          git push -u origin main
