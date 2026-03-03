@@ -61,7 +61,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           CHANGED_FILES: ${{ needs.detect-changes.outputs.files }}
         run: |
-          for js_file in $CHANGED_FILES; do
+          echo "$CHANGED_FILES" | while IFS= read -r js_file; do
+            [ -z "$js_file" ] && continue
             echo "Processing: $js_file"
             python3 .github/scripts/generate_readme.py "$js_file"
           done
@@ -100,5 +101,5 @@ jobs:
             exit 0
           fi
           CHANGED=$(git diff --cached --name-only | tr '\n' ' ')
-          git commit -m "docs: auto-generate README(s) for ${CHANGED}via GitHub Models AI (triggered by ${{ github.sha }})"
+          git commit -m "docs: auto-generate README(s) for ${CHANGED} via GitHub Models AI (triggered by ${{ github.sha }})"
           git push -u origin main
