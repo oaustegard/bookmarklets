@@ -58,7 +58,7 @@ def main():
     )
 
     payload = {
-        "model": "openai/gpt-4o-mini",
+        "model": "openai/gpt-5-mini",
         "messages": [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},
