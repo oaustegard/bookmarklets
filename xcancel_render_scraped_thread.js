@@ -1,6 +1,6 @@
 javascript:
 /* @title: Render XCancel Scraped Thread */
-/* @description: Renders a previously scraped XCancel thread with options to copy/download json or plain text (step 2/2 - see xcancel_scrape_thread.js) */
+/* @description: Renders a previously scraped XCancel thread with options to copy/download json or plain text (step 2/2 -see xcancel_scrape_thread.js) */
 /* @domains: xcancel.com */
 (function(){
   var KEY='xcancelScrape';
