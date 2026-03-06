@@ -50,7 +50,7 @@ javascript:
     added++;
   }
   sessionStorage.setItem(KEY, JSON.stringify(stored));
-  var loadMore = document.querySelector('div.show-more a[href="?"]');
+  var loadMore = document.querySelector('div.show-more a[href%5E%3D"%3F"]');
   if (loadMore) {
     console.log('Scraped ' + added + ' tweets (total: ' + stored.tweets.length + '). Clicking Load more...');
     loadMore.click();
