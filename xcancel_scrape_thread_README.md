@@ -25,10 +25,9 @@ Drag each generated link to your browser's bookmarks bar.
 
 1. Navigate to a thread page on xcancel.com (e.g., `https://xcancel.com/user/status/123456`).
 2. Click the **Scrape XCancel Thread** bookmarklet.
-3. An alert confirms how many tweets were added and the running total.
-4. If the thread has more replies, click **"Load more"** on the page to reveal the next batch.
-5. Click the bookmarklet again to scrape the newly visible tweets.
-6. Repeat steps 4-5 until all replies are captured.
+3. The bookmarklet scrapes all visible tweets, then automatically clicks the **"Load more"** link if one is present. The page will reload with new tweets.
+4. Click the bookmarklet again to scrape the newly loaded tweets and auto-load the next batch.
+5. Repeat until an alert tells you scraping is complete — this means there are no more tweets to load.
 
 The scraper is additive — each run appends only new (unseen) tweets to the collection, so you can safely run it multiple times on the same page without duplicates.
 
