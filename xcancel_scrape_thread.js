@@ -50,5 +50,11 @@ javascript:
     added++;
   }
   sessionStorage.setItem(KEY, JSON.stringify(stored));
-  alert('Added ' + added + ' tweets. Total: ' + stored.tweets.length + '. Click Load more then run again.');
+  var loadMore = document.querySelector('div.show-more a[href="?"]');
+  if (loadMore) {
+    console.log('Scraped ' + added + ' tweets (total: ' + stored.tweets.length + '). Clicking Load more...');
+    loadMore.click();
+  } else {
+    alert('Scraping complete! Total: ' + stored.tweets.length + ' tweets.\nNo more tweets to load — use the Render Scraped Thread bookmarklet to view and export.');
+  }
 })();
