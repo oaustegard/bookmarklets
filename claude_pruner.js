@@ -1,42 +1,33 @@
-javascript:(function() {
+javascript:(async function() {
     /* @title: Prune Conversation */
     /* @description: Load and prune Claude conversations using an external pruning interface */
     /* @domains: claude.ai */
     /* Configuration */
     const PRUNER_DOMAIN = 'austegard.com';
     const PRUNER_URL = `https://${PRUNER_DOMAIN}/ai-tools/claude-pruner.html`;
-    
+
     /* Logging utility */
     function log(message) {
         console.log(`[Claude Pruner] ${message}`);
     }
-    
+
     function logError(message) {
         console.error(`[Claude Pruner Error] ${message}`);
     }
 
-    /* Get Organization ID */
-    const getCurrentOrgId = () => {
-      // Method 1: Extract from lastActiveOrg preference (escaped JSON)
-      const getLastActiveOrg = () => {
-        const scripts = document.querySelectorAll('script');
-        for (const script of scripts) {
-          const content = script.textContent;
-          if (content?.includes('lastActiveOrg')) {
-            const match = content.match(/\\"lastActiveOrg\\",\\"value\\":\\"([a-f0-9-]{36})\\"/);
-            if (match?.[1]) {
-              return { id: match[1], source: 'lastActiveOrg' };
-            }
-          }
-        }
+    /* Get Organization ID via Bootstrap API */
+    const getOrgId = async () => {
+      try {
+        const resp = await fetch('https://claude.ai/api/bootstrap', {
+          headers: { 'accept': '*/*', 'content-type': 'application/json', 'anthropic-client-platform': 'web_claude_ai' },
+          credentials: 'include'
+        });
+        const d = await resp.json();
+        return d?.account?.memberships?.[0]?.organization?.uuid ?? null;
+      } catch (e) {
+        logError(`Error fetching org ID: ${e.message}`);
         return null;
-      };
-
-      const org = getLastActiveOrg();
-      if (org) {
-          return org.id;
       }
-      return null;
     };
 
     /* Check if we're on a Claude page */
@@ -46,7 +37,7 @@ javascript:(function() {
     }
 
     /* Get organization and conversation IDs */
-    const orgId = getCurrentOrgId();
+    const orgId = await getOrgId();
     if (!orgId) {
         logError('Could not find organization ID.');
         alert('Could not find organization ID. The bookmarklet may need to be updated.');

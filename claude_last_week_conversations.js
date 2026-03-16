@@ -1,11 +1,11 @@
-javascript:(function() {
+javascript:(async function() {
   /* @title: List Last Week's Conversations */
   /* @description: Display summaries of all Claude conversations from the past week in a searchable interface */
   /* @domains: claude.ai */
   /* Configuration */
   const DAYS_TO_FETCH = 7;
   const BATCH_SIZE = 50;
-  
+
   /* Rate limiting configuration (milliseconds) */
   const RATE_LIMIT_TICK = 200; /* Base delay unit. Set to 1 for instant, 200 for polite */
   const DELAY_MULTIPLIERS = {
@@ -14,29 +14,20 @@ javascript:(function() {
     heavy: 2.5     /* Requests 7+: RATE_LIMIT_TICK * 2.5 */
   };
   const BETWEEN_WEEKS_DELAY = RATE_LIMIT_TICK * 2.5; /* Delay between current and prior week fetches */
-  
-  /* Get Organization ID */
-  const getCurrentOrgId = () => {
-    /* Method 1: Extract from lastActiveOrg preference (escaped JSON) */
-    const getLastActiveOrg = () => {
-      const scripts = document.querySelectorAll('script');
-      for (const script of scripts) {
-        const content = script.textContent;
-        if (content?.includes('lastActiveOrg')) {
-          const match = content.match(/\\"lastActiveOrg\\",\\"value\\":\\"([a-f0-9-]{36})\\"/);
-          if (match?.[1]) {
-            return { id: match[1], source: 'lastActiveOrg' };
-          }
-        }
-      }
-      return null;
-    };
 
-    const org = getLastActiveOrg();
-    if (org) {
-      return org.id;
+  /* Get Organization ID via Bootstrap API */
+  const getOrgId = async () => {
+    try {
+      const resp = await fetch('https://claude.ai/api/bootstrap', {
+        headers: { 'accept': '*/*', 'content-type': 'application/json', 'anthropic-client-platform': 'web_claude_ai' },
+        credentials: 'include'
+      });
+      const d = await resp.json();
+      return d?.account?.memberships?.[0]?.organization?.uuid ?? null;
+    } catch (e) {
+      console.error('Error fetching org ID:', e.message);
+      return null;
     }
-    return null;
   };
 
   /* Calculate cutoff date */
@@ -373,7 +364,7 @@ javascript:(function() {
       console.log('Starting Claude conversation fetch...');
 
       /* Get organization ID */
-      const orgId = getCurrentOrgId();
+      const orgId = await getOrgId();
       if (!orgId) {
         removeStatus(statusOverlay);
         alert('Could not find organization ID. Make sure you are logged into Claude.');

@@ -179,79 +179,23 @@ javascript:(function() {
                 <div style="font-size: 11px; color: #3b82f6; margin-top: 4px;">Uploading to Claude...</div>
               `;
 
-              /* Extract org ID from multiple sources */
+              /* Get org ID from Bootstrap API */
               let orgId = null;
-              
-              /* Method 1: From lastActiveOrg in script tags (most reliable) */
-              const scripts = Array.from(document.querySelectorAll('script'));
-              for (const script of scripts) {
-                if (script.textContent) {
-                  /* Match with escaped quotes: \"name\":\"lastActiveOrg\",\"value\":\"UUID\" */
-                  const lastActiveMatch = script.textContent.match(/\\"name\\":\\"lastActiveOrg\\",\\"value\\":\\"([a-f0-9-]{36})\\"/);
-                  if (lastActiveMatch) {
-                    orgId = lastActiveMatch[1];
-                    break;
-                  }
-                  /* Also try without escaped quotes in case format differs */
-                  const simpleMatch = script.textContent.match(/"name":"lastActiveOrg","value":"([a-f0-9-]{36})"/);
-                  if (simpleMatch) {
-                    orgId = simpleMatch[1];
-                    break;
-                  }
-                  /* Simplest: just find lastActiveOrg followed by any UUID */
-                  const looseMatch = script.textContent.match(/lastActiveOrg[^\w]*([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/);
-                  if (looseMatch) {
-                    orgId = looseMatch[1];
-                    break;
-                  }
-                }
+              try {
+                const bootstrapResp = await fetch('https://claude.ai/api/bootstrap', {
+                  headers: { 'accept': '*/*', 'content-type': 'application/json', 'anthropic-client-platform': 'web_claude_ai' },
+                  credentials: 'include'
+                });
+                const bootstrapData = await bootstrapResp.json();
+                orgId = bootstrapData?.account?.memberships?.[0]?.organization?.uuid ?? null;
+              } catch (e) {
+                console.error('Error fetching org ID:', e.message);
               }
-              
-              /* Method 2: From URL path */
+
               if (!orgId) {
-                const pathMatch = window.location.pathname.match(/\/organizations\/([a-f0-9-]{36})/);
-                if (pathMatch) orgId = pathMatch[1];
+                throw new Error('Could not determine organization ID.');
               }
-              
-              /* Method 3: From any link with organizations path */
-              if (!orgId) {
-                const orgLink = document.querySelector('a[href*="/organizations/"]');
-                if (orgLink) {
-                  const linkMatch = orgLink.href.match(/\/organizations\/([a-f0-9-]{36})/);
-                  if (linkMatch) orgId = linkMatch[1];
-                }
-              }
-              
-              /* Method 4: From localStorage/sessionStorage */
-              if (!orgId) {
-                const stored = localStorage.getItem('lastActiveOrg') ||
-                               localStorage.getItem('selectedOrganizationId') || 
-                               sessionStorage.getItem('selectedOrganizationId');
-                if (stored) orgId = stored;
-              }
-              
-              /* Method 5: From organizationId in script tags */
-              if (!orgId) {
-                for (const script of scripts) {
-                  if (script.textContent) {
-                    const match = script.textContent.match(/"organizationId":"([a-f0-9-]{36})"/);
-                    if (match) {
-                      orgId = match[1];
-                      break;
-                    }
-                  }
-                }
-              }
-              
-              if (!orgId) {
-                /* Debug output */
-                console.error('Could not find org ID. Debug info:');
-                console.log('URL:', window.location.href);
-                console.log('Has scripts:', scripts.length);
-                console.log('Sample script content:', scripts[0]?.textContent?.substring(0, 200));
-                throw new Error('Could not determine organization ID. Check console for debug info.');
-              }
-              
+
               console.log('Using organization ID:', orgId);
 
               /* Upload to Claude API */

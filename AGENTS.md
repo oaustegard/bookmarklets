@@ -308,12 +308,12 @@ javascript:
 /* @title: Claude Conversation Pruner */
 /* @description: Loads a Claude conversation in a new window allowing pruning the context */
 /* @domains: claude.ai */
-(function() {
+(async function() {
     const PRUNER_DOMAIN = 'austegard.com';
     const PRUNER_URL = `https://${PRUNER_DOMAIN}/ai-tools/claude-pruner.html`;
-    
+
     /* 1. Extract data from current page */
-    const orgId = getCurrentOrgId();
+    const orgId = await getOrgId();
     const conversationId = window.location.pathname.split('/').pop();
     const API_URL = `https://claude.ai/api/organizations/${orgId}/chat_conversations/${conversationId}`;
     

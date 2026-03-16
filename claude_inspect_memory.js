@@ -2,16 +2,20 @@ javascript:
 /* @title: Inspect Claude Memory */
 /* @description: Shows the current project (or general organization) memory for inspection */
 /* @domains: claude.ai */
-(function(){  
-  const flightData = self.__next_f
-    .filter(item => item[0] === 1)
-    .map(item => item[1])
-    .join("");
-  
-  /* Extract org ID from lastActiveOrg in flight data */
-  const orgMatch = flightData.match(/lastActiveOrg.*?([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/);
-  const orgId = orgMatch ? orgMatch[1] : null;
-  
+(async function(){
+  /* Get Organization ID via Bootstrap API */
+  let orgId = null;
+  try {
+    const resp = await fetch('https://claude.ai/api/bootstrap', {
+      headers: { 'accept': '*/*', 'content-type': 'application/json', 'anthropic-client-platform': 'web_claude_ai' },
+      credentials: 'include'
+    });
+    const d = await resp.json();
+    orgId = d?.account?.memberships?.[0]?.organization?.uuid ?? null;
+  } catch (e) {
+    console.error("Error fetching org ID:", e.message);
+  }
+
   if (!orgId) {
     alert("Could not find organization ID");
     return;
