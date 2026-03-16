@@ -1,11 +1,11 @@
 /**
- * Extract Claude.ai Organization ID from page context
+ * Extract Claude.ai Organization ID via the Bootstrap API
  *
- * Claude.ai stores the active organization ID in escaped JSON within inline scripts.
- * This function extracts it from the lastActiveOrg preference.
+ * Fetches the org ID from Claude's /api/bootstrap endpoint,
+ * which returns account membership data including the organization UUID.
  *
  * Usage:
- *   const orgId = getCurrentOrgId();
+ *   const orgId = await getOrgId();
  *   if (!orgId) {
  *     alert('Could not determine organization ID');
  *     return;
@@ -13,36 +13,31 @@
  *   const apiUrl = `https://claude.ai/api/organizations/${orgId}/chat_conversations`;
  *
  * Returns:
- *   {string|null} - The organization UUID (format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx) or null if not found
+ *   {Promise<string|null>} - The organization UUID (format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx) or null if not found
  *
  * Dependencies:
- *   - None (pure DOM parsing)
+ *   - Requires user to be logged in (uses credentials: 'include')
  *
  * Notes:
  *   - Only works on claude.ai domain
- *   - Requires user to be logged in
- *   - Looks for escaped JSON in inline scripts: \"lastActiveOrg\",\"value\":\"<uuid>\"
+ *   - Must be called with await (async function)
+ *   - For multi-org accounts, returns the first membership's org UUID
  */
 
-const getCurrentOrgId = () => {
-  /* Method 1: Extract from lastActiveOrg preference (escaped JSON) */
-  const getLastActiveOrg = () => {
-    const scripts = document.querySelectorAll('script');
-    for (const script of scripts) {
-      const content = script.textContent;
-      if (content?.includes('lastActiveOrg')) {
-        const match = content.match(/\\"lastActiveOrg\\",\\"value\\":\\"([a-f0-9-]{36})\\"/);
-        if (match?.[1]) {
-          return { id: match[1], source: 'lastActiveOrg' };
-        }
-      }
-    }
+const getOrgId = async () => {
+  try {
+    const resp = await fetch('https://claude.ai/api/bootstrap', {
+      headers: {
+        'accept': '*/*',
+        'content-type': 'application/json',
+        'anthropic-client-platform': 'web_claude_ai'
+      },
+      credentials: 'include'
+    });
+    const d = await resp.json();
+    return d?.account?.memberships?.[0]?.organization?.uuid ?? null;
+  } catch (e) {
+    console.error('Error fetching org ID:', e.message);
     return null;
-  };
-
-  const org = getLastActiveOrg();
-  if (org) {
-    return org.id;
   }
-  return null;
 };

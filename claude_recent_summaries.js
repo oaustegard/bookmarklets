@@ -1,33 +1,24 @@
-javascript:(function() {
+javascript:(async function() {
   /* @title: Recent Conversation Summaries */
   /* @description: Generate AI-powered summaries of recently updated Claude conversations */
   /* @domains: claude.ai */
   /* Configuration */
   const RATE_LIMIT_TICK = 200; /* Base delay unit. Set to 1 for instant, 200 for polite */
   const BATCH_DELAY_MULTIPLIER = 1; /* Delay between API requests */
-  
-  /* Get Organization ID */
-  const getCurrentOrgId = () => {
-    /* Method 1: Extract from lastActiveOrg preference (escaped JSON) */
-    const getLastActiveOrg = () => {
-      const scripts = document.querySelectorAll('script');
-      for (const script of scripts) {
-        const content = script.textContent;
-        if (content?.includes('lastActiveOrg')) {
-          const match = content.match(/\\"lastActiveOrg\\",\\"value\\":\\"([a-f0-9-]{36})\\"/);
-          if (match?.[1]) {
-            return { id: match[1], source: 'lastActiveOrg' };
-          }
-        }
-      }
-      return null;
-    };
 
-    const org = getLastActiveOrg();
-    if (org) {
-      return org.id;
+  /* Get Organization ID via Bootstrap API */
+  const getOrgId = async () => {
+    try {
+      const resp = await fetch('https://claude.ai/api/bootstrap', {
+        headers: { 'accept': '*/*', 'content-type': 'application/json', 'anthropic-client-platform': 'web_claude_ai' },
+        credentials: 'include'
+      });
+      const d = await resp.json();
+      return d?.account?.memberships?.[0]?.organization?.uuid ?? null;
+    } catch (e) {
+      console.error('Error fetching org ID:', e.message);
+      return null;
     }
-    return null;
   };
 
   /* Extract conversation UUIDs from visible chat links */
@@ -204,7 +195,7 @@ javascript:(function() {
       updateStatus(statusIndicator, 'Initializing...');
       
       /* Get organization ID */
-      const orgId = getCurrentOrgId();
+      const orgId = await getOrgId();
       if (!orgId) {
         removeStatus(statusIndicator);
         alert('Could not find organization ID. Make sure you are logged into Claude.');
