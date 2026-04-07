@@ -382,31 +382,6 @@ javascript:(function() {
   header += '> **Source:** [' + (location.hostname || url) + '](' + url + ')\n\n---\n\n';
   md = header + md;
 
-  console.log('[Clipper] Extracted ' + md.length + ' chars from <' +
-    contentNode.tagName + (contentNode.id ? '#' + contentNode.id : '') + '>');
-
-  /* === CLIPBOARD + TOAST === */
-
-  navigator.clipboard.writeText(md).then(function() {
-    showToast('✓ Clipped! (' + md.length + ' chars)', '#22c55e');
-  }).catch(function(err) {
-    console.error('[Clipper] Clipboard failed:', err);
-    /* fallback: textarea copy */
-    var ta = document.createElement('textarea');
-    ta.value = md;
-    ta.style.cssText = 'position:fixed;left:-9999px;top:0';
-    document.body.appendChild(ta);
-    ta.select();
-    try {
-      document.execCommand('copy');
-      showToast('✓ Clipped! (' + md.length + ' chars)', '#22c55e');
-    } catch(e2) {
-      showToast('✗ Copy failed — check console', '#ef4444');
-      console.error('[Clipper] Fallback copy also failed:', e2);
-    }
-    ta.remove();
-  });
-
   function showToast(msg, bg) {
     var toast = document.createElement('div');
     toast.textContent = msg;
@@ -420,6 +395,40 @@ javascript:(function() {
       toast.style.opacity = '0';
       setTimeout(function() { toast.remove(); }, 500);
     }, 2000);
+  }
+
+  console.log('[Clipper] Extracted ' + md.length + ' chars from <' +
+    contentNode.tagName + (contentNode.id ? '#' + contentNode.id : '') + '>');
+
+  if (!md || md.length < 20) {
+    showToast('✗ No content found', '#ef4444');
+    return;
+  }
+
+  /* === CLIPBOARD (sync execCommand — works in iOS Safari bookmarklets) === */
+
+  function copyToClip(text) {
+    function listener(e) {
+      e.clipboardData.setData('text/plain', text);
+      e.preventDefault();
+    }
+    document.addEventListener('copy', listener);
+    var ok = document.execCommand('copy');
+    document.removeEventListener('copy', listener);
+    return ok;
+  }
+
+  var copied = copyToClip(md);
+  if (copied) {
+    showToast('✓ Clipped! (' + md.length + ' chars)', '#22c55e');
+  } else {
+    console.warn('[Clipper] execCommand failed, trying clipboard API');
+    navigator.clipboard.writeText(md).then(function() {
+      showToast('✓ Clipped! (' + md.length + ' chars)', '#22c55e');
+    }).catch(function(err) {
+      showToast('✗ Copy failed — ' + md.length + ' chars in console', '#ef4444');
+      console.log('[Clipper] OUTPUT:\n' + md);
+    });
   }
 
   } catch(err) {
