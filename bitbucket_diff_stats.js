@@ -1,4 +1,8 @@
-javascript:(async () => {
+javascript:
+/* @title: Bitbucket diff stats */
+/* @description: Adds add/delete line number stats to a Bitbucket PR's Diff page */
+/* @domains: *bitbucket* */
+(async () => {
   /* Match Bitbucket Data Center/Server PR URL pattern */
   const m = location.pathname.match(/\/projects\/([^/]+)\/repos\/([^/]+)\/pull-requests\/(\d+)/);
   if (!m) return alert('Not on a Bitbucket PR page');
