@@ -1,13 +1,10 @@
 javascript:(function() {
 /* @title: Get SharePoint File Path */
 /* @description: Generates a Windows Explorer-compatible file path for SharePoint document libraries */
-    /* Validate domain -- change as needed */
-    function isValidDomain(server) {
-        return (
-            server.endsWith('.ACME.com') ||
-            server.endsWith('.AC-ME.com') ||
-            !server.includes('.')
-        );
+    /* Detect SharePoint document libraries, list views, and site pages by URL structure.
+       Works on any host -- no domain allowlist needed. */
+    function looksLikeSharePoint(url) {
+        return /(?:_layouts\/|[?&]RootFolder=|\/Forms\/[^\/]+\.aspx|\/SitePages(?:\/|$))/i.test(url);
     }
 
     /* Extract the server name and path from the current URL */
@@ -17,8 +14,8 @@ javascript:(function() {
         var server = match[1];
         var path = match[2];
 
-        if (!isValidDomain(server)) {
-            alert('This doesn\'t appear to be a valid local SharePoint site.');
+        if (!looksLikeSharePoint(url)) {
+            alert('This doesn\'t look like a SharePoint document library, list, or site page.');
             return null;
         }
 
