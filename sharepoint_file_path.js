@@ -1,13 +1,7 @@
 javascript:(function() {
 /* @title: Get SharePoint File Path */
 /* @description: Generates a Windows Explorer-compatible file path for SharePoint document libraries */
-    /* Verify we're on a SharePoint site */
-    if (typeof SP === 'undefined' || typeof SP.Site === 'undefined') {
-        alert('This doesn\'t appear to be a SharePoint site.');
-        return;
-    }
-
-    /* Validate domain -- change as needed*/
+    /* Validate domain -- change as needed */
     function isValidDomain(server) {
         return (
             server.endsWith('.ACME.com') ||
@@ -36,7 +30,7 @@ javascript:(function() {
         }
 
         /* Remove query parameters and specific SharePoint paths */
-        path = path.split('?')[0].replace(/\/Forms\/AllItems\.aspx$/, '').replace(/\/SitePages\/.*$/, '/SitePages');
+        path = path.split('?')[0].replace(/\/Forms\/[^\/]+\.aspx$/, '').replace(/\/SitePages\/.*$/, '/SitePages');
 
         return { server: server, path: path };
     }
