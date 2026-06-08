@@ -8,10 +8,10 @@ This bookmarklet helps users who need to access SharePoint files or folders dire
 
 ## Features
 
--   **SharePoint Specific**: Checks for the presence of SharePoint's `SP` JavaScript object.
--   **Domain Validation**: Includes a function `isValidDomain` to check if the SharePoint server matches a list of predefined "local" domains (e.g., `.ACME.com`). This needs customization for other organizations.
+-   **Domain Validation**: Includes a function `isValidDomain` to check if the SharePoint server matches a list of predefined "local" domains (e.g., `.ACME.com`). **This needs customization for your organization.**
 -   **URL Parsing**: Handles different SharePoint URL formats, including those with `_layouts/15/start.aspx#/` or `RootFolder=`.
 -   **Path Transformation**: Converts the web path to a `file://` path using `DavWWWRoot`.
+-   **Form-Page Stripping**: Removes any trailing `/Forms/<page>.aspx` (e.g. `AllItems.aspx`, `DispForm.aspx`) and collapses `/SitePages/...` to `/SitePages`.
 -   **Dialog Display**: Shows the generated path in a temporary dialog box at the bottom-right of the page.
 -   **Clipboard Integration**: Automatically copies the generated path to the clipboard.
 -   **Auto-Close Dialog**: The dialog closes automatically after 10 seconds or when a "Close" button is clicked.
@@ -23,7 +23,7 @@ This bookmarklet helps users who need to access SharePoint files or folders dire
     *   Drag the generated link to your bookmarks bar.
 2.  **Hard Mode**:
     *   Copy the entire JavaScript code from the [sharepoint_file_path.js file](https://github.com/oaustegard/bookmarklets/blob/main/sharepoint_file_path.js).
-    *   **Important**: You may need to customize the `isValidDomain` function within the code to match your organization's SharePoint domains.
+    *   **Important**: You must customize the `isValidDomain` function within the code to match your organization's SharePoint domains (the published version uses `.ACME.com` / `.AC-ME.com` placeholders).
     *   Go to the generic [Bookmarklet Installer](https://austegard.com/web-utilities/bookmarklet-installer.html).
     *   Paste the modified code into the installer.
     *   Name the bookmarklet (e.g., "SP to File Path").
@@ -33,42 +33,35 @@ This bookmarklet helps users who need to access SharePoint files or folders dire
 
 1.  Navigate to a document library, folder, or file within your organization's SharePoint site.
 2.  Click the "SP to File Path" bookmarklet.
-3.  If the page is recognized as a valid SharePoint site and domain:
+3.  If the page is on a valid (configured) domain:
     *   A small dialog will appear in the bottom-right corner displaying the generated Windows Explorer path.
     *   This path will also be copied to your clipboard.
-4.  You can then try pasting this path into the Windows File Explorer address bar.
+4.  Paste this path into the Windows File Explorer address bar.
 5.  The dialog will close on its own after 10 seconds or if you click its "Close" button.
-6.  Alerts will appear if it's not a SharePoint site, not a valid local domain, or if path extraction fails.
+6.  An alert appears if the current domain is not in the configured list, or if path extraction fails.
 
 ## How It Works
 
-1.  **SharePoint Check**: Verifies `typeof SP !== 'undefined' && typeof SP.Site !== 'undefined'`.
-2.  **`isValidDomain(server)` Function**:
-    *   Checks if the server name ends with predefined domain suffixes (e.g., `.ACME.com`, `.AC-ME.com`) or has no dots (implying a local server name). **This function needs to be customized for your specific SharePoint environment.**
-3.  **`extractPathInfo(url)` Function**:
-    *   Parses `window.location.href` to get the server and path.
+1.  **`isValidDomain(server)`**: Checks if the server name ends with predefined domain suffixes (e.g., `.ACME.com`, `.AC-ME.com`) or has no dots (implying a local server name). **Customize this for your specific SharePoint environment.**
+2.  **`extractPathInfo(url)`**:
+    *   Parses `window.location.href` into server and path.
     *   Calls `isValidDomain`. If invalid, alerts and returns `null`.
     *   Handles different SharePoint URL structures:
-        *   If URL contains `_layouts/15/start.aspx#/`, it takes the part after the `#`.
-        *   If URL contains `RootFolder=`, it decodes and takes the value of `RootFolder`.
-    *   Cleans the path by removing query parameters and common endings like `/Forms/AllItems.aspx` or `/SitePages/...` (replacing the latter with just `/SitePages`).
-4.  **`createExplorerPath(pathInfo)` Function**:
-    *   Prepends `file://` to the server name and inserts `/DavWWWRoot` before the path: `file://{server}/DavWWWRoot{path}`.
-5.  **`copyToClipboard(text)` Function**: Standard textarea-based clipboard copying.
-6.  **`showAndCopyPath(path)` Function**:
-    *   Creates a styled `div` for the dialog.
-    *   Sets its `innerHTML` with the path and a close button.
-    *   Appends dialog to `document.body`.
-    *   Calls `copyToClipboard`.
-    *   Sets up the close button's `onclick` and a `setTimeout` to remove the dialog.
-7.  **Main Execution**: Calls `extractPathInfo`, then `createExplorerPath`, then `showAndCopyPath`.
+        *   If the URL contains `_layouts/15/start.aspx#/`, it takes the part after the `#`.
+        *   If the URL contains `RootFolder=`, it decodes and takes the value of `RootFolder`.
+    *   Cleans the path by removing query parameters and trailing `/Forms/<page>.aspx`, and collapsing `/SitePages/...` to `/SitePages`.
+3.  **`createExplorerPath(pathInfo)`**: Builds `file://{server}/DavWWWRoot{path}`.
+4.  **`copyToClipboard(text)`**: Textarea-based clipboard copy via `execCommand('copy')`.
+5.  **`showAndCopyPath(path)`**: Creates a styled dialog with the path and a close button, copies the path, and auto-removes the dialog after 10 seconds.
+6.  **Main Execution**: `extractPathInfo` → `createExplorerPath` → `showAndCopyPath`.
 
 ## Technical Notes
 
--   The reliability of `DavWWWRoot` paths depends on the client machine having the WebClient service running and proper authentication/network access to the SharePoint server.
--   The `isValidDomain` function is crucial and **must be configured** by the user for their specific SharePoint environment for the bookmarklet to work as intended.
+-   The reliability of `DavWWWRoot` paths depends on the client machine running the WebClient service with proper authentication and network access to the SharePoint server.
+-   The `isValidDomain` function is the only piece that **must** be configured for your environment.
 -   The URL parsing logic is heuristic and might not cover all SharePoint URL variations or custom setups.
+-   Unlike an earlier variant, this version does not gate on the legacy `SP` JavaScript global, so it also runs on pages where that object is not present.
 
 ## Source Code
 
-The full source code is available on [GitHub](https://github.com/oaustegard/bookmarklets/blob/main/sharepoint_file_path.js). Remember to check and customize `isValidDomain` if needed.
+The full source code is available on [GitHub](https://github.com/oaustegard/bookmarklets/blob/main/sharepoint_file_path.js). Remember to set `isValidDomain` to your own domains.
