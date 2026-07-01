@@ -85,7 +85,7 @@ javascript:
     console.log('Bookmarklet: Complete');
     if (sortedGroups === 0) {
       alert('\u2717 No skill groups found. Open Customize \u2192 Skills or Admin settings \u2192 Skills first.');
-    }
+    } 
   } catch (e) {
     console.error('Bookmarklet error:', e);
     alert('Operation failed: ' + e.message);
