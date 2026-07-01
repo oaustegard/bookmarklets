@@ -23,7 +23,7 @@ javascript:(async function() {
           credentials: 'include'
         });
         const d = await resp.json();
-        return d?.account?.memberships?.[0]?.organization?.uuid ?? null;
+        const orgs = (d?.account?.memberships ?? []).map(m => m?.organization).filter(Boolean); const chatOrg = orgs.find(o => Array.isArray(o.capabilities) && o.capabilities.includes('chat')); return (chatOrg ?? orgs[0])?.uuid ?? null;
       } catch (e) {
         logError(`Error fetching org ID: ${e.message}`);
         return null;
