@@ -64,6 +64,13 @@ Below is a list of available bookmarklets, their purpose, and links to their res
 
 ---
 
+### BSky Translator
+- **Purpose**: Toggles inline English translations beneath non-English posts in a BlueSky feed or thread, translating new posts automatically as you scroll.
+- **Source**: [`bsky_translator.js`](https://github.com/oaustegard/bookmarklets/blob/main/bsky_translator.js)
+- **Details**: [`bsky_translator_README.md`](https://github.com/oaustegard/bookmarklets/blob/main/bsky_translator_README.md)
+
+---
+
 ### BlueSky User Lists Viewer
 - **Purpose**: Provides a modal overlay to display all public lists created by a BlueSky user when viewing their profile page.
 - **Source**: [`bsky_user_lists.js`](https://github.com/oaustegard/bookmarklets/blob/main/bsky_user_lists.js)
