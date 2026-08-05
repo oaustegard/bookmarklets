@@ -29,63 +29,64 @@ javascript:
     fileName = fileName + '.md';
     console.log('Bookmarklet: Target filename', fileName);
 
-    /* --- Intercept the copy instead of reading the clipboard back --- */
-    var captured = null;
-    var originalWriteText = navigator.clipboard && navigator.clipboard.writeText
-      ? navigator.clipboard.writeText.bind(navigator.clipboard)
-      : null;
-
-    if (originalWriteText) {
-      navigator.clipboard.writeText = function (text) {
-        captured = text;
-        return Promise.resolve();
-      };
+    if (!navigator.clipboard || !navigator.clipboard.readText) {
+      alert('✗ Clipboard read is not available in this browser.');
+      return;
     }
 
-    var onCopy = function (e) {
-      if (e.clipboardData) {
-        var data = e.clipboardData.getData('text/plain');
-        if (data) { captured = data; }
-      }
+    /* --- Trigger the app's own copy handler, then read the OS clipboard back.
+       The site's copy write is async and not reliably interceptable (it may
+       hold a bound reference to navigator.clipboard.writeText from before
+       this bookmarklet ran), so read the real clipboard instead — with a
+       short retry loop since the write may not have landed yet. --- */
+    var readClipboardWithRetry = function (retriesLeft, delay) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+          navigator.clipboard.readText().then(function (text) {
+            if (text || retriesLeft <= 0) {
+              resolve(text);
+            } else {
+              readClipboardWithRetry(retriesLeft - 1, delay).then(resolve, reject);
+            }
+          }).catch(function (err) {
+            if (retriesLeft <= 0) {
+              reject(err);
+            } else {
+              readClipboardWithRetry(retriesLeft - 1, delay).then(resolve, reject);
+            }
+          });
+        }, delay);
+      });
     };
-    document.addEventListener('copy', onCopy, true);
 
-    var restore = function () {
-      if (originalWriteText) { navigator.clipboard.writeText = originalWriteText; }
-      document.removeEventListener('copy', onCopy, true);
-    };
-
-    /* --- Trigger the app's own copy handler --- */
     copyButton.click();
 
-    /* --- Give the handler a moment, then write the file --- */
-    setTimeout(function () {
-      try {
-        restore();
-        if (!captured) {
-          alert('✗ Could not capture the response markdown.');
-          console.log('Bookmarklet: Complete (no content)');
-          return;
-        }
-        console.log('Bookmarklet: Captured', captured.length, 'characters');
-
-        var blob = new Blob([captured], { type: 'text/markdown;charset=utf-8' });
-        var url = URL.createObjectURL(blob);
-        var link = document.createElement('a');
-        link.href = url;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
-
-        console.log('Bookmarklet: Complete —', fileName, '(' + captured.length + ' characters)');
-      } catch (inner) {
-        restore();
-        console.error('Bookmarklet error:', inner);
-        alert('Operation failed: ' + inner.message);
+    readClipboardWithRetry(4, 200).then(function (captured) {
+      if (!captured) {
+        alert('✗ Clipboard was empty after copying. Try again, or make sure this tab has focus.');
+        console.log('Bookmarklet: Complete (no content)');
+        return;
       }
-    }, 600);
+      console.log('Bookmarklet: Captured', captured.length, 'characters');
+
+      var blob = new Blob([captured], { type: 'text/markdown;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+
+      console.log('Bookmarklet: Complete —', fileName, '(' + captured.length + ' characters)');
+    }).catch(function (err) {
+      console.error('Bookmarklet error:', err);
+      var hint = err && err.name === 'NotAllowedError'
+        ? ' — grant clipboard-read permission for this site and try again.'
+        : ': ' + (err && err.message);
+      alert('✗ Could not read the clipboard' + hint);
+    });
   } catch (e) {
     console.error('Bookmarklet error:', e);
     alert('Operation failed: ' + e.message);
