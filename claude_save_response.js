@@ -17,6 +17,9 @@ javascript:
     var titleEl = document.querySelector('[data-testid="chat-title-split"]');
     var rawTitle = titleEl ? (titleEl.innerText || '') : '';
     var fileName = rawTitle
+      .normalize('NFKC')
+      .replace(/[\u0000-\u001F\u007F-\u009F\u200B-\u200F\u2028-\u202F\u205F-\u206F\uFE00-\uFE0F\uFEFF\uE000-\uF8FF]/g, '')
+      .replace(/[\u{1F000}-\u{1FFFF}\u2190-\u2BFF]/gu, '')
       .replace(/[\\/:*?"<>|]/g, '-')
       .replace(/\s+/g, ' ')
       .trim()
@@ -76,8 +79,7 @@ javascript:
         document.body.removeChild(link);
         setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
 
-        alert('✓ Saved ' + fileName + ' (' + captured.length + ' characters)');
-        console.log('Bookmarklet: Complete');
+        console.log('Bookmarklet: Complete —', fileName, '(' + captured.length + ' characters)');
       } catch (inner) {
         restore();
         console.error('Bookmarklet error:', inner);
