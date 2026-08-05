@@ -1,5 +1,8 @@
-javascript:(function () {
-  /* Save Claude's last response as a .md file, named after the chat title */
+javascript:
+/* @title: Save Claude's last response */
+/* @description: Saves the last response given by Claude as a .md file, named after the chat title */
+/* @domains: claude.ai */
+(function () {
   console.log('Bookmarklet: Starting');
   try {
     /* --- Locate the copy button for the last response --- */
