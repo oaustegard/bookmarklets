@@ -13,41 +13,142 @@ javascript:
 
     /* ---------- locate the transcript data ---------- */
 
+    var SESSION_RE = /^session_[A-Za-z0-9_-]+$/;
+
+    var urlMatch = location.pathname.match(/session_[A-Za-z0-9_-]+/);
+    var sessionId = urlMatch ? urlMatch[0] : null;
+
     function fiberOf(el) {
       var k = Object.keys(el).filter(function(x) { return x.indexOf('__reactFiber$') === 0; })[0];
       return k ? el[k] : null;
     }
 
-    function entriesFrom(el) {
-      var node = fiberOf(el), hops = 0;
-      while (node && hops < 80) {
-        var p = node.memoizedProps;
-        if (p) {
-          if (Array.isArray(p.entries) && p.entries.length) return p.entries;
-          if (Array.isArray(p.baseEntries) && p.baseEntries.length) return p.baseEntries;
-        }
-        node = node.return;
-        hops++;
+    /* Pull a session id out of one props object, without walking the whole
+       React graph. Session-named keys are read first, so a stray `session_...`
+       string in some unrelated prop cannot outrank an explicit `sessionId`. */
+    function sessionIdFrom(props) {
+      if (!props || typeof props !== 'object') return null;
+      var keys;
+      try { keys = Object.keys(props); } catch (e) { return null; }
+      var named = [], other = [], i, v;
+      for (i = 0; i < keys.length; i++) {
+        (/session/i.test(keys[i]) ? named : other).push(keys[i]);
+      }
+      var order = named.concat(other);
+      for (i = 0; i < order.length; i++) {
+        try { v = props[order[i]]; } catch (e) { continue; }
+        if (typeof v === 'string' && SESSION_RE.test(v)) return v;
+        if (v && typeof v === 'object' && !Array.isArray(v) && typeof v.id === 'string' && SESSION_RE.test(v.id)) return v.id;
       }
       return null;
     }
 
-    function collectEntries() {
-      var hosts = document.querySelectorAll('[data-testid="epitaxy-virtual-transcript"]');
-      var seen = [], all = [];
-      for (var i = 0; i < hosts.length; i++) {
-        var e = entriesFrom(hosts[i]);
-        if (e && seen.indexOf(e) === -1) { seen.push(e); all = all.concat(e); }
+    /* Climb from one transcript host to the nearest props carrying an entry
+       array, and to the nearest session id in the same chain. That id is what
+       distinguishes this session's transcript from another session the SPA
+       still has mounted. */
+    function candidateFor(host) {
+      var node = fiberOf(host), hops = 0;
+      var entries = null, depth = -1, found = null;
+      while (node && hops < 80) {
+        var p = null;
+        try { p = node.memoizedProps; } catch (e) { p = null; }
+        if (p) {
+          if (!entries) {
+            if (Array.isArray(p.entries) && p.entries.length) { entries = p.entries; depth = hops; }
+            else if (Array.isArray(p.baseEntries) && p.baseEntries.length) { entries = p.baseEntries; depth = hops; }
+          }
+          if (!found) found = sessionIdFrom(p);
+        }
+        if (entries && found) break;
+        node = node.return;
+        hops++;
       }
-      return all;
+      return entries ? { entries: entries, sessionId: found, depth: depth, host: host } : null;
     }
 
-    var entries = collectEntries();
-    if (!entries.length) {
+    function areaOf(el) {
+      try {
+        var r = el.getBoundingClientRect();
+        return (r.width || 0) * (r.height || 0);
+      } catch (e) { return 0; }
+    }
+
+    function isVisible(el) {
+      try { return !!(el.offsetParent || areaOf(el)); } catch (e) { return true; }
+    }
+
+    function collectCandidates() {
+      var hosts = document.querySelectorAll('[data-testid="epitaxy-virtual-transcript"]');
+      var out = [], seen = [];
+      for (var i = 0; i < hosts.length; i++) {
+        var c = candidateFor(hosts[i]);
+        if (!c || seen.indexOf(c.entries) !== -1) continue;
+        seen.push(c.entries);
+        c.visible = isVisible(hosts[i]);
+        c.area = areaOf(hosts[i]);
+        out.push(c);
+      }
+      return out;
+    }
+
+    var candidates = collectCandidates();
+    if (!candidates.length) {
       alert('✗ No transcript data found.\n\nOpen a Claude Code session page (claude.ai/code/session_...) and let it finish loading, then try again.');
       return;
     }
-    console.log('CC-Transcript: entries =', entries.length);
+
+    console.log('CC-Transcript: candidates =', candidates.map(function(c) {
+      return { session: c.sessionId, entries: c.entries.length, depth: c.depth, visible: c.visible, area: c.area };
+    }));
+
+    /* ---------- scope to one session ---------- */
+
+    var matched = [], foreign = [], unknown = [];
+    candidates.forEach(function(c) {
+      if (!c.sessionId || !sessionId) unknown.push(c);
+      else if (c.sessionId === sessionId) matched.push(c);
+      else foreign.push(c);
+    });
+
+    var scopeWarnings = [];
+    var chosen, dropped;
+
+    function describe(list) {
+      return list.map(function(c) { return (c.sessionId || 'unidentified') + ' (' + c.entries.length + ')'; }).join(', ');
+    }
+
+    if (matched.length) {
+      chosen = matched;
+      dropped = foreign.concat(unknown);
+    } else if (candidates.length === 1) {
+      chosen = candidates;
+      dropped = [];
+      if (foreign.length) {
+        scopeWarnings.push('The mounted transcript reports ' + foreign[0].sessionId + ' but the URL says ' + sessionId + '. Exported what is mounted.');
+      }
+    } else {
+      /* Nothing carried a usable session id. Rank by what is actually on
+         screen — a stale transcript the router left mounted is hidden or
+         collapsed — then by how close the entry array sits to its host. */
+      var ranked = candidates.slice().sort(function(a, b) {
+        if (a.visible !== b.visible) return a.visible ? -1 : 1;
+        if (a.area !== b.area) return b.area - a.area;
+        return a.depth - b.depth;
+      });
+      chosen = ranked.slice(0, 1);
+      dropped = ranked.slice(1);
+      scopeWarnings.push('None of the ' + candidates.length + ' mounted transcripts identifies itself as ' +
+                         (sessionId || 'this session') + '; exported the ' + (chosen[0].visible ? 'largest visible' : 'first') + ' one.');
+    }
+
+    if (dropped.length) {
+      scopeWarnings.push('Ignored ' + dropped.length + ' other transcript' + (dropped.length === 1 ? '' : 's') +
+                         ' mounted on this page: ' + describe(dropped) + '.');
+      console.log('CC-Transcript: skipped', describe(dropped));
+    }
+
+    var transcriptSession = chosen[0].sessionId || sessionId || 'unknown';
 
     /* ---------- helpers ---------- */
 
@@ -156,32 +257,82 @@ javascript:
 
     /* ---------- assemble ---------- */
 
-    var sessionMatch = location.pathname.match(/session_[A-Za-z0-9_-]+/);
-    var sessionId = sessionMatch ? sessionMatch[0] : 'transcript';
+    var fileTag = sessionId || 'transcript';
     var exportedAt = new Date().toISOString();
 
+    /* Flatten the selected transcripts and drop repeats by entry identity, so
+       two props pointing at overlapping slices of one session cannot double up. */
+    function flatten(list) {
+      var out = [], seenIds = {};
+      list.forEach(function(c) {
+        c.entries.forEach(function(e) {
+          var key = e && (e.id || e.eventUuid || e.sourceUuid);
+          if (key) {
+            if (seenIds[key]) return;
+            seenIds[key] = 1;
+          }
+          out.push(e);
+        });
+      });
+      return out;
+    }
+
+    /* Backwards time inside one export means entries from more than one
+       session got concatenated — the failure this scoping exists to prevent. */
+    function chronologyWarning(list) {
+      var backSteps = 0, prev = null;
+      list.forEach(function(e) {
+        var t = (e && e.timestamp) ? Date.parse(e.timestamp) : NaN;
+        if (isNaN(t)) return;
+        if (prev !== null && t < prev - 1000) backSteps++;
+        prev = t;
+      });
+      if (!backSteps) return null;
+      return backSteps + ' backwards timestamp jump' + (backSteps === 1 ? '' : 's') +
+             ' in the exported entries — this export may still mix sessions.';
+    }
+
+    var entries, warnings, scopeLabel, md;
+
+    function setScope(list, baseWarnings, label) {
+      entries = flatten(list);
+      warnings = baseWarnings.slice();
+      var chrono = chronologyWarning(entries);
+      if (chrono) warnings.push(chrono);
+      scopeLabel = label;
+      md = buildMarkdown();
+      console.log('CC-Transcript:', label, '—', entries.length, 'entries,', md.length, 'chars of markdown');
+      warnings.forEach(function(w) { console.warn('CC-Transcript:', w); });
+    }
+
     function buildMarkdown() {
-      var header = [
+      var lines = [
         '# ' + (document.title || 'Claude Code transcript'),
         '',
-        '- **Session:** `' + sessionId + '`',
+        '- **Session:** `' + (scopeLabel === 'all' ? 'all mounted transcripts' : transcriptSession) + '`',
         '- **URL:** ' + location.origin + location.pathname,
         '- **Exported:** ' + exportedAt,
-        '- **Entries:** ' + entries.length,
-        '',
-        '---'
-      ].join('\n');
+        '- **Entries:** ' + entries.length
+      ];
+      warnings.forEach(function(w) { lines.push('- **Warning:** ' + w); });
+      lines.push('', '---');
       var body = entries.map(renderEntry).join('\n\n---\n\n');
-      return header + '\n\n' + body + '\n';
+      return lines.join('\n') + '\n\n' + body + '\n';
     }
 
     function buildJson() {
       return safeJson({
-        session: sessionId,
+        session: scopeLabel === 'all' ? null : transcriptSession,
+        urlSession: sessionId,
+        scope: scopeLabel,
         url: location.origin + location.pathname,
         title: document.title,
         exportedAt: exportedAt,
         entryCount: entries.length,
+        skippedTranscripts: (scopeLabel === 'all' ? [] : dropped).map(function(c) {
+          return { session: c.sessionId || null, entryCount: c.entries.length };
+        }),
+        warnings: warnings,
         entries: entries
       }, 2);
     }
@@ -189,7 +340,7 @@ javascript:
     /* ---------- delivery ---------- */
 
     function download(text, ext, mime) {
-      var name = 'claude-code-' + sessionId + '-' + exportedAt.slice(0, 10) + '.' + ext;
+      var name = 'claude-code-' + fileTag + (scopeLabel === 'all' ? '-all' : '') + '-' + exportedAt.slice(0, 10) + '.' + ext;
       var blob = new Blob([text], { type: mime + ';charset=utf-8' });
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
@@ -231,19 +382,21 @@ javascript:
     var old = document.getElementById('cc-transcript-panel');
     if (old) old.remove();
 
-    var md = buildMarkdown();
+    setScope(chosen, scopeWarnings, 'session');
 
     var panel = document.createElement('div');
     panel.id = 'cc-transcript-panel';
-    panel.style.cssText = 'position:fixed;top:16px;right:16px;z-index:2147483647;background:#1f1e1d;color:#f5f4f2;font:13px/1.5 ui-sans-serif,system-ui,sans-serif;border:1px solid #454340;border-radius:10px;padding:12px 14px;box-shadow:0 8px 30px rgba(0,0,0,.45);min-width:250px';
+    panel.style.cssText = 'position:fixed;top:16px;right:16px;z-index:2147483647;background:#1f1e1d;color:#f5f4f2;font:13px/1.5 ui-sans-serif,system-ui,sans-serif;border:1px solid #454340;border-radius:10px;padding:12px 14px;box-shadow:0 8px 30px rgba(0,0,0,.45);min-width:250px;max-width:340px';
 
     var title = document.createElement('div');
     title.textContent = 'Transcript export';
     title.style.cssText = 'font-weight:600;margin-bottom:2px';
 
     var meta = document.createElement('div');
-    meta.textContent = entries.length + ' entries · ' + Math.round(md.length / 1024) + ' KB markdown';
-    meta.style.cssText = 'opacity:.65;margin-bottom:10px;font-size:12px';
+    meta.style.cssText = 'opacity:.65;margin-bottom:8px;font-size:12px;word-break:break-all';
+
+    var warn = document.createElement('div');
+    warn.style.cssText = 'color:#e8c07d;font-size:12px;margin-bottom:10px';
 
     var row = document.createElement('div');
     row.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap';
@@ -251,11 +404,19 @@ javascript:
     var status = document.createElement('div');
     status.style.cssText = 'margin-top:9px;font-size:12px;min-height:16px;color:#c8e6a0';
 
+    function refresh() {
+      meta.textContent = entries.length + ' entries · ' + Math.round(md.length / 1024) + ' KB markdown · ' +
+                         (scopeLabel === 'all' ? 'all mounted transcripts' : transcriptSession);
+      warn.textContent = warnings.length ? '⚠ ' + warnings.join(' ') : '';
+      warn.style.display = warnings.length ? 'block' : 'none';
+      status.textContent = '';
+    }
+
     function button(label, handler) {
       var b = document.createElement('button');
       b.textContent = label;
       b.style.cssText = 'cursor:pointer;background:#c96442;color:#fff;border:0;border-radius:6px;padding:6px 10px;font:inherit;font-size:12px';
-      b.onclick = handler;
+      b.addEventListener('click', handler);
       row.appendChild(b);
       return b;
     }
@@ -267,19 +428,37 @@ javascript:
     button('Download MD', function() { status.textContent = '✓ ' + download(md, 'md', 'text/markdown'); });
     button('Download JSON', function() { status.textContent = '✓ ' + download(buildJson(), 'json', 'application/json'); });
 
+    /* Escape hatch: if the scoping picked the wrong transcript, everything
+       mounted is still one click away. */
+    if (dropped.length) {
+      var toggle = button('Include all', function() {
+        if (scopeLabel === 'session') {
+          setScope(candidates, ['Scope: every transcript mounted on this page (' + describe(candidates) + ').'], 'all');
+          toggle.textContent = 'This session only';
+        } else {
+          setScope(chosen, scopeWarnings, 'session');
+          toggle.textContent = 'Include all';
+        }
+        refresh();
+      });
+      toggle.style.background = '#454340';
+    }
+
     var close = document.createElement('button');
     close.textContent = '×';
     close.style.cssText = 'cursor:pointer;background:transparent;color:#f5f4f2;border:0;font:inherit;font-size:18px;line-height:1;position:absolute;top:8px;right:10px;opacity:.6';
-    close.onclick = function() { panel.remove(); };
+    close.addEventListener('click', function() { panel.remove(); });
 
     panel.appendChild(close);
     panel.appendChild(title);
     panel.appendChild(meta);
+    panel.appendChild(warn);
     panel.appendChild(row);
     panel.appendChild(status);
     document.body.appendChild(panel);
+    refresh();
 
-    console.log('CC-Transcript: ready,', md.length, 'chars of markdown');
+    console.log('CC-Transcript: ready');
   } catch (error) {
     console.error('CC-Transcript error:', error);
     alert('✗ Transcript export failed: ' + error.message);
