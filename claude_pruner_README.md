@@ -140,9 +140,9 @@ For maximum transparency, use these separate bookmarklets:
 1. Use [Export Conversation](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=claude_conversation_tree_json.js) to open a new window with the conversation as JSON
 2. From that window run [Process JSON](https://austegard.com/web-utilities/bookmarklet-installer.html?bookmarklet=claude_prune_json.js)
 
-## Contributing
+## Project Files
 
-Contributions welcome! The project consists of:
+The project consists of:
 - `[https://github.com/oaustegard/bookmarklets/blob/main/claude_pruner.js](claude_pruner.js)` - The bookmarklet
 - `[claude-pruner.html](https://github.com/oaustegard/oaustegard.github.io/blob/main/ai-tools/claude-pruner.html)` - The pruner interface
 - Supporting documentation
