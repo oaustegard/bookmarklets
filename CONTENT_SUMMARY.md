@@ -99,6 +99,13 @@ Below is a list of available bookmarklets, their purpose, and links to their res
 
 ---
 
+### Export Claude Transcript
+- **Purpose**: Downloads a claude.ai chat, shared chat, or Claude Code / Cowork session as pruned JSON, with full, compact, or outline detail for sessions.
+- **Source**: [`claude_export_transcript.js`](https://github.com/oaustegard/bookmarklets/blob/main/claude_export_transcript.js)
+- **Details**: [`claude_export_transcript_README.md`](https://github.com/oaustegard/bookmarklets/blob/main/claude_export_transcript_README.md)
+
+---
+
 ### Claude Custom Instructions Enlarger
 - **Purpose**: Enlarges the Custom Instructions textarea in Claude Projects for more convenient editing of large instructions.
 - **Source**: [`claude_enlarge_custom_instruction_field.js`](https://github.com/oaustegard/bookmarklets/blob/main/claude_enlarge_custom_instruction_field.js)
