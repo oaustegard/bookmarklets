@@ -1,0 +1,12 @@
+{
+  "name": "bookmarklet-tools",
+  "private": true,
+  "type": "module",
+  "description": "Minify a bookmarklet source file into a javascript: URL and an install page",
+  "scripts": {
+    "build": "node build_bookmarklet.mjs"
+  },
+  "devDependencies": {
+    "terser": "5.36.0"
+  }
+}
