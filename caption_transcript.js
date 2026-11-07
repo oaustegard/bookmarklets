@@ -1,6 +1,6 @@
 javascript:
 /* @title: Caption Transcript */
-/* @description: Scrub the page's main video to load its full caption track, then download a timestamped transcript (.txt) */
+/* @description: Seek through the page's longest video to load its full caption track, then download a timestamped transcript (.txt) */
 (function () {
   'use strict';
 

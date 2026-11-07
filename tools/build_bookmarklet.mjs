@@ -61,9 +61,9 @@ const page = `<!doctype html>
 <h1>${escapeHtml(title)}</h1>
 <p>${escapeHtml(description)}</p>
 <p><a class="bookmarklet" href="${escapeHtml(url)}">${escapeHtml(title)}</a></p>
-<p>Drag the button to your bookmarks bar. Open a page with a video and click the bookmark.</p>
-<p class="small">${result.code.length.toLocaleString('en-US')} characters minified. Source:
-<a href="https://github.com/oaustegard/bookmarklets/blob/main/${name}.js"><code>${name}.js</code></a></p>
+<p>Drag the button above to your bookmarks bar, then open a page with the content and click the bookmark.</p>
+<p class="small">Documentation: <a href="https://github.com/oaustegard/bookmarklets/blob/main/${name}_README.md"><code>${name}_README.md</code></a>.
+Source: <a href="https://github.com/oaustegard/bookmarklets/blob/main/${name}.js"><code>${name}.js</code></a>.</p>
 </main>
 </body>
 </html>

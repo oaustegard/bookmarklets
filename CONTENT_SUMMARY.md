@@ -93,7 +93,7 @@ Below is a list of available bookmarklets, their purpose, and links to their res
 ---
 
 ### Caption Transcript
-- **Purpose**: Seeks through the page's main video (shadow DOM and same-origin iframes included) to load its full caption track, then downloads a timestamped `.txt` transcript. Built for players like Mux that load captions only near the playhead.
+- **Purpose**: Seeks through the page's longest video (shadow DOM and same-origin iframes included) to load its full caption track, then downloads a timestamped `.txt` transcript. Built for streaming players, such as Mux, that load captions only around the current playback position.
 - **Source**: [`caption_transcript.js`](https://github.com/oaustegard/bookmarklets/blob/main/caption_transcript.js)
 - **Details**: [`caption_transcript_README.md`](https://github.com/oaustegard/bookmarklets/blob/main/caption_transcript_README.md)
 
